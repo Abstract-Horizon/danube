@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+  <properties>
+    <author email="daniel.sendula@abstracthorizon.org">Daniel Sendula</author>
+    <title>Danube (core)</title>
+  </properties>
+
+  <meta name="keyword" content="danube java"/>
+
+  <body>
+    <section name="Danube (HTTP)">
+      <p>
+        Danube HTTP connection handling packages. It deals with raw, low level HTTP requests (both HTTP/1.0 and HTTP/1.1),
+        cookies, HTTP sessions and HTTP authorisation.
+      </p>
+      <p>
+        This project defines simple implementations for above interfaces along with simple file serving.
+      </p>
+    </section>
+  </body>
+
+</document>

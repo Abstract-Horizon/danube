@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Danube">
+
+  <bannerLeft>
+    <name></name>
+    <src>../images/ah.png</src>
+    <href>http://www.abstracthorizon.org</href>
+  </bannerLeft>
+
+  <bannerRight>
+    <name>Danube</name>
+    <src>../images/danube.png</src>
+    <href>http://danube.abstracthorizon.org</href>
+  </bannerRight>
+
+  <body>
+    <menu ref="parent"/>
+
+    <menu ref="modules"/>
+    <menu ref="reports"/>
+  </body>
+</project>

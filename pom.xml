@@ -1,0 +1,447 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.abstracthorizon</groupId>
+    <artifactId>abstracthorizon-dev</artifactId>
+    <version>1.1.1</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.abstracthorizon.danube</groupId>
+
+  <artifactId>danube</artifactId>
+
+  <packaging>pom</packaging>
+
+  <name>Danube</name>
+
+  <version>1.1-SNAPSHOT</version>
+
+  <description>Danube Framework</description>
+
+  <url>http://danube.abstracthorizon.org/</url>
+
+  <issueManagement>
+    <system>Trac</system>
+    <url>http://trac.abstracthorizon.org/danube</url>
+  </issueManagement>
+  
+  <inceptionYear>2005</inceptionYear>
+  
+  <organization>
+    <name>Abstract Horizon</name>
+    <url>http://www.abstracthorizon.org/</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>Eclipse Public License - v 1.0</name>
+      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <!-- SCM -->
+  <scm>
+    <connection>scm:svn:http://svn.abstracthorizon.org/danube/tags/danube-0.4.0</connection>
+    <developerConnection>scm:svn:https://svn.abstracthorizon.org/danube/tags/danube-0.4.0</developerConnection>
+    <url>http://trac.abstracthorizon.org/danube/browser/tags/danube-0.4.0</url>
+  </scm>
+
+  <modules>
+    <module>danube-adaptable</module>
+    <module>danube-core</module>
+    <module>danube-support</module>
+    <module>danube-service</module>
+    <module>danube-http</module>
+    <module>danube-http-spring</module>
+    <module>danube-webdav</module>
+    <module>danube-webdav-spring</module>
+    <module>danube-webflow</module>
+    <module>danube-freemarker</module>
+    <module>danube-velocity</module>
+    <module>danube-tapestry</module>
+    <module>danube-tapestry-spring</module>
+    <module>danube-json</module>
+    <module>danube-bean-console</module>
+    <module>danube-socket-proxy</module>
+    <module>danube-test-support</module>
+    <module>danube-service-test</module>
+    <module>danube-auth</module>
+  </modules>
+
+  <dependencies />
+
+  <properties>
+    <spring.version>2.5.6</spring.version>
+    <slf4j.version>1.5.6</slf4j.version>
+    <junit.version>4.5</junit.version>
+    <pasulj.version>0.0.1</pasulj.version>
+    <javax.activation.version>1.1</javax.activation.version>
+  </properties>
+  
+  <dependencyManagement>
+    <dependencies>
+
+      <!-- SLF4J Logging -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j.version}</version>
+        <type>jar</type>
+        <scope>compile</scope>
+      </dependency>
+      <!-- To Satisfy Spring JCL deps and our spring-inherited classes (scope:compile then!) -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+        <type>jar</type>
+        <scope>runtime</scope>
+      </dependency>
+      
+      <dependency>
+        <groupId>javax.activation</groupId>
+        <artifactId>activation</artifactId>
+        <version>${javax.activation.version}</version>
+        <type>jar</type>
+      </dependency>
+
+
+      <!-- Various commonly used deps - SPRING -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring.version}</version>
+        <type>jar</type>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>${spring.version}</version>
+        <type>jar</type>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+        <type>jar</type>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-aop</artifactId>
+        <version>${spring.version}</version>
+        <type>jar</type>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+        <version>${spring.version}</version>
+        <type>jar</type>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${spring.version}</version>
+        <type>jar</type>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>struts</artifactId>
+            <groupId>struts</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+        <version>${spring.version}</version>
+        <type>jar</type>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webflow</artifactId>
+        <version>1.0.1</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.abstracthorizon.pasulj</groupId>
+        <artifactId>pasulj</artifactId>
+        <version>${pasulj.version}</version>
+        <type>jar</type>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <type>jar</type>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- Project modules -->
+      <dependency>
+        <groupId>org.abstracthorizon.danube</groupId>
+        <artifactId>danube-adaptable</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube</groupId>
+        <artifactId>danube-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube</groupId>
+        <artifactId>danube-service</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube</groupId>
+        <artifactId>danube-support</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.http</groupId>
+        <artifactId>danube-http</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.spring</groupId>
+        <artifactId>danube-http-spring</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.webdav</groupId>
+        <artifactId>danube-webdav</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.spring</groupId>
+        <artifactId>danube-webdav-spring</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.http</groupId>
+        <artifactId>danube-freemarker</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.http</groupId>
+        <artifactId>danube-velocity</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.http</groupId>
+        <artifactId>danube-tapestry</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.spring</groupId>
+        <artifactId>danube-tapestry-spring</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.http</groupId>
+        <artifactId>danube-json</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube</groupId>
+        <artifactId>danube-bean-console</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.test</groupId>
+        <artifactId>danube-test-support</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.abstracthorizon.danube.test</groupId>
+        <artifactId>danube-service-test</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.1.2</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.3</version>
+          <configuration>
+            <source>1.6</source>
+            <target>1.6</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <extensions>
+      <!-- Enabling the use of SSH -->
+       <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh</artifactId>
+        <version>2.9</version>
+      </extension>
+    </extensions>
+  </build>
+  
+  <distributionManagement>
+    <site>
+      <id>abstracthorizon.site</id>
+      <url>scpexe://server.creative-sphere.com/srv/www.abstracthorizon.org/html/danube</url>
+    </site>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>abstracthorizon</id>
+      <layout>default</layout>
+      <name>Abstracthorizon.org Repository</name>
+      <releases>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <url>
+        http://repository.abstracthorizon.org/maven2/abstracthorizon
+      </url>
+    </repository>
+    <repository>
+      <id>abstracthorizon.snapshot</id>
+      <layout>default</layout>
+      <name>Abstracthorizon.org Snapshot Repository</name>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <url>
+        http://repository.abstracthorizon.org/maven2/abstracthorizon.snapshot
+      </url>
+    </repository>
+  </repositories>
+ 
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+          <destDir>api</destDir>
+          <links>
+            <link>http://java.sun.com/j2se/1.5/docs/api/</link>
+            <link>http://static.springframework.org/spring/docs/1.2.x/api/</link>
+            <link>http://static.springframework.org/spring-webflow/docs/pr5/api/</link>
+            <link>http://jakarta.apache.org/velocity/docs/api/</link>
+            <link>http://freemarker.sourceforge.net/docs/api/</link>
+            <link>http://tapestry.apache.org/tapestry4/tapestry/apidocs/</link>
+            <link>http://jakarta.apache.org/hivemind/hivemind/apidocs/</link>
+            <link>http://java.sun.com/javaee/javaserverfaces/1.2/docs/api/</link>
+          </links>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+</project>

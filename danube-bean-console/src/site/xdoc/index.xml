@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+  <properties>
+    <author email="daniel.sendula@abstracthorizon.org">Daniel Sendula</author>
+    <title>Danube (core)</title>
+  </properties>
+
+  <meta name="keyword" content="danube java"/>
+
+  <body>
+    <section name="Danube Bean Explorer">
+      <p>
+        This is example application that provides insite in internals of Danube framework. It allows user to
+        browse beans defined under Spring framework, modify their properties as there were
+        JavaBeans and invoke some methods on same beans.
+      </p>
+    </section>
+  </body>
+
+</document>

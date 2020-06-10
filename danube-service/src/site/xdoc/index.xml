@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+  <properties>
+    <author email="daniel.sendula@abstracthorizon.org">Daniel Sendula</author>
+    <title>Danube (core)</title>
+  </properties>
+
+  <meta name="keyword" content="danube java"/>
+
+  <body>
+    <section name="Danube (Service)">
+      <p>
+        This project defines service handling with in Danube. It is, along side of Core part,
+        very generic and can be used in many cases where input from a socket (or any other input
+        in that case) is processes in structured way.
+      </p>
+      <p>
+        It defines a service and then provides several different implementations.
+      </p>
+    </section>
+  </body>
+
+</document>

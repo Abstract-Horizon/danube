@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Integration - FreeMarker</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+
+    <section name="FreeMarker">
+      <p>
+        <i>&quot;<a href="links.html#FreeMarker">FreeMarker</a> is <a href="links.html#Java">Java</a> template; a generic tool to generate text output (HTML, RTF, source code, etc.)...&quot;</i>
+      </p>
+
+    <subsection name="Description">
+      <p>
+        Integration with <a href="links.html#FreeMarker">FreeMarker</a> is done through
+        <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>.
+        It is a view implementation used by
+        <a href="api/org/abstracthorizon/danube/mvc/MVCConnectionHandler.html">MVCConnectionHandler</a>.
+      </p>
+      <p>
+        <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>
+        obtains template from supplied view name (using suffix if supplied) and processes it using
+        a model that is passed in.
+      </p>
+    </subsection>
+    <subsection name="Configuration">
+      <p>
+        <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>
+        has two important parameters: <code>templatesLocation</code> and <code>suffix</code>.
+        The first is self-explanatory, while the second represents a string that is suffixed to the template name
+        supplied by
+        <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a>. <code>Suffix</code>
+        can be set to <code>null</code> and in that case it is going to be treated as <code>suffix</code> is set
+        to <code>&quot;&quot;</code>.
+      </p>
+      <p>
+        <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>'s
+        <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html#init()">init</a> method
+        must be called after templates location is set. Templates' location can be set as a file or URL.
+      </p>
+      <!--
+      <p>
+        Aside of <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">org.abstracthorizon.danube.freemarker.FreeMarkerViewAdapter</a>
+        there is
+        <a href="api/org/abstracthorizon/danube/freemarker/spring/FreeMarkerViewAdapter.html">org.abstracthorizon.danube.freemarker.spring.FreeMarkerViewAdapter</a>
+        supplied as well. Its only difference from &quot;ordinary&quot; implementation of the
+        <a href="api/org/abstracthorizon/danube/freemarker/spring//FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>
+        is that it uses <a href="links.html#Spring">Spring</a> application context's resource to obtain location of templates. It is very useful with
+        application contexts that handle <code>getResource</code> method well (such as
+        <a href="api/org/abstracthorizon/danube/http/spring/ResourceXmlApplicationContext.html">ResourceXmlApplicationContext</a>).
+      </p>
+      -->
+    </subsection>
+    <subsection name="Example">
+
+      <p>
+        Here is an example of an configuration of <a href="links.html#FreeMarker">FreeMarker</a> (with <a href="links.html#Spring-Webflow">Spring Webflow</a>) taken from supplied demo:
+      </p>
+      <source>
+<![CDATA[
+  <!--
+   * This bean defines beans application context.
+   * It references MVC controller defined at the "/guess.do" path.
+  -->
+  <bean name="webflow-freemarker-example-applicaiton" class="org.abstracthorizon.danube.http.HTTPContext">
+    <property name="components">
+      <list>
+        <bean class="org.abstracthorizon.danube.http.matcher.Prefix">
+          <property name="prefix"><value>/guess.do</value></property>
+          <property name="connectionHandler"><ref bean="guess.do"/></property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+   * This is MVC controller that has Spring WebFlow as a controller and FreeMarker as a view adapter.
+  -->
+  <bean name="guess.do" class="org.abstracthorizon.danube.http.HTTPMVCConnectionHandler">
+    <property name="controller"><ref bean="webFlowController" /></property>
+    <property name="view"><ref bean="freemarkerViewAdapter" /></property>
+  </bean>
+
+  <!--
+   * This is WebFlow controller. Flow locator is defined through flow registry bean and
+   * "bean-explorer-flow" is set as defualt flow id
+  -->
+  <bean name="webFlowController" class="org.abstracthorizon.danube.webflow.DanubeFlowController">
+    <property name="flowLocator"><ref bean="flowRegistry" /></property>
+    <property name="defaultFlowId"><value>guess-flow</value></property>
+  </bean>
+
+  <!--
+   * Flow registry defines where flow definitions are to be read from.
+  -->
+  <bean id="flowRegistry" class="org.springframework.webflow.registry.XmlFlowRegistryFactoryBean">
+    <property name="flowLocations" value="guess-flow.xml"/>
+  </bean>
+
+  <!--
+    This is FreeMarker view adapter.
+    It defines directory "pages" as location of templates and ".page" as templates' suffix.
+  -->
+  <bean id="freemarkerViewAdapter" class="org.abstracthorizon.danube.freemarker.FreeMarkerViewAdapter" init-method="init">
+    <property name="templatesURL" value="classpath:pages"/>
+    <property name="suffix" value="page"/>
+  </bean>
+]]>
+      </source>
+    </subsection>
+
+  </section>
+
+</body>
+</document>

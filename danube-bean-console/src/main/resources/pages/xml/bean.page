@@ -1,0 +1,76 @@
+<!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+ *
+-->
+<bean>
+  <name>${bean.name}</name>
+  <type>${bean.type}</type>
+  <path>${bean.path}</path>
+  <#if bean.beans?exists>
+    <beans>
+    <#list bean.beans as bean>
+      <name>${bean.name}</name>
+      <type>${bean.type}</type>
+      <access>${bean.access}</access>
+      <value>${bean.value}</value>
+    </#list>
+    </beans>
+  </#if>
+
+  <#if bean.collection?exists>
+    <collection>
+    <#list bean.collection as element>
+      <type>${element.type}</type>
+      <value>${element.value}</value>
+    </#list>
+    </collection>
+  </#if>
+
+  <#if bean.map?exists>
+    <map>
+    <#list bean.map as element>
+      <name>${element.name}</name>
+      <type>${element.type}</type>
+      <value>${element.value}</value>
+    </#list>
+    </map>
+  </#if>
+
+  <properties>
+  <#if propertiesError?exists>
+    <error>${propertiesError}</error>  
+  </#if>
+
+  <#list bean.properties as prop>
+    <name>${prop.name}</name>
+    <type>${prop.type}</type>
+    <access>${prop.access}</access>
+    <value>${prop.value}</value>
+  </#list>
+  </properties>
+
+  <#if (bean.methods?size > 0)>
+
+  <methods>
+
+  <#list bean.methods as method>
+    <method>
+      <name>${method.name}</name>
+      <parameters>
+      <#list method.parameterTypes as param>
+        <name>${param.name}</name>
+      </#list>
+      </parameters>
+    </method>
+  </#list>
+  </methods>
+  </#if>
+</bean>

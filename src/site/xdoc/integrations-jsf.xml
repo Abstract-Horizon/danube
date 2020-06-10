@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Integration - JavaServer Faces</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+
+    <section name="JavaServer Faces">
+      <p>
+        <i>&quot;<a href="#JSF">JavaServer Faces</a>
+        technology is a framework for building user interfaces for web applications.&quot;</i>
+      </p>
+    <subsection name="Description">
+      <p>
+        Integration with <a href="#JSF">JavaServer Faces</a> (JSF) is tied to <a href="#Facelets">Facelets</a>.
+        It is done through
+        <a href="api/org/abstracthorizon/danube/jsf/JSFConnectionHandler.html">JSFConnectionHandler</a>.
+        <a href="#JSF">JSF</a> is integrated with Danube through following classes:
+        <a href="api/org/abstracthorizon/danube/jsf/context/DanubeExternalContext.html">DanubeExternalContext</a>
+        and
+        <a href="api/org/abstracthorizon/danube/jsf/context/DanubeFacesContext.html">DanubeFacesContext</a>.
+        Connection between <a href="#JSF">JSF</a>, Danube and <a href="#Facelets">facelets</a> is
+        done through
+        <a href="api/org/abstracthorizon/danube/jsf/facelets/DanubeFaceletsViewHandler.html">DanubeFaceletsViewHandler</a>.
+        It has to be supplied in <code>faces-config</code>'s <code>view-handler</code> tag. See configuration example for it.
+      </p>
+      <p>
+        Danube implementation is based on <a href="#MyFaces">MyFaces</a> implementation.
+      </p>
+    </subsection>
+    <subsection name="Configuration">
+      <p>
+        Parameters that can be set to
+        <a href="api/org/abstracthorizon/danube/jsf/JSFConnectionHandler.html">JSFConnectionHandler</a>
+        are:
+        <ul>
+        <li>
+            <code>sessionManager</code> - session manager to be used. It must implement <a href="api/org/abstracthorizon/danube/http/session/HTTPSessionManager.html">HTTPSessionManager</a>.
+            If it is not set then defaulted to <a href="api/org/abstracthorizon/danube/http/session/SimpleSessionManager.html">SimpleSessionManager</a>.
+        </li>
+        <li><code>attribuets</code> - &quot;context&quot; attributes - global attributes for this &quot;application&quot;</li>
+        <li><code>initParameters</code> - initial parameters</li>
+        </ul>
+      </p>
+    </subsection>
+    <subsection name="Example">
+      <p>
+        Here is an example of an configuration of <a href="#JSF">JavaServer Faces</a> taken from supplied demo:
+      </p>
+
+          <source>
+<![CDATA[
+    <!--
+     * This bean defines beans application context.
+     * It references to two components: File component that accepts only file named "style.css" and
+     * MVC controller defined at the root of this application ("/").
+    -->
+    <bean name="web-application" class="org.abstracthorizon.danube.http.HTTPContext">
+    <property name="components">
+        <list>
+            <bean class="org.abstracthorizon.danube.http.matcher.Pattern">
+                <property name="pattern"><value>/style\.css</value></property>
+                <property name="connectionHandler"><ref bean="files"/></property>
+            </bean>
+            <bean class="org.abstracthorizon.danube.http.matcher.Pattern">
+                <property name="pattern"><value>.*\.jsf</value></property>
+                <property name="connectionHandler"><ref bean="jsf-application"/></property>
+                <property name="matchAsComponentPath"><value>true</value></property>
+            </bean>
+        </list>
+    </property>
+    </bean>
+
+    <!--
+     * This bean defines serving files from directory "pages" as given file path.
+    -->
+    <bean name="files" class="org.abstracthorizon.danube.http.util.FileConnectionHandler">
+        <property name="filePath"><value>src/pages</value></property>
+    </bean>
+
+    <!--
+     * This is connection handler that handles JSF requests.
+    -->
+    <bean name="jsf-application" class="org.abstracthorizon.danube.jsf.JSFConnectionHandler"
+        init-method="init">
+        <property name="initParameters">
+            <map>
+                <entry>
+                    <key><value>javax.faces.DEFAULT_SUFFIX</value></key>
+                    <value>.xhtml</value>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+]]>
+</source>
+      <p>
+        Also <code>faces-config.xml</code> must have following:
+<code><pre>
+  &lt;application&gt;
+    &lt;view-handler&gt;
+      org.abstracthorizon.danube.jsf.facelets.DanubeFaceletViewHandler
+    &lt;/view-handler&gt;
+  &lt;/application&gt;
+</pre></code>
+      </p>
+    </subsection>
+    <subsection name="Known Issues">
+      <p>
+        It works only with <a href="#Facelets">Facelets</a> jar supplied with Danube.
+      </p>
+    </subsection>
+
+  </section>
+
+</body>
+</document>

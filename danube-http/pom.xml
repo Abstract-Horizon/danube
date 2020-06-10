@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.abstracthorizon.danube</groupId>
+    <artifactId>danube</artifactId>
+    <version>1.1-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>danube-http</artifactId>
+
+  <groupId>org.abstracthorizon.danube.http</groupId>
+
+  <packaging>jar</packaging>
+
+  <name>Danube (HTTP)</name>
+
+  <description>
+    Danube HTTP connection handling packages. It deals with raw, low level HTTP requests (both HTTP/1.0 and HTTP/1.1),
+    cookies, HTTP sessions and HTTP authorisation.
+
+    This project defines simple implementations for above interfaces along with simple file serving.
+  </description>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube</groupId>
+      <artifactId>danube-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube</groupId>
+      <artifactId>danube-service</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube</groupId>
+      <artifactId>danube-support</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.pasulj</groupId>
+      <artifactId>pasulj</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>activation</artifactId>
+    </dependency>
+
+    <!-- Test deps -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube.test</groupId>
+      <artifactId>danube-test-support</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+</project>

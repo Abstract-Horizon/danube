@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Integration - Velocity</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+
+    <section name="Velocity">
+      <p>
+        <i>&quot;<a href="links.html#Velocity">Velocity</a> is <a href="links.html#Java">Java</a> based template engine...&quot;</i>
+      </p>
+    <subsection name="Description">
+      <p>
+        Integration with <a href="links.html#Velocity">Velocity</a> is done through
+        <a href="api/org/abstracthorizon/danube/velocity/VelocityViewAdapter.html">VelocityViewAdapter</a>.
+        It is a view implementation used by
+        <a href="api/org/abstracthorizon/danube/mvc/MVCConnectionHandler.html">MVCConnectionHandler</a>.
+      </p>
+      <p>
+        <a href="api/org/abstracthorizon/danube/velocity/VelocityViewAdapter.html">VelocityViewAdapter</a>
+        obtains template from supplied view name (using suffix if supplied) and processes it using a model that is
+        passed in.
+      </p>
+    </subsection>
+    <subsection name="Configuration">
+      <p>
+        <a href="api/org/abstracthorizon/danube/velocity/VelocityViewAdapter.html">VelocityViewAdapter</a>
+        has three parameters: <code>templatesLocation</code>, <code>suffix</code> and <code>contentType</code>.
+        The first is self-explanatory, while the second represents a string that is suffixed to the template name
+        supplied by
+        <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a>. <code>Suffix</code>
+        can be set to <code>null</code> and in that case it is going to be treated as <code>suffix</code> is set
+        to <code>&quot;&quot;</code>. <code>ContentType</code> is used as default content type for returned
+        rendered pages.
+      </p>
+      <p>
+        <a href="api/org/abstracthorizon/danube/velocity/VelocityViewAdapter.html">VelocityViewAdapter</a>'s
+        <a href="api/org/abstracthorizon/danube/velocity/VelocityViewAdapter.html#init()">init</a> method
+        must be called before adapter can be used. That method sets default content type and initialises
+        <a href="links.html#Velocity">Velocity</a> template engine with AbsoluteFileResourceLoader.
+        Templates' location can be set as a file or URL.
+      </p>
+    </subsection>
+    <subsection name="Example">
+      <p>
+        Here is an example of an configuration of <a href="links.html#Velocity">Velocity</a> (with <a href="links.html#Spring-Webflow">Spring Webflow</a>) taken from supplied demo:
+      </p>
+      <source>
+<![CDATA[
+    <!--
+     * This bean defines beans application context.
+     * It references MVC controller defined at the "/guess.do" path.
+    -->
+    <bean name="web-application" class="org.abstracthorizon.danube.http.HTTPContext">
+        <property name="components">
+            <list>
+                <bean class="org.abstracthorizon.danube.http.matcher.Prefix">
+                    <property name="prefix"><value>/guess.do</value></property>
+                    <property name="connectionHandler"><ref bean="guess.do"/></property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!--
+     * This is MVC controller that has Spring WebFlow as a controller and Velocity as a view adapter.
+    -->
+    <bean name="guess.do" class="org.abstracthorizon.danube.http.HTTPMVCConnectionHandler">
+        <property name="controller"><ref bean="webFlowController" /></property>
+        <property name="view"><ref bean="velocityViewAdapter" /></property>
+    </bean>
+
+    <!--
+     * This is WebFlow controller. Flow locator is defined through flow registry bean and
+     * "bean-explorer-flow" is set as defualt flow id
+    -->
+    <bean name="webFlowController" class="org.abstracthorizon.danube.webflow.DanubeFlowController">
+        <property name="flowLocator"><ref bean="flowRegistry" /></property>
+        <property name="defaultFlowId"><value>guess-flow</value></property>
+    </bean>
+
+    <!--
+     * Flow registry defines where flow definitions are to be read from.
+    -->
+    <bean id="flowRegistry" class="org.springframework.webflow.registry.XmlFlowRegistryFactoryBean">
+      <property name="flowLocations" value="guess-flow.xml"/>
+    </bean>
+
+    <!--
+     * This is Velocity view adapter.
+     * It defines directory "templates" as location of templates.
+    -->
+    <bean id="velocityViewAdapter" class="org.abstracthorizon.danube.velocity.VelocityViewAdapter" init-method="init">
+        <property name="templatesLocation"><value>templates</value></property>
+    </bean>
+]]>
+      </source>
+    </subsection>
+  </section>
+
+</body>
+</document>

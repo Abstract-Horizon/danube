@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Core </title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+
+      <section name="Danube Core">
+        <p>
+          <!-- a href="images/core1.all.png" --><img src="images/core1.png" align="right" border="0"/><!-- /a -->
+          The core part is designed to be as simple as possible. It comprises of two interfaces:
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a> and
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>.
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a> represents
+          connection from other computers or services. Input and output
+          streams, sockets or any other decorations are available through it (see
+          <a href="api/org/abstracthorizon/danube/adapter/Adaptable.html#adapt(java.lang.Class)">adapt</a>
+          of <a href="api/org/abstracthorizon/danube/adapter/Adaptable.html">Adaptable</a> class).
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          is a class that knows what to do with the supplied
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a>.
+          <a href="api/org/abstracthorizon/danube/service/server/SocketConnection.html">SocketConnection</a>,
+          for instance, is a simple extension of
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a>
+          that introduces a socket into the picture - thus enabling the handler to interrogate it in order to
+          gather information about the client or the state of the connection.
+        </p>
+        <p>
+          Most of server's components are just implementations of
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>.
+          Examples are:
+          <a href="api/org/abstracthorizon/danube/mvc/MVCConnectionHandler.html">MVCConnectionHandler</a>
+          (more will be explained later),
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a> or
+          <a href="api/org/abstracthorizon/danube/http/HTTPServerConnectionHandler.html">HTTPServerConnectionHandler</a>,
+          <a href="api/org/abstracthorizon/danube/http/util/ErrorConnectionHandler.html">ErrorConnectionHandler</a> and
+          <a href="api/org/abstracthorizon/danube/http/util/ReadOnlyFileConnectionHandler.html">ReadOnlyFileConnectionHandler</a>.
+        </p>
+      </section>
+
+  </body>
+</document>

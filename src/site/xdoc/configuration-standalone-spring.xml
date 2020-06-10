@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Configuration - Standalone Spring</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+
+    <section name="Standalone using Spring">
+      <p>
+        TODO: This description is out-of-date. Update it!
+      </p>
+        <p>
+
+          Danube can be invoked as standalone server using the <a href="links.html#Spring">Spring Framework</a> for
+          configuration. Class
+          <a href="api/org/abstracthorizon/danube/service/util/StartLocalServer.html">StartLocalServer</a>
+          loads the server.xml configuration file from the current directory or one specified using the <code>-d</code>
+          option. Then if extra parameters are set they are used as the names of beans that will be expected to be of
+          <a href="api/org/abstracthorizon/danube/service/Service.html">Service</a>
+          interface type, and methods
+          <a href="api/org/abstracthorizon/danube/service/Service.html#create()">create()</a> and
+          <a href="api/org/abstracthorizon/danube/service/Service.html#start()">start()</a> will be invoked
+          for each of them. If no arguments are passed then a bean assigned with the name <code>server</code> will be used.
+        </p>
+        <p>
+          Here is an sample configuration file used for a <a href="links.html#WebFlow">Spring WebFlow</a> and
+          <a href="links.html#Velocity">Velocity</a> integration example:
+        </p>
+<source><![CDATA[
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+-->
+<beans>
+    <!--
+     * Here we are setting up the framework mechanism.
+     * First, there must be a bean called "server" of Service type. We are using ServerSocketService
+     * Then it needs to know what is processing requests. HttpServerConnectionHandler is used for it.
+     * HttpServerConnectionHandler has one, 'context', prefix defined to reference our 'application'.
+     * For 'application', an ApplicationSeparator is used. ApplicationSeparator is just loading another context
+     * to pass control to it.
+    -->
+
+    <!--
+     * This is our service. It is named "Danube", runs on port 8080, has initial socket timeout of 1000ms and
+     * uses httpServerConnectionHandler for processing requests.
+    -->
+    <bean name="server" class="org.abstracthorizon.danube.service.ServerSocketService">
+        <property name="name"><value>Danube</value></property>
+        <property name="port"><value>8080</value></property>
+        <property name="serverSocketTimeout"><value>1000</value></property>
+        <property name="newSocketTimeout"><value>60000</value></property>
+        <property name="connectionHandler"><ref bean="httpServerConnectionHandler" /></property>
+    </bean>
+
+    <!--
+     * This handler checks for 'context' prefix "/velocity-example" and if request is passed to that path
+     * it is then handled by 'application' "webflow-velocity-example"
+     * More contexts can be added to this bean.
+    -->
+    <bean name="httpServerConnectionHandler" class="org.abstracthorizon.danube.http.HTTPServerConnectionHandler">
+    <property name="components">
+        <list>
+            <bean class="org.abstracthorizon.danube.http.matcher.Prefix">
+                <property name="prefix"><value>/velocity-example</value></property>
+                <property name="connectionHandler"><ref bean="webflow-velocity-example"/></property>
+            </bean>
+        </list>
+    </property>
+    </bean>
+
+    <!--
+     * This is not application (connection) handler - but simple 'connector' from this xml definition file to
+     * another. It defines another Spring application context and name of the bean to pass control (handling of the request) to.
+     * In this case application context is defined under bean named "webflow-velocity-application-context" and name of the bean to be used from
+     * it is "web-application".
+    -->
+    <bean name="webflow-velocity-example" class="org.abstracthorizon.danube.http.spring.ApplicationSeparator" init-method="init">
+        <property name="applicationContext"><ref bean="webflow-velocity-application-context"/></property>
+        <property name="beanName"><value>web-application</value></property>
+    </bean>
+
+    <!--
+     * This is ResourceXmlApplicationContext application context set up. It is same as simple
+     * Spring FileSystemXmlApplicationContext which loades resources from the directories (paths)
+     * xml definition files residing in. It reads the file from given resource in constructor.
+    -->
+    <bean name="webflow-velocity-application-context" class="org.abstracthorizon.danube.http.spring.ResourceXmlApplicationContext">
+        <constructor-arg><value>.</value></constructor-arg>
+        <constructor-arg><value>web-application.xml</value></constructor-arg>
+    </bean>
+</beans>
+
+]]>
+</source>
+        <p>
+          Definitions found here correspod to what was explained in the previous chapter
+          (<a href="configuration-standalone.html">Standalone configuration</a>) except that there is
+          one more new class:
+          <a href="api/org/abstracthorizon/danube/http/spring/ApplicationSeparator.html">ApplicationSeparator</a>.
+          It is used instead of the <code>include</code> statement. This class is actually a
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a> and
+          it needs <code>applicationContext</code> and <code>beanName</code> as properties. It extracts
+          a bean with a given name from a given application context and assumes it too is of the
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a> inteface type
+          and passes control to it. With that, a class configuration of different
+          &quot;application contexts&quot; can be defined in different xml files, for example.
+        </p>
+        <p>
+          In this case, the example's context is defined using a <code>webflow-velocity-application-context</code>
+          bean that is really a <code>FileSystemXmlApplicationContext</code> which loads definitions from
+          a file with the name &quot;<code>web-application.xml</code>&quot;. <i>Note: for this example to work the
+          current directory must be the one that contains both &quot;<code>server.xml</code>&quot;
+          and &quot;<code>web-application.xml</code>&quot; files.</i>
+        </p>
+        <p>
+          And here is the content of the &quot;<code>web-application.xml</code>&quot; file:
+        </p>
+<source>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE beans PUBLIC &quot;-//SPRING//DTD BEAN//EN&quot; &quot;http://www.springframework.org/dtd/spring-beans.dtd&quot;&gt;
+
+&lt;!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+--&gt;
+&lt;beans&gt;
+    &lt;!--
+     * This file defines the beans 'application'.
+     * First bean's name in here is specified in &quot;server.xml&quot; and has to be of &quot;ConnectionHandler&quot; type.
+     * When server gets request with 'context' path prefix (as specified in &quot;server.xml&quot;) then control is
+     * passed in here.
+     * First bean, then, references components defined for this application. Rest of the file defines those
+     * components or auxiliary beans.
+    --&gt;
+
+    &lt;!--
+     * This bean defines beans application context.
+     * It references MVC controller defined at the &quot;/guess.do&quot; path.
+    --&gt;
+    &lt;bean name=&quot;web-application&quot; class=&quot;org.abstracthorizon.danube.http.HTTPContext&quot;&gt;
+        &lt;property name=&quot;components&quot;&gt;
+            &lt;list&gt;
+                &lt;bean class=&quot;org.abstracthorizon.danube.http.matcher.Prefix&quot;&gt;
+                    &lt;property name=&quot;prefix&quot;&gt;&lt;value&gt;/guess.do&lt;/value&gt;&lt;/property&gt;
+                    &lt;property name=&quot;connectionHandler&quot;&gt;&lt;ref bean=&quot;guess.do&quot;/&gt;&lt;/property&gt;
+                &lt;/bean&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!--
+     * This is MVC controller that has Spring WebFlow as a controller and Velocity as a view adapter.
+    --&gt;
+    &lt;bean name=&quot;guess.do&quot; class=&quot;org.abstracthorizon.danube.http.HTTPMVCConnectionHandler&quot;&gt;
+        &lt;property name=&quot;controller&quot;&gt;&lt;ref bean=&quot;webFlowController&quot; /&gt;&lt;/property&gt;
+        &lt;property name=&quot;view&quot;&gt;&lt;ref bean=&quot;velocityViewAdapter&quot; /&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!--
+     * This is WebFlow controller. Flow locator is defined through flow registry bean and
+     * &quot;bean-explorer-flow&quot; is set as defualt flow id
+    --&gt;
+    &lt;bean name=&quot;webFlowController&quot; class=&quot;org.abstracthorizon.danube.webflow.DanubeFlowController&quot;&gt;
+        &lt;property name=&quot;flowLocator&quot;&gt;&lt;ref bean=&quot;flowRegistry&quot; /&gt;&lt;/property&gt;
+        &lt;property name=&quot;defaultFlowId&quot;&gt;&lt;value&gt;guess-flow&lt;/value&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!--
+     * Flow registry defines where flow definitions are to be read from.
+    --&gt;
+    &lt;bean id=&quot;flowRegistry&quot; class=&quot;org.springframework.webflow.registry.XmlFlowRegistryFactoryBean&quot;&gt;
+      &lt;property name=&quot;flowLocations&quot; value=&quot;guess-flow.xml&quot;/&gt;
+    &lt;/bean&gt;
+
+    &lt;!--
+     * This is Velocity view adapter.
+     * It defines directory &quot;templates&quot; as location of templates.
+    --&gt;
+    &lt;bean id=&quot;velocityViewAdapter&quot; class=&quot;org.abstracthorizon.danube.velocity.spring.VelocityViewAdapter&quot; init-method=&quot;init&quot;&gt;
+        &lt;property name=&quot;templatesLocation&quot;&gt;&lt;value&gt;templates&lt;/value&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+
+    &lt;!--
+     * This part of the file defines WebFlow's controllers as defined in the given flow(s) ====================================================================-
+    --&gt;
+
+    &lt;!--
+     * This controller is responsible for obtaining the name of the player
+    --&gt;
+    &lt;bean id=&quot;NameController&quot; class=&quot;org.springframework.webflow.action.FormAction&quot;&gt;
+        &lt;property name=&quot;formObjectName&quot;&gt;&lt;value&gt;nameForm&lt;/value&gt;&lt;/property&gt;
+        &lt;property name=&quot;formObjectClass&quot;&gt;&lt;value&gt;org.abstracthorizon.danube.example.webflowvelocity.NameForm&lt;/value&gt;&lt;/property&gt;
+        &lt;property name=&quot;formObjectScope&quot;&gt;&lt;value&gt;FLOW&lt;/value&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!--
+     * This controller is used for guessing process
+    --&gt;
+    &lt;bean id=&quot;GuessController&quot; class=&quot;org.abstracthorizon.danube.example.webflowvelocity.GuessController&quot;&gt;
+        &lt;property name=&quot;formObjectName&quot;&gt;&lt;value&gt;guessForm&lt;/value&gt;&lt;/property&gt;
+        &lt;property name=&quot;formObjectClass&quot;&gt;&lt;value&gt;org.abstracthorizon.danube.example.webflowvelocity.GuessForm&lt;/value&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</source>
+    </section>
+
+  </body>
+</document>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Danube">
+
+  <skin>
+    <groupId>org.abstracthorizon</groupId>
+    <artifactId>abstracthorizon-maven-skin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </skin>
+
+  <publishDate position="bottom" />
+
+  <bannerLeft>
+    <name>Abstract Horizon</name>
+    <src>images/ah-logo-256.png</src>
+    <href>http://www.abstracthorizon.org</href>
+  </bannerLeft>
+
+  <bannerRight>
+    <name>Danube</name>
+    <src>images/danube-128.png</src>
+    <href>http://danube.abstracthorizon.org</href>
+  </bannerRight>
+
+
+  <body>
+
+    <menu name="Danube">
+      <item name="About" href="index.html"/>
+      <item name="Documentation" href="documentation.html"  collapse="true">
+        <item name="Introduction" href="introduction.html"/>
+        <item name="Overview" href="overview.html"/>
+        <item name="Core" href="core.html"/>
+        <item name="Services" href="services.html"/>
+        <item name="HTTP Server" href="http-server.html">
+          <item name="HTTP Integrations" href="http-integrations.html">
+            <item name="Spring WebFlow" href="integrations-webflow.html"/>
+            <item name="FreeMarker" href="integrations-freemarker.html"/>
+            <item name="Velocity" href="integrations-velocity.html"/>
+            <item name="Tapestry" href="integrations-tapestry.html"/>
+            <!-- item name="JSF + Facelets" href="integrations-jsp.html" -->
+          </item>
+          <item name="HTTP Authentication" href="http-authentication.html"/>
+        </item>
+        <item name="Configuration" href="configuration.html">
+          <item name="Configuration Standalone" href="configuration-standalone.html"/>
+          <item name="Configuration Standalone Spring" href="configuration-standalone-spring.html"/>
+          <item name="Configuration Extend" href="configuration-extend.html"/>
+          <item name="Configuration Other" href="configuration-other.html"/>
+        </item>
+        <item name="Links" href="links.html"/>
+      </item>
+
+      <item name="Forum" href=""/>
+      <item name="JavaDoc" href="api/index.html"/>
+      <item name="Downloads" href="http://download.abstracthorizon.org/danube/"/>
+
+    </menu>
+
+    <!-- menu ref="modules"/ -->
+    <menu ref="reports" collapse="true"/>
+  </body>
+  
+  <poweredBy>
+    <logo name="" href=" " img=" " />
+  </poweredBy>
+</project>

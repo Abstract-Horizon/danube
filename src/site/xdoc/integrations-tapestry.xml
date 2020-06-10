@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Integration - Tapestry</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+
+    <section name="Tapestry">
+      <p>
+        <i>&quot;<a href="links.html#Tapestry">Tapestry</a> is an open-source framework for creating dynamic,
+        robust, highly scalable web applications in <a href="#Java">Java</a>...&quot;</i>
+      </p>
+
+    <subsection name="Description">
+      <p>
+        Integration with the <a href="links.html#Tapestry">Tapestry</a> framework is done through
+        <a href="api/org/abstracthorizon/danube/tapestry/TapestryConnectionHandler.html">TapestryConnectionHandler</a>.
+        That class sets up a <a href="links.html#HiveMind">hivemind</a> registry and substitutes/extends several important service points.
+        There are set of classes that are given instead of
+        original implementations:
+        <a href="api/org/abstracthorizon/danube/tapestry/DanubeActivator.html">DanubeActivator</a>,
+        <a href="api/org/abstracthorizon/danube/tapestry/DanubeContext.html">DanubeContext</a>,
+        <a href="api/org/abstracthorizon/danube/tapestry/DanubeCookieSource.html">DanubeCookieSource</a>,
+        <a href="api/org/abstracthorizon/danube/tapestry/DanubeRequest.html">DanubeRequest</a>,
+        <a href="api/org/abstracthorizon/danube/tapestry/DanubeResponse.html">DanubeResponse</a> and
+        <a href="api/org/abstracthorizon/danube/tapestry/DanubeSession.html">DanubeSession</a>.
+      </p>
+    </subsection>
+    <subsection name="Configuration">
+      <p>
+        <a href="api/org/abstracthorizon/danube/tapestry/TapestryConnectionHandler.html">TapestryConnectionHandler</a>'s
+        <a href="api/org/abstracthorizon/danube/tapestry/TapestryConnectionHandler.html#init()">init</a> method should be called
+        before the class can be used.
+        This class has several important parameters:
+        <ul>
+        <li><code>applicationSpecificationResourceName</code> - name of main .application file. It defaults to &quot;tapestry.application&quot;</li>
+        <li><code>initialParameters</code> - map of initial parameters.</li>
+        <li>
+            <code>sessionManager</code> - session manager to be used. It must implement <a href="api/org/abstracthorizon/danube/http/session/HTTPSessionManager.html">HTTPSessionManager</a>.
+            If not set then defaulted to <a href="api/org/abstracthorizon/danube/http/session/SimpleSessionManager.html">SimpleSessionManager</a>.
+        </li>
+        </ul>
+      </p>
+      <p>
+        Also there are a few parameters that are exposed as a expansion points but there is no reason for them to be set unless some
+        internal behaviour is to be changed. Here there are:
+        <ul>
+        <li><code>classResolver</code> - Class resolver implementation of <a href="http://jakarta.apache.org/hivemind/hivemind/apidocs/org/apache/hivemind/ClassResolver.html">ClassResolver</a> type.</li>
+        <li><code>webActivator</code> - web activator implementation of <a href="http://jakarta.apache.org/tapestry/tapestry/apidocs/org/apache/tapestry/web/WebActivator.html">WebActivator</a> type.</li>
+        <li><code>webContext</code> - web context implementation of <a href="http://jakarta.apache.org/tapestry/tapestry/apidocs/org/apache/tapestry/web/WebContext.html">WebContext</a> type.</li>
+        </ul>
+      </p>
+      <p>
+        Pages and all other resources are accesses through class loader - so make sure that they are in the classpath.
+      </p>
+      <p>
+        Aside of <a href="api/org/abstracthorizon/danube/tapestry/TapestryConnectionHandler.html">org.abstracthorizon.danube.tapestry.TapestryConnectionHandler</a>
+        there is <a href="api/org/abstracthorizon/danube/tapestry/spring/TapestryConnectionHandler.html">org.abstracthorizon.danube.tapestry.spring.TapestryConnectionHandler</a>
+        supplied as well. Difference is that <a href="links.html#Spring">Spring</a> version uses application context's resource for obtaining Tapestry's application
+        resources (<code>applicationSpecificationName</code>).
+      </p>
+      <p>
+        Non-Spring version of
+        <a href="api/org/abstracthorizon/danube/tapestry/TapestryConnectionHandler.html">TapestryConnectionHandler</a>
+        searches for <code>applicationSpecificationResourceName</code> using <a href="http://jakarta.apache.org/tapestry/tapestry/apidocs/org/apache/tapestry/web/WebContextResource.html">WebContextResource</a>
+        - in <code>WEB-INF/</code> path. Spring version of
+        <a href="api/org/abstracthorizon/danube/tapestry/spring/TapestryConnectionHandler.html">TapestryConnectionHandler</a> first checks for
+        <code>applicationSpecificationResourceName</code> as application context's resource and if failed then as application context's resource at path
+        <code>WEB-INF/</code>.
+      </p>
+    </subsection>
+    <subsection name="Example">
+      <p>
+        Here is an example of an configuration of <a href="links.html#Tapestry">Tapestry</a> taken from supplied demo:
+      </p>
+      <source>
+<![CDATA[
+    <!--
+     * This bean defines beans application context.
+     * It references to two components: File component that accepts only file named "style.css" and
+     * MVC controller defined at the "/app" path.
+    -->
+    <bean name="web-application" class="org.abstracthorizon.danube.http.HTTPContext">
+    <property name="components">
+        <list>
+            <bean class="org.abstracthorizon.danube.http.matcher.Pattern">
+                <property name="pattern"><value>/style\.css</value></property>
+                <property name="connectionHandler"><ref bean="files"/></property>
+            </bean>
+            <bean class="org.abstracthorizon.danube.http.matcher.Prefix">
+                <property name="prefix"><value>/app</value></property>
+                <property name="connectionHandler"><ref bean="tapestry-application"/></property>
+            </bean>
+        </list>
+    </property>
+    </bean>
+
+    <!--
+     * This bean defines serving files from directory "pages" as given file path.
+    -->
+    <bean name="files" class="org.abstracthorizon.danube.http.util.FileConnectionHandler">
+        <property name="filePath"><value>src/pages</value></property>
+    </bean>
+
+    <!--
+     * This is connection handler that handles Tapestry requests.
+    -->
+    <bean name="tapestry-application" class="org.abstracthorizon.danube.tapestry.TapestryConnectionHandler"
+        init-method="init">
+    </bean>
+]]>
+      </source>
+    </subsection>
+    <subsection name="Known Issues">
+      <p>
+        Successive requests before a session is created are going to create several sessions. This is due to the bug in the
+        way sessions are created.
+      </p>
+    </subsection>
+
+  </section>
+
+</body>
+</document>

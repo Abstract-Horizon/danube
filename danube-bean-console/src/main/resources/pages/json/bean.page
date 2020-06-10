@@ -1,0 +1,139 @@
+
+
+
+
+        {
+  "name": "${bean.name}",
+  "type": "${bean.type}",
+  "path": "${bean.path}",
+  "value": "${bean.escapedValue}"
+
+  <#if bean.beans?exists>
+    , "beans" : [
+
+    <#assign first=true />
+    <#list bean.beans as bean>
+      <#if first>
+        <#assign first=false />
+      <#else>
+         ,
+      </#if>
+      {
+        "name" : "${bean.name}",
+        "type" : "${bean.type}",
+        "access" : "${bean.access}",
+        "value" : "${bean.escapedValue}",
+        "followable" : ${bean.followableAsString}
+      }
+    </#list>
+    ]
+  </#if>
+
+  <#if bean.beans?exists>
+    , "savedBeans" : [
+
+    <#assign first=true />
+    <#list bean.savedBeans as bean>
+      <#if first>
+        <#assign first=false />
+      <#else>
+         ,
+      </#if>
+      {
+        "name" : "${bean.name}",
+        "type" : "${bean.type}",
+        "access" : "${bean.access}",
+        "value" : "${bean.escapedValue}",
+        "followable" : ${bean.followableAsString}
+      }
+    </#list>
+    ]
+  </#if>
+
+  <#if bean.collection?exists>
+    , "collection" : [
+    <#assign first=true />
+    <#list bean.collection as element>
+      <#if first>
+        <#assign first=false />
+      <#else>
+         ,
+      </#if>
+      {
+        "type" : "${element.type}",
+        "value" : "${element.escapedValue}",
+        "access" : "rw",
+        "followable" : ${element.followableAsString}
+      }
+    </#list>
+    ]
+  </#if>
+
+  <#if bean.map?exists>
+    , "map" : [
+    <#assign first=true />
+    <#list bean.map as element>
+      <#if first>
+        <#assign first=false />
+      <#else>
+         ,
+      </#if>
+      {
+        "name" : "${element.name}",
+        "type" : "${element.type}",
+        "value" : "${element.escapedValue}",
+        "access" : "rw",
+        "followable" : ${element.followableAsString}
+      }
+    </#list>
+    ]
+  </#if>
+
+  , "properties" : [
+
+  <#assign first=true />
+  <#list bean.properties as prop>
+      <#if first>
+        <#assign first=false />
+      <#else>
+         ,
+      </#if>
+     {
+       "name" : "${prop.name}",
+       "type" : "${prop.type}", 
+       "access" : "${prop.access}", 
+       "value" : "${prop.escapedValue}",
+       "followable" : ${prop.followableAsString}
+     }
+  </#list>
+  ]
+  
+  <#if (bean.methods?size > 0)>
+	
+  , "methods" : [
+
+  <#assign first=true />
+  <#list bean.methods as method>
+      <#if first>
+        <#assign first=false />
+      <#else>
+         ,
+      </#if>
+    {
+       "name" : "${method.name}",
+       "parametersTypes" : [
+      <#assign first2=true />
+      <#list method.parameterTypes as param>
+        <#if first2>
+          <#assign first2=false />
+        <#else>
+           ,
+        </#if>
+         { "name" : "${param.type}" }
+      </#list>
+       ]
+    }
+  </#list>
+  ]
+  </#if>
+}

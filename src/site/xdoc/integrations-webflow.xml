@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Integration - Spring WebFlow</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+
+    <section name="Spring WebFlow">
+      <p>
+        <i>&quot;<a href="links.html#Spring-WebFlow">Spring WebFlow</a> (SWF) is
+        a product focused on the definition and execution of page flow within
+        a web application...&quot;</i>
+      </p>
+      <p>
+        TODO: This needs to be updated to SWF 1.0.
+      </p>
+
+    <subsection name="Description">
+      <p>
+        Integration with <a href="links.html#Spring-Webflow">Spring Webflow</a> is done through
+        <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowController.html">DanubeFlowController</a>
+        which is an implementation of
+        <a href="api/org/abstracthorizon/danube/mvc/Controller.html">Controller</a>. It uses
+        <a href="api/org/abstracthorizon/danube/webflow/DanubeExternalContext.html">DanubeExternalContext</a>
+        as implementation of
+        <a href="http://static.springframework.org/spring-webflow/docs/1.0-ea/api/org/springframework/webflow/ExternalContext.html">ExternalContext</a>.
+      </p>
+    </subsection>
+    <subsection name="Configuration">
+      <p>
+        <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowController.html">DanubeFlowController</a>
+        has several attributes:
+        <ul>
+          <li>
+            <code>flowLocator</code> - a flow locator. Setting a flow locator is going to set flow executor
+            (<a href="http://static.springframework.org/spring-webflow/docs/1.0-ea/api/org/springframework/webflow/executor/FlowExecutorImpl">FlowExecutorImpl</a>)
+            implicitly.
+          </li>
+          <li><code>flowExecutor</code> - a flow locator.</li>
+          <li><code>defaultFlowId</code> - default flow id.</li>
+          <li>
+            <code>argumentExtractor</code> - an argument extractor. Defaulted to the
+            <a href="http://static.springframework.org/spring-webflow/docs/1.0-ea/api/org/springframework/webflow/executor/support/FlowExecutorArgumentExtractor">FlowExecutorArgumentExtractor</a>.
+          </li>
+          <li>
+            <code>sessionManager</code> - session manager to be used. If not set then defaulted to
+            <a href="api/org/abstracthorizon/danube/http/session/SimpleSessionManager.html">SimpleSessionManager</a>.
+          </li>
+          <li><code>attributes</code> - flow attributes. They are equivalent to static, servlet context attributes.</li>
+        </ul>
+      </p>
+      <p>
+        Note: <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowController.html">DanubeFlowController</a> implementation is based on
+        <a href="http://static.springframework.org/spring-webflow/docs/1.0-ea/api/org/springframework/webflow/executor/mvc/FlowController.html">FlowController</a>
+        so most of the attributes are the same (like <code>flowLocator</code>, <code>flowExecutor</code>, <code>defaultFlowId</code>, <code>argumentExtractor</code>).
+      </p>
+    </subsection>
+    <subsection name="Example">
+      <p>
+        Here is an example of an configuration of <a href="links.html#Spring-Webflow">Spring Webflow</a> (with <a href="links.html#FreeMarker">FreeMarker</a>) taken from supplied demo:
+      </p>
+      <source>
+<![CDATA[
+    <!--
+     * This bean defines beans application context.
+     * It references MVC controller defined at the "/guess.do" path.
+    -->
+    <bean name="webflow-freemarker-example-applicaiton" class="org.abstracthorizon.danube.http.HTTPContext">
+        <property name="components">
+            <list>
+                <bean class="org.abstracthorizon.danube.http.matcher.Prefix">
+                    <property name="prefix"><value>/guess.do</value></property>
+                    <property name="connectionHandler"><ref bean="guess.do"/></property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!--
+     * This is MVC controller that has Spring WebFlow as a controller and FreeMarker as a view adapter.
+    -->
+    <bean name="guess.do" class="org.abstracthorizon.danube.http.HTTPMVCConnectionHandler">
+        <property name="controller"><ref bean="webFlowController" /></property>
+        <property name="view"><ref bean="freemarkerViewAdapter" /></property>
+    </bean>
+
+    <!--
+     * This is WebFlow controller. Flow locator is defined through flow registry bean and
+     * "bean-explorer-flow" is set as defualt flow id
+    -->
+    <bean name="webFlowController" class="org.abstracthorizon.danube.webflow.DanubeFlowController">
+        <property name="flowLocator"><ref bean="flowRegistry" /></property>
+        <property name="defaultFlowId"><value>guess-flow</value></property>
+    </bean>
+
+    <!--
+     * Flow registry defines where flow definitions are to be read from.
+    -->
+    <bean id="flowRegistry" class="org.springframework.webflow.registry.XmlFlowRegistryFactoryBean">
+      <property name="flowLocations" value="guess-flow.xml"/>
+    </bean>
+
+    <!--
+     * This is FreeMarker view adapter.
+     * It defines directory "pages" as location of templates and ".page" as templates' suffix.
+    -->
+    <bean id="freemarkerViewAdapter" class="org.abstracthorizon.danube.freemarker.FreeMarkerViewAdapter" init-method="init">
+        <property name="templatesLocation"><value>pages/</value></property>
+        <property name="suffix"><value>.page</value></property>
+    </bean>
+]]>
+      </source>
+    </subsection>
+  </section>
+
+</body>
+</document>

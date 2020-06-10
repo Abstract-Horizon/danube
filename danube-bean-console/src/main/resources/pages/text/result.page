@@ -1,0 +1,19 @@
+* Copyright (c) 2005-2006 Creative Sphere Limited.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the LGPL licence
+* which accompanies this distribution, and is available at
+* http://www.gnu.org/copyleft/lesser.html
+*
+* Contributors:
+*
+*   Creative Sphere - initial API and implementation
+*
+Bean: ${name}
+Path: ${path}
+Method name: ${methodName}
+<#if result?exists>
+Result: ${result}
+</#if>
+<#if error?exists>
+Error: ${error}
+</#if>

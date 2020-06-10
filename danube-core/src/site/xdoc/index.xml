@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+  <properties>
+    <author email="daniel.sendula@abstracthorizon.org">Daniel Sendula</author>
+    <title>Danube (core)</title>
+  </properties>
+
+  <meta name="keyword" content="danube java"/>
+
+  <body>
+    <section name="Danube (Core)">
+      <p>
+        This is core project that describes main building blocks of Danube:
+        <code>Connection</code> and <code>ConnectionHandler</code>.
+        Aside these there are couple of imporant packages like <code>adapter</code>
+        (with <code>Adaptable</code>, etc), mvc with simple MVC interface (<code>Controller</code>,
+        <code>ModelAndView</code>, <code>View</code> and handler that uses all of them) and
+        <code>session </code> that describes simple session management.
+      </p>
+    </section>
+  </body>
+
+</document>

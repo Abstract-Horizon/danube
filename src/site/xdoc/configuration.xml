@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Configuration</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="Configuration">
+
+      <p>
+        Minimal configuration requirements were considered an important factor during the development of Danube. Consequently most
+        classes are provided in this distribution with all required default values (where assigning defaults was sensible and logical).
+        Configuring Danube should be a simple job, but when needed fine tuning can be achieved easily.
+      </p>
+    </section>
+  </body>
+</document>

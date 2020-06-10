@@ -1,0 +1,9 @@
+<html>
+    <head>
+        <title>Application - gwt-maven com.totsp.sample</title>
+        <meta http-equiv="refresh" content="0;url=${connection.contextPath}/#${bean.path}">
+    </head>
+    <body bgcolor="white"> 
+        Redirecting to ${connection.contextPath}/#${bean.path}
+    </body>
+</html>

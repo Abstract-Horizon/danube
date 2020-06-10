@@ -1,0 +1,11 @@
+<html>
+    <head>
+        <title>Application - gwt-maven com.totsp.sample</title>       
+        <script type="text/javascript">
+            var basePathVar = "${connection.contextPath}";
+        </script>
+    </head>
+    <body bgcolor="white"> 
+        <script language="javascript" src="${connection.contextPath}/org.abstracthorizon.danube.beanconsole.gwt.Application/org.abstracthorizon.danube.beanconsole.gwt.Application.nocache.js"></script>
+    </body>
+</html>

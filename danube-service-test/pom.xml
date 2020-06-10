@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.abstracthorizon.danube</groupId>
+    <artifactId>danube</artifactId>
+    <version>1.1-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>danube-service-test</artifactId>
+
+  <groupId>org.abstracthorizon.danube.test</groupId>
+
+  <packaging>jar</packaging>
+
+  <name>Danube (Service test)</name>
+
+  <description>
+    Workaround for lack of test part of project inheritance. This module performs test for service module
+  </description>
+
+  <dependencies>
+
+    <!-- Test deps -->
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube</groupId>
+      <artifactId>danube-service</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube.test</groupId>
+      <artifactId>danube-test-support</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+</project>

@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.abstracthorizon.danube</groupId>
+    <artifactId>danube</artifactId>
+    <version>1.1-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>danube-webdav-spring</artifactId>
+
+  <groupId>org.abstracthorizon.danube.webdav</groupId>
+
+  <packaging>jar</packaging>
+
+  <name>Danube (WebDAV-Spring)</name>
+
+  <description>
+    This project povides implementation of Danube WebDAV interface for Spring framework's Resource object.
+    Resource object is used as WebDAV resource.
+  </description>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube.webdav</groupId>
+      <artifactId>danube-webdav</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+
+    <!-- Test deps -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+  </dependencies>
+
+</project>

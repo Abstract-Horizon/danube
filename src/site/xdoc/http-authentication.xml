@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - HTTP Authentication</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="Authentication">
+
+      <p>
+        It is possible to set security in Danube using JAAS technology. It is done through <a href="api/org/abstracthorizon/danube/http/auth/JAASAuthenticator.html">JAASAuthenticator</a>
+        connection handler. This handler performes basic http authentication and uses supplied user name and password supplied with preconfigured login context.
+        Login context is supplied through <code>loginContextName</code> attribute. If authentication passed then forward connection handler (possible http context) is called.
+      </p>
+      <p>
+        Here are all attributes of authentication class:
+      </p>
+
+      <ul>
+        <li><code>loginContextName</code> - name of login context to be used</li>
+        <li><code>handler</code> - reference to handler which is going to be invoked in case of successful authentication</li>
+        <li><code>sessionManager</code> - reference to session manager for subject to be placed under &quot;org.abstracthorizon.danube.http.auth.Subject&quot; attribute.</li>
+        <li><code>realm</code> - realm as in http basic authentication</li>
+        <li><code>loginContext</code> - reference to the login context to be used. It is automatically set if login context name is supplied.</li>
+        <li><code>cacheTimeout</code> - timeout for local authorisation string cache. Cache contains subjects mapped to authorisation strings.</li>
+        <li><code>minimumScanPeriod</code> - minimal allowed period for cache to be scanned for timed out subjects</li>
+      </ul>
+
+      <p>
+        For authentication using JAAS to work appropriate LoginContext must be defined. Login modules must use username/password authentication for it to work.
+      </p>
+
+      <p>
+        New types of authentications are planned for the future implementations such as public/private SSL key, Acegi, etc...
+      </p>
+    </section>
+  </body>
+</document>

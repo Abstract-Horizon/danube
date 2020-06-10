@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+-->
+<beans>
+  <!--
+   * Here we are setting up the framework mechanism.
+   * First, there must be a bean called "server" of Service type. We are using ServerSocketService
+   * Then it needs to know what is processing requests. HTTPServerConnectionHandler is used for it.
+   * HTTPServerConnectionHandler has one, 'context', prefix defined to reference our 'application'.
+   * For 'application', an ApplicationSeparator is used. ApplicationSeparator is just loading another context
+   * to pass control to it.
+  -->
+
+  <!--
+   * This is our service. It is named "Danube", runs on port 8080, has initial socket timeout of 1000ms and
+   * uses httpServerConnectionHandler for processing requests.
+  -->
+  <bean name="server" class="org.abstracthorizon.danube.service.server.MultiThreadServerSocketService">
+    <property name="name" value="Danube"/>
+    <property name="port" value="8080"/>
+    <!-- property name="address" value="127.0.0.1"/ -->
+    <property name="serverSocketTimeout" value="1000"/>
+    <property name="newSocketTimeout" value="60000"/>
+    <property name="connectionHandler" ref="logger"/>
+  </bean>
+
+  <bean name="logger" class="org.abstracthorizon.danube.support.logging.LoggingConnectionHandler">
+    <property name="connectionHandler" ref="httpServerConnectionHandler"/>
+    <property name="addressPattern" value="-"/>
+    <property name="tempLogging" value="true"/>
+    <property name="directional" value="false"/>
+  </bean>
+
+  <!--
+   * This handler checks for 'context' prefix "/beans" and if request is passed to that path
+   * it is then handled by 'application' "beans-application-separator"
+   * More contexts can be added to this bean.
+  -->
+  <bean name="httpServerConnectionHandler" class="org.abstracthorizon.danube.http.HTTPServerConnectionHandler">
+    <property name="connectionHandler" ref="http-access-logger"/>
+    <!-- property name="connectionHandler" ref="httpServerApplicationSelector"/ -->
+  </bean>
+
+
+  <bean name="http-access-logger" class="org.abstracthorizon.danube.http.logging.HTTPAccessLogConnectionHandler">
+    <property name="connectionHandler" ref="httpServerApplicationSelector"/>
+    <property name="logFileRotator">
+      <bean class="org.abstracthorizon.danube.support.logging.util.LogFileRotatorImpl">
+        <property name="logFile" value="/tmp/beans.log"/>
+        <property name="numberOfGenerations" value="4"/>
+      </bean>
+    </property>
+    <property name="logPattern" value="%h %l %u %t &quot;%r&quot; %s %b %D &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot;"/>
+  </bean>
+
+  <bean name="httpServerApplicationSelector" class="org.abstracthorizon.danube.http.HTTPContext">
+    <property name="components">
+      <list>
+        <bean class="org.abstracthorizon.danube.http.matcher.Prefix">
+          <property name="prefix" value="/bean-console"/>
+          <property name="connectionHandler" ref="beans-application-separator"/>
+        </bean>
+        <bean class="org.abstracthorizon.danube.http.matcher.Prefix">
+          <property name="prefix" value="/bean-control"/>
+          <property name="connectionHandler" ref="control-application-separator"/>
+        </bean>
+        <bean class="org.abstracthorizon.danube.http.matcher.Prefix">
+          <property name="prefix" value="/bean-rest"/>
+          <property name="connectionHandler" ref="beans-rest-application-separator"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+
+  <!--
+   * This is not application (connection) handler - but simple 'connector' from this xml definition file to
+   * another. It defines another Spring application context and name of the bean to pass control (handling of the request) to.
+   * In this case application context is defined under bean named "beans-app-context" and name of the bean to be used from
+   * it is "beans-application".
+  -->
+  <bean name="beans-application-separator" class="org.abstracthorizon.danube.http.spring.ApplicationSeparator" init-method="init">
+    <property name="childContext">
+      <!--
+       * This is ResourceXmlApplicationContext application context set up. It is same as simple
+       * Spring FileSystemXmlApplicationContext which loades resources from the directories (paths)
+       * xml definition files residing in. It reads the file from given resource in constructor.
+      -->
+      <bean name="beans-app-context" class="org.abstracthorizon.danube.http.spring.ResourceXmlApplicationContext">
+        <constructor-arg value="."/>
+        <constructor-arg value="classpath:web-application.xml"/>
+      </bean>
+    </property>
+    <property name="beanName" value="web-application"/>
+  </bean>
+
+  <bean name="beans-rest-application-separator" class="org.abstracthorizon.danube.http.spring.ApplicationSeparator" init-method="init">
+    <property name="childContext">
+      <!--
+       * This is ResourceXmlApplicationContext application context set up. It is same as simple
+       * Spring FileSystemXmlApplicationContext which loades resources from the directories (paths)
+       * xml definition files residing in. It reads the file from given resource in constructor.
+      -->
+      <bean name="beans-app-context" class="org.abstracthorizon.danube.http.spring.ResourceXmlApplicationContext">
+        <constructor-arg value="."/>
+        <constructor-arg value="classpath:rest-web-application.xml"/>
+      </bean>
+    </property>
+    <property name="beanName" value="rest-application"/>
+  </bean>
+
+
+  <!--
+   * This is not application (connection) handler - but simple 'connector' from this xml definition file to
+   * another. It defines another Spring application context and name of the bean to pass control (handling of the request) to.
+   * In this case application context is defined under bean named "beans-app-context" and name of the bean to be used from
+   * it is "beans-application".
+  -->
+  <bean name="control-application-separator" class="org.abstracthorizon.danube.http.spring.ApplicationSeparator" init-method="init">
+    <property name="childContext">
+      <!--
+       * This is ResourceXmlApplicationContext application context set up. It is same as simple
+       * Spring FileSystemXmlApplicationContext which loades resources from the directories (paths)
+       * xml definition files residing in. It reads the file from given resource in constructor.
+      -->
+      <bean class="org.abstracthorizon.danube.http.spring.ResourceXmlApplicationContext">
+        <constructor-arg value="."/>
+        <constructor-arg value="classpath:webdav-application.xml"/>
+      </bean>
+    </property>
+    <property name="beanName" value="webdav-application"/>
+  </bean>
+
+  <!--
+    This is bean console login module.
+    It stores usernames and passwords for access to bean-console.
+    Default username is 'admin' and password 'admin123'
+  <bean name="login-module" class="org.abstracthorizon.spring.server.auth.jaas.keystore.KeyStoreModuleService">
+    <property name="loginContext" value="testcontext" />
+    <property name="configuration" ref="javax.security.auth.login"/>
+    <property name="keyStorePassword" value="bean-console.key" />
+    <property name="keyStore" value="META-INF/bean-console.jks" />
+    <!- - property name="keyStoreType" value="" / - ->
+    <!- - property name="keyStoreProvider" value="" / - ->
+  </bean>
+  -->
+
+  <bean name="testBean" class="org.abstracthorizon.danube.beanconsole.data.SomeTestObject"/>
+
+</beans>

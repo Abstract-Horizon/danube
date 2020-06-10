@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Links</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="Links">
+
+      <ul>
+        <li><a name="Java"></a><a href="http://java.sun.com" target="new_page">Java</a></li>
+        <li><a name="Spring"></a><a href="http://www.springframework.org" target="new_page">Spring</a></li>
+        <li><a name="Spring-Webflow"></a><a href="http://opensource2.atlassion.com/confluence/spring/display/WEBFLOW/Home" target="new_page">Spring-Webflow</a></li>
+        <li><a name="Struts"></a><a href="http://struts.apache.org" target="new_page">Struts</a></li>
+        <li><a name="Tapestry"></a><a href="http://jakarta.apache.org/tapestry" target="new_page">Tapestry</a></li>
+        <li><a name="WebWork"></a><a href="http://www.opensymphony.com/webwork" target="new_page">WebWork</a></li>
+        <li><a name="Tomcat"></a><a href="http://tomcat.apache.org" target="new_page">Tomcat</a></li>
+        <li><a name="Jetty"></a><a href="http://jetty.mortbay.org/jetty" target="new_page">Jetty</a></li>
+        <li><a name="HTTP1.0"></a><a href="http://www.w3.org/Protocols/HTTP/1.0/draft-ietf-http-spec.html" target="new_page">HTTP/1.0</a></li>
+        <li><a name="HTTP1.1"></a><a href="http://www.w3.org/Protocols" target="new_page">HTTP/1.1</a></li>
+        <li><a name="JBoss"></a><a href="http://www.jboss.org" target="new_page">JBoss</a></li>
+        <li><a name="JBossMicrocontainer"></a><a href="http://www.jboss.org/products/jbossmc" target="new_page">JBoss Microcontainer</a></li>
+        <li><a name="Pico"></a><a href="http://www.picocontainer.org" target="new_page">Pico Container</a></li>
+        <li><a name="Velocity"></a><a href="http://jakarta.apache.org/velocity" target="new_page">Velocity Template Engine</a></li>
+        <li><a name="FreeMarker"></a><a href="http://freemarker.sourceforge.net" target="new_page">FreeMarker</a></li>
+        <li><a name="JSP"></a><a href="http://java.sun.com/products/jsp" target="new_page">JSP</a></li>
+        <li><a name="JSTL"></a><a href="http://java.sun.com/products/jsp/jstl" target="new_page">JSTL</a></li>
+        <li><a name="JSF"></a><a href="http://java.sun.com/javaee/javaserverfaces" target="new_page">JavaServer Faces</a></li>
+        <li><a name="MyFaces"></a><a href="http://myfaces.apache.org" target="new_page">MyFaces</a></li>
+        <li><a name="Facelets"></a><a href="http://facelets.dev.java.net" target="new_page">Facelets</a></li>
+      </ul>
+    </section>
+
+  </body>
+</document>

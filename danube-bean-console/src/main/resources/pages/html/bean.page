@@ -1,0 +1,268 @@
+<!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+ *
+-->
+<html>
+<head>
+  <title>Bean Console - ${bean.name}</title>
+  <link rel="stylesheet" href="${connection.contextPath}/style.css" />
+</head>
+
+<body>
+  <h2>${bean.path}</h2>
+
+  <table class="quiet">
+  <tr>
+    <th>Bean name</th><td>${bean.name}</td>
+  </tr>
+  <tr>
+    <th>Bean class</th><td>${bean.type}</td>
+  </tr>
+  <tr>
+    <th>Full path</th><td>${bean.path}</td>
+  </tr>
+  </table>
+
+  <br />
+
+  <table class="quiet">
+  <tr>
+    <td>
+      <#if backUri?exists>
+        <form action="${backUri}" method="post">
+          <input type="submit" value="Back">
+        </form>
+      <#else>
+        <form action="${uri}" method="post">
+          <input type="submit" value="Back" disabled>
+        </form>
+      </#if>
+    </td>
+    <td>
+      <#if topUri?exists>
+        <form action="${topUri}" method="post">
+          <input type="submit" value="Top">
+        </form>
+      <#else>
+        <form action="${uri}" method="post">
+          <input type="submit" value="Top" disabled>
+        </form>
+      </#if>
+    </td>
+    <td>
+      <form action="${uri}" method="post">
+        <input type="submit" value="Refresh">
+      </form>
+    </td>
+  </tr>
+  </table>
+
+  <hr />
+
+  <#if bean.beans?exists>
+
+    <h3>Beans</h3>
+
+    <table>
+
+    <#assign first=true />
+    <#assign row=false />
+    <#list bean.beans as bean>
+      <#if first>
+        <tr>
+          <th>Name</th><th>Type</th><th>Access</th><th>Value</th>
+        </tr>
+      </#if>
+      <#assign first=false />
+      <tr class="${row?string}" height="25"><#assign row=!row />
+        <td>${bean.name}</td>
+        <td>${bean.shortType}</td>
+        <td>${bean.access}</td>
+        <td>
+          <#if bean.followable><a href="${uri}b_${bean.name}"></#if>
+          ${bean.shortValue}
+          <#if bean.followable></a></#if>
+        </td>
+      </tr>
+    </#list>
+    </table>
+    <br />
+  </#if>
+
+  <#if bean.collection?exists>
+    <h2>Bean as a collection</h2>
+    <table>
+      <#assign row=false />
+      <#assign index=0 />
+      <#assign first=true />
+      <#list bean.collection as element>
+        <#if first>
+          <tr>
+            <th>Type</th><th>Value</th>
+          </tr>
+        </#if>
+        <tr class="${row?string}" height="25"><#assign row=!row />
+          <td>${element.shortType}</td>
+          <td>
+            <#if element.followable><a href="${uri}i_${index}"></#if>
+               ${element.shortValue}
+            <#if element.followable></a></#if>
+          </td>
+        </tr>
+        <#assign first=false />
+        <#assign index=index+1 />
+      </#list>
+    </table>
+    <br />
+  </#if>
+
+  <#if bean.map?exists>
+    <h2>Bean as a map</h2>
+    <table>
+      <#assign first=true />
+      <#assign row=false />
+      <#list bean.map as element>
+        <#if first>
+          <tr>
+            <th>Name</th><th>Type</th><th>Value</th>
+          </tr>
+        </#if>
+
+        <tr class="${row?string}"><#assign row=!row />
+          <td>${element.name}</td>
+          <td>${element.shortType}</td>
+          <td>
+            <#if element.followable><a href="${uri}m_${element.name}"></#if>
+              ${element.shortValue}
+            <#if element.followable></a></#if>
+          </td>
+        </tr>
+        <#assign first=false />
+      </#list>
+    </table>
+    <br />
+  </#if>
+
+  <h2>Properties</h2>
+
+  <table>
+
+  <#if propertiesError?exists>
+    <tr><td class="error" colspan="4"><pre>${propertiesError}</pre></td></tr>
+  </#if>
+
+  <a name="properties" />
+  <form name="attributes" action="${uri}#properties" method="post">
+    <input type="hidden" name="-update" value="true" />
+
+    <#assign first=true />
+    <#assign hasSubmit=false />
+    <#assign row=false />
+    <#list bean.properties as prop>
+      <#if first>
+        <tr>
+          <th>Name</th><th>Type</th><th>Access</th><th>Value</th>
+        </tr>
+      </#if>
+      <#assign first=false />
+      <tr class="${row?string}" height="25"><#assign row=!row />
+        <td>
+          <a href="display?#reference=${prop.name}"></a>
+          ${prop.name}
+        </td>
+        <td>${prop.shortType}</td>
+
+        <td>${prop.access}</td>
+        <td>
+          <#if prop.access="RW">
+            <input name="${prop.name}" type="text" value="${prop.value}" />
+            <#assign hasSubmit=true />
+          <#elseif prop.access="rw" || prop.access="RO" || prop.access="ro">
+            <#if prop.followable><a href="${uri}p_${prop.name}"></#if>
+            ${prop.shortValue}
+            <#if prop.followable></a></#if>
+          <#elseif prop.access="WO">
+            <input name="${prop.name}" type="text" value="" />
+            <#assign hasSubmit=true />
+          <#else>
+            ${prop.shortValue}
+          </#if>
+        </td>
+      </tr>
+    </#list>
+    <#if hasSubmit><tr><td colspan="4"><input type="submit" value="Update"></td></#if>
+  </form>
+  </table>
+  <br />
+
+  <#assign methods = bean.methods />
+
+  <#if (bean.methods?size > 0)>
+
+  <br />
+
+  <h2>List of bean methods</h2>
+
+  <#list methods as method>
+
+  <table class="quiet">
+  <form name="method" action="${uri}m_${method.name}" method="post">
+
+    <tr>
+      <th colspan="2">
+        ${method.type} ${method.name}() &nbsp;&nbsp;
+        <#if method.expert>
+        (expert)
+        <#else>
+        </#if>
+      </th>
+    </tr>
+    <#if method.desc != method.name>
+    <tr>
+      <td colspan="2">${method.desc}</td>
+    </tr>
+    </#if>
+    <tr>
+      <td>
+        <table>
+
+    <#assign paramNum=0 />
+    <#assign first=true />
+    <#assign row=false />
+    <#list method.parameterTypes as param>
+      <#if first>
+        <#assign first=false />
+        <tr class="${row?string}"><#assign row=!row />
+          <th>Parameter Type</th><th>Value</th>
+        </tr>
+      </#if>
+      <tr class="${row?string}"><#assign row=!row />
+        <td>
+          ${param.type}
+        </td>
+        <td>
+          <input name="${bean.path}.${paramNum?string}" type="text" value="" />
+        </td>
+      </tr>
+      <#assign paramNum=paramNum+1 />
+    </#list>
+        </table>
+      </td>
+    </tr>
+    <tr><td colspan="2"><input type="submit" value="Execute"></td>
+  </form>
+  </table>
+  <br />
+  </#list>
+  </#if>
+
+</body>
+</html>

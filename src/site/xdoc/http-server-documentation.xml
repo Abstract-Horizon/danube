@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube HTTP Server Documentation</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <!--  macro name="toc" section="1" fromDepth="1" toDepth="3"/ -->
+
+    <section name="Intruduction">
+      <p>
+        Since there is an explosion of non-J2EE web tier techonologies (<a href="#Struts">Struts</a>,
+        <a href="#Tapestry">Tapesty</a>, <a href="#Spring-Webflow">Spring Webflow</a> and <a href="#Spring">Spring MVC</a>,
+        <a href="#WebWork">WebWork</a>, etc)
+        it was logical to provide an alternative way of invoking such frameworks while avoiding the use of &quot;fat&quot;
+        J2EE compliant web containers (<a href="#Tomcat">Tomcat</a>, <a href="#Jetty">Jetty</a>, etc).
+      </p>
+      <p>
+        This idea was the inspiration for Danube. Aiming to provide a simple, configurable and extensible POJO based HTTP
+        server, while avoiding the superfluous functionality of modern, currently popular web containers. It has been
+        developed to be fully <a href="#HTTP1.1">HTTP/1.1</a> compliant.
+      </p>
+      <p>
+        As a pure Java open source project it is an ideally positioned platform for further research of web tier
+        functionality within enterprise scale internet applications.
+      </p>
+    </section>
+
+    <section name="Overview">
+      <p>
+        The Danube HTTP server consists of several parts: <a href="#overview.core">server core</a>,
+        <a href="#overview.http">http server</a>, <a href="#overview.services">services</a>. These components support the running of the server
+        and (optionally) any <a href="#integration">integration</a> with other technologies.
+      </p>
+      <p>
+        These parts can configured as POJOs - programmatically or by using any of the dependency injection containers such
+        as <a href="#Spring">Spring</a>, <a href="#Pico">Pico Container</a>, <a href="#JBossMicrocontainer">JBoss Microcontainer</a>
+        or similar. Danube is written so as not to depend on any configuration utilities, although the main
+        development was done using the <a href="#Spring">Spring</a> container.
+      </p>
+
+      <subsection name="Server Core">
+        <p>
+          <a href="images/core1.all.png"><img src="images/core1.png" align="right" border="0"/></a>
+          The core part is designed to be as simple as possible. It comprises of two interfaces:
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a> and
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>.
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a> represents
+          the server's connection to other computer, from which it is possible to obtain input and output
+          streams (since communication between the client and server has been completed through this &quot;pipe&quot;).
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          is a class that knows what to do with the supplied
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a>.
+          <a href="api/org/abstracthorizon/danube/connection/SocketConnection.html">SocketConnection</a>
+           is a simple extension of
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a>
+          that introduces a socket into the picture - thus enabling the handler to interrogate it, in order to
+          gather information about the client or the state of the connection.
+        </p>
+        <p>
+          Most of server's components are just implementations of
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>.
+          Examples are:
+          <a href="api/org/abstracthorizon/danube/mvc/MVCConnectionHandler.html">MVCConnectionHandler</a>
+          (more will be explained later),
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a> or
+          <a href="api/org/abstracthorizon/danube/http/HTTPServerConnectionHandler.html">HTTPServerConnectionHandler</a>,
+          <a href="api/org/abstracthorizon/danube/http/util/ErrorConnectionHandler.html">ErrorConnectionHandler</a> and
+          <a href="api/org/abstracthorizon/danube/http/util/ReadOnlyFileConnectionHandler.html">ReadOnlyFileConnectionHandler</a>.
+
+        </p>
+      </subsection>
+
+      <subsection name="HTTP Server">
+        <p>
+          <a href="images/http1.all.png"><img src="images/http1.png" align="right" border="0"/></a>
+          Danube's HTTP server is actually a combination of implementations of
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a> and
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>.
+          Interface <a href="api/org/abstracthorizon/danube/http/HTTPConnection.html">HttpConnection</a> (extension of
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a>) and its
+          implementation <a href="api/org/abstracthorizon/danube/http/HTTPConnectionImpl.html">HttpConnectionImpl</a>
+          represent both HTTP request and response.
+        </p>
+       <!--  br clear="all" / -->
+        <p>
+          <a href="images/http2.all.png"><img src="images/http2.png" align="right" border="0" /></a>
+          Class <a href="api/org/abstracthorizon/danube/http/HTTPServerConnectionHandler.html">HttpServerConnectionHandler</a>
+          accepts <a href="api/org/abstracthorizon/danube/http/HTTPConnection.html">HttpConnection</a> and invokes
+          the processing of headers and parameters. Also, it handles <a href="#HTTP1.1">HTTP/1.1</a> and <a href="#HTTP1.0">HTTP/1.0</a>
+          requests. It sets a minimal set of required headers and then does the same job as a
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a> class.
+        </p>
+      <!-- br clear="all" / -->
+        <p>
+          <a href="images/http3.all.png"><img src="images/http3.png" align="right" border="0" /></a>
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a> is a simple class that
+          goes through a supplied list of
+          <a href="api/org/abstracthorizon/danube/http/matcher/Matcher.html">Matcher</a>s that in turn inspect
+          <a href="api/org/abstracthorizon/danube/http/HTTPConnection.html">HttpConnection</a> (mostly for
+          request URI) and decide whether or not to pass control to the
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          they are pointing to.
+        </p>
+        <p>
+          There are two supplied implementations of the
+          <a href="api/org/abstracthorizon/danube/http/matcher/Matcher.html">Matcher</a> interface:
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> and
+          <a href="api/org/abstracthorizon/danube/http/matcher/Pattern.html">Pattern</a>.
+        </p>
+        <p>
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> checks if the
+          supplied string is a prefix of the current request URI and, if it is, the case then
+          removes it from current request URI in
+          <a href="api/org/abstracthorizon/danube/http/HTTPConnection.html">HttpConnection</a>
+          and passes control to the
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          it points to.
+        </p>
+        <p>
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Pattern</a> uses
+          regular expressions to match against the current request URI. If it matches it passes control to the
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          it points to.
+        </p>
+        <p>
+          The <a href="api/org/abstracthorizon/danube/http/matcher/Matcher.html">Matcher</a> interface
+          supplies one more pieces of information to the
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a> class to enable it to
+          determine whether it should stop on the first match or alternatively continue with the list even if a match is
+          found. The default value is <code>true</code>, which prevents the
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          going further down the list. Setting that value to <code>false</code> would
+          provide filter-like functionality, where
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          can act as a filter and enable the
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          to continue with other matches.
+        </p>
+        <p>
+          When using
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          with
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> matchers
+          it is possible for standard J2EE application behaviour to be simulated: Firstly, a
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          (<a href="api/org/abstracthorizon/danube/http/HTTPServerConnectionHandler.html">HttpServerConnectionHandler</a>)
+          and its
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> matchers
+          are like applications.
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> matchers
+          should in this case point to their instances of
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          with
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> matchers
+          that serve as servlet paths.
+        </p>
+        <p>
+          For more complex matching,
+          <a href="api/org/abstracthorizon/danube/http/matcher/Pattern.html">Pattern</a> matchers
+          should be used. However, care must be taken to ensure that changes are not made to the
+          current request URI (which is what a
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a>
+          matcher would do). Also, it is posible for custom (dynamically assigned)
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a>
+          implementations to be introduced for more complex logic involving the matching of incoming URIs.
+        </p>
+        <p>
+          There is one more, special, case of the <a href="api/org/abstracthorizon/danube/http/matcher/Matcher.html">Matcher</a>
+          interface implementation:
+          <a href="api/org/abstracthorizon/danube/http/matcher/WelcomeFile.html">WelcomeFile</a>. This matcher
+          matches only &quot;/&quot; paths. Also, when matched it adds value of <code>welcomeFile</code> property
+          as <code>componentResourcePath</code> of current connection. If, for instance, linked with
+          <a href="api/org/abstracthorizon/danube/http/util/FileConnectionHandler.html">FileConnectionHandler</a>
+          it acts as would welcome files in some web servers.
+        </p>
+      <!-- br clear="all" / -->
+        <p>
+          <a href="images/http4.all.png"><img src="images/http4.png" align="center" border="0" /></a>
+          <!-- br clear="all" / -->
+          As already mentioned,
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          implementations are actually handling the requests. There are only handful of such implementations
+          supplied with this distribution:
+        </p>
+        <ul>
+          <li>the previously mentioned <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a></li>
+          <li>and its extension <a href="api/org/abstracthorizon/danube/http/HTTPServerConnectionHandler.html">HttpServerConnectionHandler</a></li>
+          <li>additionally, the <a href="api/org/abstracthorizon/danube/http/util/ErrorConnectionHandler.html">ErrorConnectionHandler</a> class handles
+              exceptions which are not handled anywhere else. It displays a HTTP error code with an explanatory message. If
+              request parameters have an entry with the name &quot;_exception&quot; of type
+              <a href="http://java.sun.com/j2se/1.5/docs/api/java/lang/Throwable.html">Throwable</a>,
+              then it will be displayed as well.
+          </li>
+          <li>and <a href="api/org/abstracthorizon/danube/http/util/FileConnectionHandler.html">FileConnectionHandler</a>, which processes simple files (and directories).
+              This handles and knows how to render directories in a HTML page and can return the contents of selected files. Files'
+              mime types are read from <a href="http://java.sun.com/j2ee/1.4/docs/api/javax/activation/FileTypeMap.html">FileTypeMap</a>.
+          </li>
+        </ul>
+      <!-- br clear="all" / -->
+        <p>
+          <a href="images/mvc1.all.png"><img src="images/mvc1.png" align="right" border="0" /></a>
+          Apart from these basic implementations there is one important, &quot;integration&quot; implementation of
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>:
+          <a href="api/org/abstracthorizon/danube/mvc/MVCConnectionHandler.html">MVCConnectionHandler</a>. It is
+          a very simple implementation. It passes requests
+          (<a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a>)
+          to an implementation of the
+          <a href="api/org/abstracthorizon/danube/mvc/Controller.html">Controller</a> interface that is
+          intended to return a
+          <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a> object. Following this
+          an implementation of a
+          <a href="api/org/abstracthorizon/danube/mvc/View.html">View</a> interface is invoked with a
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a> and
+          <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a> object.
+        </p>
+        <p>
+         <i>Note: This way of modelling the MVC is inspired by the <a href="#Spring">Spring</a> framework.</i>
+        </p>
+        <p>
+          The <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a> object contains
+          two fields only: the name of the view to be selected by the
+          <a href="api/org/abstracthorizon/danube/mvc/View.html">View</a> implementation
+          and the <a href="http://java.sun.com/j2se/1.5/docs/api/java/lang/Map.html">Map</a> that
+          represents the model. Various view layer technologies (<a href="#Velocity">Velocity</a>,
+          <a href="#Freemarker">Freemarker</a>, etc) have adopted such an approach. Even the <a href="#JSTL">JSTL</a>
+          tag library for <a href="#JSP">JSP</a>s can use this as the subset of scopes it caters for.
+        </p>
+      </subsection>
+
+
+      <subsection name="Services">
+        <p>
+          <a href="images/service1.all.png"><img src="images/service1.png" align="right" border="0" /></a>
+          The services components of the Danube server are responsible for starting up the server.
+          <!-- br clear="all" / -->
+        </p>
+      </subsection>
+    </section>
+
+    <section name="Integration">
+
+      <p>
+        Implementations of the
+        <a href="api/org/abstracthorizon/danube/mvc/View.html">View</a>
+        and
+        <a href="api/org/abstracthorizon/danube/mvc/Controller.html">Controller</a>
+        interfaces are the main points where Danube can integrate with other technologies:
+      </p>
+      <ul>
+        <li>
+          <a href="integration-webflow.html">Spring Webflow</a> -
+          <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowExecutionManager.html">DanubeFlowExecutionManager</a>.
+          This is a controller implementation. It supplies the name of the view that should be displayed along with a map
+          that represents the model.
+        </li>
+        <li>
+          <a href="integration-freemarker.html">Freemarker</a> -
+          <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>.
+          This is a view implementation.
+        </li>
+        <li>
+          <a href="integration-velocity.html">Velocity</a> template engine -
+          <a href="api/org/abstracthorizon/danube/velocity/VelocityViewAdapter.html">VelocityViewAdapter</a>.
+          This is a view implementation.
+        </li>
+        <li>
+          <a href="integration-tapestry.html">Tapestry</a> framework -
+          <a href="api/org/abstracthorizon/danube/tapestry/TapestryConnectionHandler.html">TapestryConnectionHandler</a>.
+          This is a connection handler implementation.
+        </li>
+        <li>
+          <a href="integration-jsf.html">JSF with Facelets</a> -
+          <a href="api/org/abstracthorizon/danube/jsf/JSFConnectionHandler.html">JSFConnectionHandler</a>.
+          This is a connection handler implementation.
+        </li>
+      </ul>
+      <p>
+        Other technologies can be added in the similar way as those above.
+      </p>
+<!--
+        <div>
+          <a name="integration.spring-webflow"></a>
+          <h3>Spring Webflow</h3>
+          <p>
+            Integration with <a href="#Spring-Webflow">Spring Webflow</a> is done through
+            <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowExecutionManager.html">DanubeFlowExecutionManager</a>
+            which is an extension of <a href="http://static.springframework.org/spring-webflow/docs/pr5/api/org/springframework/webflow/execution/FlowExecutionManager.html">FlowExecutionManager</a>.
+            Sessions (flows) are stored by
+            <a href="api/org/abstracthorizon/danube/webflow/StaticFlowExecutionStorage.html">StaticFlowExecutionStorage</a>,
+            but
+            <a href="http://static.springframework.org/spring-webflow/docs/pr5/api/org/springframework/webflow/execution/ClientContinuationFlowExecutionStorage.html">ClientContinuationFlowExecutionStorage</a>
+            can be used too.
+          </p>
+        </div>
+
+        <div>
+          <a name="integration.tapestry"></a>
+          <h3>Tapestry</h3>
+          <p>
+            Integration with the <a href="#Tapestry">Tapestry</a> framework is done through
+            <a href="api/org/abstracthorizon/danube/tapestry/TapestryConnectionHandler.html">TapestryConnectionHandler</a>.
+            This class has several important parameters:
+            <ul>
+            <li><code>applicationSpecificationResourceName</code> - name of main .application file. It defaults to &quot;tapestry.application&quot;</li>
+            <li><code>initialParameters</code> - map of initial parameters.</li>
+            <li>
+                <code>sessionManager</code> - session manager to be used. It must implement <a href="api/org/abstracthorizon/danube/http/session/HttpSessionManager.html">HttpSessionManager</a>.
+                If not set then defaulted to <a href="api/org/abstracthorizon/danube/http/session/SimpleSessionManager.html">SimpleSessionManager</a>.
+            </li>
+            </ul>
+          </p>
+          <p>
+            Also there are a few parameters that are exposed as a expansion points but there is no reason for them to be set unless some
+            internal behaviour is to be changed. Here there are:
+            <ul>
+            <li><code>classResolver</code> - Class resolver implementation of <a href="http://jakarta.apache.org/hivemind/hivemind/apidocs/org/apache/hivemind/ClassResolver.html"></a> type.</li>
+            <li><code>webActivator</code> - web activator implementation of <a href="http://jakarta.apache.org/tapestry/tapestry/apidocs/org/apache/tapestry/web/WebActivator.html"></a> type.</li>
+            <li><code>webContext</code> - web context implementation of <a href="http://jakarta.apache.org/tapestry/tapestry/apidocs/org/apache/tapestry/web/WebContext.html"></a> type.</li>
+            </ul>
+          </p>
+          <p>
+            Pages and all other resources are accesses through class loader - so make sure that they are in the classpath.
+          </p>
+        </div>
+
+        <div>
+          <a name="integration.velocity"></a>
+          <h3>Velocity</h3>
+          <p>
+            Integration with the <a href="#Velocity">Velocity</a> template engine is done through
+            <a href="api/org/abstracthorizon/danube/velocity/VelocityViewAdapter.html">VelocityViewAdapter</a>.
+            This class has two important parameters: <code>templatesLocation</code> and <code>suffix</code>.
+            The first is self-explanatory, while the second represents a string that is suffixed to the template name
+            supplied by
+            <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a>.
+          </p>
+        </div>
+
+        <div>
+          <a name="integration.freemarker"></a>
+          <h3>Freemarker</h3>
+          <p>
+            Integration with <a href="#FreeMarker">FreeMarker</a> is done through
+            <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>.
+            This class has two important parameters: <code>templatesLocation</code> and <code>suffix</code>.
+            The first is self-explanatory, while the second represents a string that is suffixed to the template name
+            supplied by
+            <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a>.
+          </p>
+        </div>
+
+        <div>
+          <a name="integration.jsf"></a>
+          <h3>JSF</h3>
+          <p>
+            Integration with <a href="#JSF">JSF</a> tied to <a href="#Facelets>Facelets</a>.
+            It is done through
+            <a href="api/org/abstracthorizon/danube/jsf/JSFConnectionHandler.html">JSFConnectionHandler</a>.
+            Parameters that can be set to it are:
+          </p>
+          <ul>
+          <li>
+              <code>sessionManager</code> - session manager to be used. It must implement <a href="api/org/abstracthorizon/danube/http/session/HttpSessionManager.html">HttpSessionManager</a>.
+              If not set then defaulted to <a href="api/org/abstracthorizon/danube/http/session/SimpleSessionManager.html">SimpleSessionManager</a>.
+          </li>
+          <li><code>attribuets</code> - attributes</li>
+          <li><code>initParameters</code> - initial parameters</li>
+          </ul>
+          <p>
+            Danube implementation is based on <a href="#MyFaces">MyFaces</a> implementation.
+          </p>
+        </div>
+-->
+    </section>
+
+    <section name="Authentication">
+
+      <p>
+        It is possible to set security in Danube using JAAS technology. It is done through <a href="api/org/abstracthorizon/danube/http/auth/JAASAuthenticator.html">JAASAuthenticator</a>
+        connection handler. This handler performes basic http authentication and uses supplied user name and password supplied with preconfigured login context.
+        Login context is supplied through <code>loginContextName</code> attribute. If authentication passed then forward connection handler (possible http context) is called.
+      </p>
+      <p>
+        Here are all attributes of authentication class:
+      </p>
+
+      <ul>
+        <li><code>loginContextName</code> - name of login context to be used</li>
+        <li><code>handler</code> - reference to handler which is going to be invoked in case of successful authentication</li>
+        <li><code>sessionManager</code> - reference to session manager for subject to be placed under &quot;org.abstracthorizon.danube.http.auth.Subject&quot; attribute.</li>
+        <li><code>realm</code> - realm as in http basic authentication</li>
+        <li><code>loginContext</code> - reference to the login context to be used. It is automatically set if login context name is supplied.</li>
+        <li><code>cacheTimeout</code> - timeout for local authorisation string cache. Cache contains subjects mapped to authorisation strings.</li>
+        <li><code>minimumScanPeriod</code> - minimal allowed period for cache to be scanned for timed out subjects</li>
+      </ul>
+
+      <p>
+        For authentication using JAAS to work appropriate LoginContext must be defined. Login modules must use username/password authentication for it to work.
+      </p>
+
+      <p>
+        New types of authentications are planned for the future implementations such as public/private SSL key, Acegi, etc...
+      </p>
+    </section>
+
+    <section name="Configuration">
+
+      <p>
+        Minimal configuration requirements were considered an important factor during the development of Danube. Consequently most
+        classes are provided in this distribution with all required default values (where assigning defaults was sensible and logical).
+        Configuring Danube should be a simple job, but when needed fine tuning can be achieved easily.
+      </p>
+
+      <subsection name="Standalone">
+        <p>
+          Danube can be started with the
+          <a href="api/org/abstracthorizon/danube/service/ServerSocketService.html">ServerSocketService</a>
+          class, by supplying it with a port and reference to
+          <a href="api/org/abstracthorizon/danube/http/HttpServerConnectionHandler.html">HttpServerConnectionHandler</a>
+          (via a property called <code>connectionHandler</code>). Its
+          <a href="api/org/abstracthorizon/danube/service/ServerSocketService.html#create()">create()</a> and
+          <a href="api/org/abstracthorizon/danube/service/ServerSocketService.html#start()">start()</a> methods should both be called.
+
+          For
+          <a href="api/org/abstracthorizon/danube/http/HttpServerConnectionHandler.html">HttpServerConnectionHandler</a>
+          a list of
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> and
+          <a href="api/org/abstracthorizon/danube/http/matcher/Pattern.html">Pattern</a>
+          objects should be supplied in the <code>components</code> property.
+          Each of the
+          <a href="api/org/abstracthorizon/danube/http/matcher/Matcher.html">Matcher</a>s
+          can additionally point to &quot;second level&quot;
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>s, a
+          <a href="api/org/abstracthorizon/danube/http/util/FileConnectionHandler.html">FileConnectionHandler</a>
+          or
+          <a href="api/org/abstracthorizon/danube/mvc/MVCConnectionHandler.html">MVCConnectionHandler</a>.
+        </p>
+        <p>
+          For <a href="api/org/abstracthorizon/danube/http/util/FileConnectionHandler.html">FileConnectionHandler</a>
+          a <code>filePath</code> (the location where files are stored) needs to be supplied along with
+          <code>uriPath</code> (ie. the prefix value stripped from the current request URI). This is needed later when used with
+          <a href="api/org/abstracthorizon/danube/http/matcher/Pattern.html">Pattern</a> matcher.
+        </p>
+        <p>
+          <a href="api/org/abstracthorizon/danube/mvc/MVCConnectionHandler.html">MVCConnectionHandler</a>
+          has only two references that need to be populated: <code>controller</code> and <code>view</code>.
+          See integrations for suitable controller and view implementations.
+        </p>
+        <p>
+          For example, the <code>controller</code> property can be a reference to an instance of
+          <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowExecutionManager.html">DanubeFlowExecutionManager</a>,
+          while <code>view</code> can point to
+          <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>.
+          <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowExecutionManager.html">DanubeFlowExecutionManager</a>
+          should be configured in the typical way that <code>FlowExecutionManager</code> is normally configured, while
+          <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>
+          should be supplied with a path to templates stored in the location pointed to by the <code>templatesLocation</code> property.
+        </p>
+      </subsection>
+
+      <subsection name="Standalone using Spring">
+
+        <p>
+          Danube can be invoked as standalone server using the <a href="#Spring">Spring Framework</a> for
+          configuration. Class
+          <a href="api/org/abstracthorizon/danube/service/util/StartLocalServer.html">StartLocalServer</a>
+          loads the server.xml configuration file from the current directory or one specified using the <code>-d</code>
+          option. Then if extra parameters are set they are used as the names of beans that will be expected to be of
+          <a href="api/org/abstracthorizon/danube/service/Service.html">Service</a>
+          interface type, and methods
+          <a href="api/org/abstracthorizon/danube/service/Service.html#create()">create()</a> and
+          <a href="api/org/abstracthorizon/danube/service/Service.html#start()">start()</a> will be invoked
+          for each of them. If no arguments are passed then a bean assigned with the name <code>server</code> will be used.
+        </p>
+        <p>
+          Here is an sample configuration file used for a <a href="#WebFlow">Spring WebFlow</a> and
+          <a href="#Velocity">Velocity</a> integration example:
+        </p>
+<source>
+<![CDATA[
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+-->
+<beans>
+    <!--
+     * Here we are setting up the framework mechanism.
+     * First, there must be a bean called "server" of Service type. We are using ServerSocketService
+     * Then it needs to know what is processing requests. HttpServerConnectionHandler is used for it.
+     * HttpServerConnectionHandler has one, 'context', prefix defined to reference our 'application'.
+     * For 'application', an ApplicationSeparator is used. ApplicationSeparator is just loading another context
+     * to pass control to it.
+    -->
+
+    <!--
+     * This is our service. It is named "Danube", runs on port 8080, has initial socket timeout of 1000ms and
+     * uses httpServerConnectionHandler for processing requests.
+    -->
+    <bean name="server" class="org.abstracthorizon.danube.service.ServerSocketService">
+        <property name="name"><value>Danube</value></property>
+        <property name="port"><value>8080</value></property>
+        <property name="serverSocketTimeout"><value>1000</value></property>
+        <property name="newSocketTimeout"><value>60000</value></property>
+        <property name="connectionHandler"><ref bean="httpServerConnectionHandler" /></property>
+    </bean>
+
+    <!--
+     * This handler checks for 'context' prefix "/velocity-example" and if request is passed to that path
+     * it is then handled by 'application' "webflow-velocity-example"
+     * More contexts can be added to this bean.
+    -->
+    <bean name="httpServerConnectionHandler" class="org.abstracthorizon.danube.http.HTTPServerConnectionHandler">
+    <property name="components">
+        <list>
+            <bean class="org.abstracthorizon.danube.http.matcher.Prefix">
+                <property name="prefix"><value>/velocity-example</value></property>
+                <property name="connectionHandler"><ref bean="webflow-velocity-example"/></property>
+            </bean>
+        </list>
+    </property>
+    </bean>
+
+    <!--
+     * This is not application (connection) handler - but simple 'connector' from this xml definition file to
+     * another. It defines another Spring application context and name of the bean to pass control (handling of the request) to.
+     * In this case application context is defined under bean named "webflow-velocity-application-context" and name of the bean to be used from
+     * it is "web-application".
+    -->
+    <bean name="webflow-velocity-example" class="org.abstracthorizon.danube.http.spring.ApplicationSeparator" init-method="init">
+        <property name="applicationContext"><ref bean="webflow-velocity-application-context"/></property>
+        <property name="beanName"><value>web-application</value></property>
+    </bean>
+
+    <!--
+     * This is ResourceXmlApplicationContext application context set up. It is same as simple
+     * Spring FileSystemXmlApplicationContext which loades resources from the directories (paths)
+     * xml definition files residing in. It reads the file from given resource in constructor.
+    -->
+    <bean name="webflow-velocity-application-context" class="org.abstracthorizon.danube.http.spring.ResourceXmlApplicationContext">
+        <constructor-arg><value>.</value></constructor-arg>
+        <constructor-arg><value>web-application.xml</value></constructor-arg>
+    </bean>
+</beans>
+
+]]>
+</source>
+        <p>
+          Definitions found here correspod to what was explained in the previous chapter
+          (<a href="#configuration.standalone">Standalone configuration</a>) except that there is
+          one more new class:
+          <a href="api/org/abstracthorizon/danube/http/spring/ApplicationSeparator.html">ApplicationSeparator</a>.
+          It is used instead of the <code>include</code> statement. This class is actually a
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a> and
+          it needs <code>applicationContext</code> and <code>beanName</code> as properties. It extracts
+          a bean with a given name from a given application context and assumes it too is of the
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a> inteface type
+          and passes control to it. With that, a class configuration of different
+          &quot;application contexts&quot; can be defined in different xml files, for example.
+        </p>
+        <p>
+          In this case, the example's context is defined using a <code>webflow-velocity-application-context</code>
+          bean that is really a <code>FileSystemXmlApplicationContext</code> which loads definitions from
+          a file with the name &quot;<code>web-application.xml</code>&quot;. <i>Note: for this example to work the
+          current directory must be the one that contains both &quot;<code>server.xml</code>&quot;
+          and &quot;<code>web-application.xml</code>&quot; files.</i>
+        </p>
+        <p>
+          And here is the content of the &quot;<code>web-application.xml</code>&quot; file:
+        </p>
+<source>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE beans PUBLIC &quot;-//SPRING//DTD BEAN//EN&quot; &quot;http://www.springframework.org/dtd/spring-beans.dtd&quot;&gt;
+
+&lt;!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+--&gt;
+&lt;beans&gt;
+    &lt;!--
+     * This file defines the beans 'application'.
+     * First bean's name in here is specified in &quot;server.xml&quot; and has to be of &quot;ConnectionHandler&quot; type.
+     * When server gets request with 'context' path prefix (as specified in &quot;server.xml&quot;) then control is
+     * passed in here.
+     * First bean, then, references components defined for this application. Rest of the file defines those
+     * components or auxiliary beans.
+    --&gt;
+
+    &lt;!--
+     * This bean defines beans application context.
+     * It references MVC controller defined at the &quot;/guess.do&quot; path.
+    --&gt;
+    &lt;bean name=&quot;web-application&quot; class=&quot;org.abstracthorizon.danube.http.HTTPContext&quot;&gt;
+        &lt;property name=&quot;components&quot;&gt;
+            &lt;list&gt;
+                &lt;bean class=&quot;org.abstracthorizon.danube.http.matcher.Prefix&quot;&gt;
+                    &lt;property name=&quot;prefix&quot;&gt;&lt;value&gt;/guess.do&lt;/value&gt;&lt;/property&gt;
+                    &lt;property name=&quot;connectionHandler&quot;&gt;&lt;ref bean=&quot;guess.do&quot;/&gt;&lt;/property&gt;
+                &lt;/bean&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!--
+     * This is MVC controller that has Spring WebFlow as a controller and Velocity as a view adapter.
+    --&gt;
+    &lt;bean name=&quot;guess.do&quot; class=&quot;org.abstracthorizon.danube.http.HTTPMVCConnectionHandler&quot;&gt;
+        &lt;property name=&quot;controller&quot;&gt;&lt;ref bean=&quot;webFlowController&quot; /&gt;&lt;/property&gt;
+        &lt;property name=&quot;view&quot;&gt;&lt;ref bean=&quot;velocityViewAdapter&quot; /&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!--
+     * This is WebFlow controller. Flow locator is defined through flow registry bean and
+     * &quot;bean-explorer-flow&quot; is set as defualt flow id
+    --&gt;
+    &lt;bean name=&quot;webFlowController&quot; class=&quot;org.abstracthorizon.danube.webflow.DanubeFlowController&quot;&gt;
+        &lt;property name=&quot;flowLocator&quot;&gt;&lt;ref bean=&quot;flowRegistry&quot; /&gt;&lt;/property&gt;
+        &lt;property name=&quot;defaultFlowId&quot;&gt;&lt;value&gt;guess-flow&lt;/value&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!--
+     * Flow registry defines where flow definitions are to be read from.
+    --&gt;
+    &lt;bean id=&quot;flowRegistry&quot; class=&quot;org.springframework.webflow.registry.XmlFlowRegistryFactoryBean&quot;&gt;
+      &lt;property name=&quot;flowLocations&quot; value=&quot;guess-flow.xml&quot;/&gt;
+    &lt;/bean&gt;
+
+    &lt;!--
+     * This is Velocity view adapter.
+     * It defines directory &quot;templates&quot; as location of templates.
+    --&gt;
+    &lt;bean id=&quot;velocityViewAdapter&quot; class=&quot;org.abstracthorizon.danube.velocity.spring.VelocityViewAdapter&quot; init-method=&quot;init&quot;&gt;
+        &lt;property name=&quot;templatesLocation&quot;&gt;&lt;value&gt;templates&lt;/value&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+
+    &lt;!--
+     * This part of the file defines WebFlow's controllers as defined in the given flow(s) ====================================================================-
+    --&gt;
+
+    &lt;!--
+     * This controller is responsible for obtaining the name of the player
+    --&gt;
+    &lt;bean id=&quot;NameController&quot; class=&quot;org.springframework.webflow.action.FormAction&quot;&gt;
+        &lt;property name=&quot;formObjectName&quot;&gt;&lt;value&gt;nameForm&lt;/value&gt;&lt;/property&gt;
+        &lt;property name=&quot;formObjectClass&quot;&gt;&lt;value&gt;org.abstracthorizon.danube.example.webflowvelocity.NameForm&lt;/value&gt;&lt;/property&gt;
+        &lt;property name=&quot;formObjectScope&quot;&gt;&lt;value&gt;FLOW&lt;/value&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!--
+     * This controller is used for guessing process
+    --&gt;
+    &lt;bean id=&quot;GuessController&quot; class=&quot;org.abstracthorizon.danube.example.webflowvelocity.GuessController&quot;&gt;
+        &lt;property name=&quot;formObjectName&quot;&gt;&lt;value&gt;guessForm&lt;/value&gt;&lt;/property&gt;
+        &lt;property name=&quot;formObjectClass&quot;&gt;&lt;value&gt;org.abstracthorizon.danube.example.webflowvelocity.GuessForm&lt;/value&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</source>
+      </subsection>
+
+      <subsection name="Extend">
+        <p>
+          To be done.
+        </p>
+      </subsection>
+
+        <!-- section name="JBoss">
+          <a name="configuration.jboss"></a>
+          <h3>JBoss</h3>
+          <p>
+            To be done.
+          </p>
+        </section -->
+   </section>
+
+
+
+
+    <section name="Links">
+
+      <ul>
+        <li><a name="Java"></a><a href="http://java.sun.com" target="new_page">Java</a></li>
+        <li><a name="Spring"></a><a href="http://www.springframework.org" target="new_page">Spring</a></li>
+        <li><a name="Spring-Webflow"></a><a href="http://opensource2.atlassion.com/confluence/spring/display/WEBFLOW/Home" target="new_page">Spring-Webflow</a></li>
+        <li><a name="Struts"></a><a href="http://struts.apache.org" target="new_page">Struts</a></li>
+        <li><a name="Tapestry"></a><a href="http://jakarta.apache.org/tapestry" target="new_page">Tapestry</a></li>
+        <li><a name="WebWork"></a><a href="http://www.opensymphony.com/webwork" target="new_page">WebWork</a></li>
+        <li><a name="Tomcat"></a><a href="http://tomcat.apache.org" target="new_page">Tomcat</a></li>
+        <li><a name="Jetty"></a><a href="http://jetty.mortbay.org/jetty" target="new_page">Jetty</a></li>
+        <li><a name="HTTP1.0"></a><a href="http://www.w3.org/Protocols/HTTP/1.0/draft-ietf-http-spec.html" target="new_page">HTTP/1.0</a></li>
+        <li><a name="HTTP1.1"></a><a href="http://www.w3.org/Protocols" target="new_page">HTTP/1.1</a></li>
+        <li><a name="JBoss"></a><a href="http://www.jboss.org" target="new_page">JBoss</a></li>
+        <li><a name="JBossMicrocontainer"></a><a href="http://www.jboss.org/products/jbossmc" target="new_page">JBoss Microcontainer</a></li>
+        <li><a name="Pico"></a><a href="http://www.picocontainer.org" target="new_page">Pico Container</a></li>
+        <li><a name="Velocity"></a><a href="http://jakarta.apache.org/velocity" target="new_page">Velocity Template Engine</a></li>
+        <li><a name="FreeMarker"></a><a href="http://freemarker.sourceforge.net" target="new_page">FreeMarker</a></li>
+        <li><a name="JSP"></a><a href="http://java.sun.com/products/jsp" target="new_page">JSP</a></li>
+        <li><a name="JSTL"></a><a href="http://java.sun.com/products/jsp/jstl" target="new_page">JSTL</a></li>
+        <li><a name="JSF"></a><a href="http://java.sun.com/javaee/javaserverfaces" target="new_page">JavaServer Faces</a></li>
+        <li><a name="MyFaces"></a><a href="http://myfaces.apache.org" target="new_page">MyFaces</a></li>
+        <li><a name="Facelets"></a><a href="http://facelets.dev.java.net" target="new_page">Facelets</a></li>
+      </ul>
+    </section>
+
+  </body>
+</document>

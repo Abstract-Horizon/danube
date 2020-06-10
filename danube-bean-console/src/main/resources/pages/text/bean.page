@@ -1,0 +1,70 @@
+* Copyright (c) 2005-2006 Creative Sphere Limited.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the LGPL licence
+* which accompanies this distribution, and is available at
+* http://www.gnu.org/copyleft/lesser.html
+*
+* Contributors:
+*
+*   Creative Sphere - initial API and implementation
+*
+Name: ${bean.name}
+Type: ${bean.type}
+Path: ${bean.path}
+<#if bean.beans?exists>
+Beans:
+<#list bean.beans as b>
+  Name: ${b.name}
+  Type: ${b.type}
+  Access: ${b.access}
+  Value: ${b.value}
+  
+</#list>
+Beans end.
+</#if>
+
+<#if bean.collection?exists>
+Collection:
+<#list bean.collection as element>
+  Type: ${element.type}
+  Value: ${element.value}
+</#list>
+Collection end.
+</#if>
+
+<#if bean.map?exists>
+Map:
+<#list bean.map as element>
+  Name: ${element.name}
+  Type: ${element.type}
+  Value: ${element.value}
+</#list>
+Map end.
+</#if>
+
+Properties:
+<#if propertiesError?exists>
+  Error: ${propertiesError}
+</#if>
+
+<#list bean.properties as prop>
+  Name: ${prop.name}
+  Type: ${prop.type}
+  Access: ${prop.access}
+  Value: ${prop.value}
+</#list>
+Properties end.
+
+<#if (bean.methods?size > 0)>
+
+Methods:
+<#list bean.methods as method>
+  Method: ${method.name}
+  Parameters:
+  <#list method.parameterTypes as param>
+    Name: ${param.name}
+  </#list>
+  Parameters end.
+</#list>
+Methods end.
+</#if>

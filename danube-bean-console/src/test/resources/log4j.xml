@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+   <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+      <param name="Target" value="System.out"/>
+      <param name="Threshold" value="DEBUG"/>
+
+      <layout class="org.apache.log4j.PatternLayout">
+         <!-- The default pattern: Date Priority [Category] Message\n -->
+         <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c] %m%n"/>
+         <!-- param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/ -->
+      </layout>
+   </appender>
+
+   <category name="org.abstracthorizoTn">
+      <priority value="INFO"/>
+   </category>
+
+   <category name="org.springframework">
+      <priority value="ERROR"/>
+   </category>
+
+   <category name="org.abstracthorizon.danube">
+      <priority value="DEBUG"/>
+   </category>
+
+   <category name="org.abstracthorizon.spring.server">
+      <priority value="DEBUG"/>
+   </category>
+
+   <category name="org.abstracthorizon.danube.http.spring.ResourceXmlApplicationContext">
+      <priority value="ERROR"/>
+   </category>
+   <category name="org.abstracthorizon.danube.freemarker.spring.FreeMarkerViewAdapter">
+      <priority value="INFO"/>
+   </category>
+   <category name="org.abstracthorizon.spring.server.deployment.support.AbstractApplicationContextModule$DeployersDefaultListableBeanFactory">
+      <priority value="INFO"/>
+   </category>
+   <category name="org.abstracthorizon.spring.server.deployment.support.ApplicationContextModuleXmlParser">
+      <priority value="INFO"/>
+   </category>
+   <category name="org.abstracthorizon.danube.http.HttpConnection">
+      <priority value="INFO"/>
+   </category>
+   <category name="org.abstracthorizon.danube.http.HttpConnectionImpl">
+      <priority value="DEBUG"/>
+   </category>
+
+
+   <category name="tapestry">
+      <priority value="INFO"/>
+   </category>
+   <category name="hivemind">
+      <priority value="INFO"/>
+   </category>
+
+
+
+   <root>
+      <appender-ref ref="CONSOLE"/>
+   </root>
+
+</log4j:configuration>

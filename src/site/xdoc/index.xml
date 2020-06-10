@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Abstract Horizon - Danube</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="About">
+      <p>
+        Danube is a simple HTTP server that can operate without having to conform to the J2EE standard.
+      </p>
+    </section>
+
+    <section name="News">
+      <subsection name="6th February, 2009">
+        <p>
+          Version 0.4.5 is released!
+        </p>
+        <p>
+          This release brings couple of tidy-up changes like, for instance moving Adaptable interface into separate 
+          Maven project. Also, some bugs are fixed in handling HTTP calls (subsequent requests over the same socket
+          for HTTP/1.1) and some bugs in bean-console.
+        </p>
+      </subsection>
+      <subsection name="14th November, 2007">
+        <p>
+          Version 0.4 is released!
+        </p>
+        <p>
+          There has been major refactoring done on this release. Another significant change is
+          for project to be re-organised and build as Maven project. Aside of it it brings some bug fixes
+          and minor enhancements.
+        </p>
+      </subsection>
+    </section>
+
+    <section name="Documentation">
+      <p>
+        Documentation for Danube can be found <a href="documentation.html">here</a>.
+      </p>
+      <p>
+        API documentation can be found <a href="api/index.html">here</a>.
+      </p>
+    </section>
+
+    <section name="Download">
+      <p>
+        Binary distribution can be found <a href="http://download.abstracthorizon.org/danube/">here</a>.
+      </p>
+      <p>
+        Source can be browsed <a href="http://svn.abstracthorizon.org/danube/">here</a>.
+      </p>
+    </section>
+<!--
+    <section name="Demo">
+      <p>
+        For demo look at <a href="demo" target="_top">Extend</a> and
+        bean console.
+      </p>
+    </section>
+-->
+    <section name="Help">
+      <p>
+       Every kind of help is more then welcome - from coding, designing to testing (using it) or commenting on it.
+      </p>
+    </section>
+<!--
+    <section name="Contact and Support">
+      <p>
+        Please feel free to send all comments to the <a href="#index.php?c=7">forum</a> topics
+        or use <a href="mailto:danube at abstracthorizon.org">danube at abstracthorizon.org</a> e-mail.
+      </p>
+    </section>
+-->
+  </body>
+</document>

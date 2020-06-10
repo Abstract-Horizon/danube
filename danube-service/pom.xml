@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.abstracthorizon.danube</groupId>
+    <artifactId>danube</artifactId>
+    <version>1.1-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>danube-service</artifactId>
+
+  <packaging>jar</packaging>
+
+  <name>Danube (Service)</name>
+
+  <description>
+    This project defines service handling with in Danube. It is, along side of Core part,
+    very generic and can be used in many cases where input from a socket (or any other input
+    in that case) is processes in structured way.
+
+    It defines a service and then provides several different implementations.
+  </description>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube</groupId>
+      <artifactId>danube-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube</groupId>
+      <artifactId>danube-support</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.pasulj</groupId>
+      <artifactId>pasulj</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+
+    <!-- Test deps -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+  </dependencies>
+
+</project>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Services</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+      <section name="Services">
+        <p>
+        <!--  TODO make a diagram
+          <a href="images/service1.all.png"><img src="images/service1.png" align="right" border="0" /></a>
+        -->
+          The services components of the Danube server are responsible for starting up the server.
+        </p>
+        <p>
+          There are several entry points to Danube framework. Some of them are defined in a sub-project called
+          <a href="danube-service">Danube service</a>. This sub-project, currently, defines socket listeners that after accepting
+          socket conneciton create a <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a> and pass it to designated
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a> for further processing.
+        </p>
+        <p>
+          One of such implementations is
+          <a href="api/org/abstracthorizon/danube/service/server/MultiThreadServerSocketService.httml">MultiThreadServerSocketService</a>
+          which uses Java 5 executors to manage thread pool and creates
+          <a href="api/org/abstracthorizon/danube/service/server/SocketConnection.html">SocketConnection</a>
+          to be processed.
+        </p>
+      </section>
+  </body>
+</document>

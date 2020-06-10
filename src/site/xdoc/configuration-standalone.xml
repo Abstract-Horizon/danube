@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Configuration - Standalone</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="Standalone">
+        <p>
+          Danube can be started with the
+
+          <a href="api/org/abstracthorizon/danube/service/server/MultiThreadServerSocketService.httml">MultiThreadServerSocketService</a>
+          class, by supplying it with a port and reference to
+          <a href="api/org/abstracthorizon/danube/http/HTTPServerConnectionHandler.html">HTTPServerConnectionHandler</a>
+          (via a property called <code>connectionHandler</code>). Its
+          <a href="api/org/abstracthorizon/danube/service/ServerSocketService.html#create()">create()</a> and
+          <a href="api/org/abstracthorizon/danube/service/ServerSocketService.html#start()">start()</a> methods should both be called.
+          Also connection handler of
+          <a href="api/org/abstracthorizon/danube/http/HTTPServerConnectionHandler.html">HTTPServerConnectionHandler</a>
+          should point to a
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>.
+
+          For
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          a list of
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> and
+          <a href="api/org/abstracthorizon/danube/http/matcher/Pattern.html">Pattern</a>
+          objects should be supplied in the <code>components</code> property.
+          Each of the
+          <a href="api/org/abstracthorizon/danube/http/matcher/Matcher.html">Matcher</a>s
+          can additionally point to &quot;second level&quot;
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>s, a
+          <a href="api/org/abstracthorizon/danube/http/util/ReadOnlyFileConnectionHandler.html">ReadOnlyFileConnectionHandler</a>
+          or
+          <a href="api/org/abstracthorizon/danube/mvc/MVCConnectionHandler.html">MVCConnectionHandler</a>.
+        </p>
+        <p>
+          For <a href="api/org/abstracthorizon/danube/http/util/ReadOnlyFileConnectionHandler.html">ReadOnlyFileConnectionHandler</a>
+          a <code>filePath</code> (the location where files are stored) needs to be supplied along with
+          <code>uriPath</code> (ie. the prefix value stripped from the current request URI).
+          This is needed later when used with
+          <a href="api/org/abstracthorizon/danube/http/matcher/Pattern.html">Pattern</a> matcher.
+        </p>
+        <p>
+          <a href="api/org/abstracthorizon/danube/mvc/MVCConnectionHandler.html">MVCConnectionHandler</a>
+          has only two references that need to be populated: <code>controller</code> and <code>view</code>.
+          See integrations for suitable controller and view implementations.
+        </p>
+        <p>
+          For example, the <code>controller</code> property can be a reference to an instance of
+          <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowExecutionManager.html">DanubeFlowExecutionManager</a>,
+          while <code>view</code> can point to
+          <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>.
+          <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowExecutionManager.html">DanubeFlowExecutionManager</a>
+          should be configured in the typical way that <code>FlowExecutionManager</code> is normally configured, while
+          <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>
+          should be supplied with a path to templates stored in the location
+          pointed to by the <code>templatesLocation</code> property.
+        </p>
+      <source>
+<![CDATA[
+  TODO: Supply an example code that does what is explained in here.
+]]>
+      </source>
+    </section>
+
+  </body>
+</document>

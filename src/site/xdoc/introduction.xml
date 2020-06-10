@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Introduction</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <!--  macro name="toc" section="1" fromDepth="1" toDepth="3"/ -->
+
+    <section name="Intruduction">
+      <p>
+        Since there is an explosion of non-J2EE web tier techonologies (<a href="links.html#Struts">Struts</a>,
+        <a href="links.html#Tapestry">Tapesty</a>,
+        <a href="links.html#Spring-Webflow">Spring Webflow</a> and <a href="links.html#Spring">Spring MVC</a>,
+        <a href="links.html#WebWork">WebWork</a>, etc)
+        it was logical to provide an alternative way of invoking such frameworks while avoiding the use of &quot;fat&quot;
+        J2EE compliant web containers (<a href="links.html#Tomcat">Tomcat</a>, <a href="links.html#Jetty">Jetty</a>, etc).
+      </p>
+      <p>
+        This idea was the inspiration for Danube. Aiming to provide a simple, configurable and extensible POJO based HTTP
+        server, while avoiding the superfluous functionality of modern, currently popular web containers. It has been
+        developed to be fully <a href="links.html#HTTP1.1">HTTP/1.1</a> compliant.
+      </p>
+      <p>
+        As a pure Java open source project it is an ideally positioned platform for further research of web tier
+        functionality within enterprise scale internet applications.
+      </p>
+    </section>
+
+  </body>
+</document>

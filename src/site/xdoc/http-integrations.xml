@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - HTTP Integrations</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="Integration">
+
+      <p>
+        Implementations of the
+        <a href="api/org/abstracthorizon/danube/mvc/View.html">View</a>
+        and
+        <a href="api/org/abstracthorizon/danube/mvc/Controller.html">Controller</a>
+        interfaces are the main points where Danube can integrate with other technologies:
+      </p>
+      <ul>
+        <li>
+          <a href="integrations-webflow.html">Spring Webflow</a> -
+          <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowController.html">DanubeFlowController</a>.
+          This is a controller implementation. It supplies the name of the view that should be displayed along with a map
+          that represents the model.
+        </li>
+        <li>
+          <a href="integrations-freemarker.html">Freemarker</a> -
+          <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>.
+          This is a view implementation.
+        </li>
+        <li>
+          <a href="integrations-velocity.html">Velocity</a> template engine -
+          <a href="api/org/abstracthorizon/danube/velocity/VelocityViewAdapter.html">VelocityViewAdapter</a>.
+          This is a view implementation.
+        </li>
+        <li>
+          <a href="integrations-tapestry.html">Tapestry</a> framework -
+          <a href="api/org/abstracthorizon/danube/tapestry/TapestryConnectionHandler.html">TapestryConnectionHandler</a>.
+          This is a connection handler implementation.
+        </li>
+        <!--
+        <li>
+          <a href="integrations-jsf.html">JSF with Facelets</a> -
+          <a href="api/org/abstracthorizon/danube/jsf/JSFConnectionHandler.html">JSFConnectionHandler</a>.
+          This is a connection handler implementation.
+        </li>
+        -->
+      </ul>
+      <p>
+        Other technologies can be added in the similar way as those above.
+      </p>
+<!--
+        <div>
+          <a name="integration.spring-webflow"></a>
+          <h3>Spring Webflow</h3>
+          <p>
+            Integration with <a href="#Spring-Webflow">Spring Webflow</a> is done through
+            <a href="api/org/abstracthorizon/danube/webflow/DanubeFlowExecutionManager.html">DanubeFlowExecutionManager</a>
+            which is an extension of <a href="http://static.springframework.org/spring-webflow/docs/pr5/api/org/springframework/webflow/execution/FlowExecutionManager.html">FlowExecutionManager</a>.
+            Sessions (flows) are stored by
+            <a href="api/org/abstracthorizon/danube/webflow/StaticFlowExecutionStorage.html">StaticFlowExecutionStorage</a>,
+            but
+            <a href="http://static.springframework.org/spring-webflow/docs/pr5/api/org/springframework/webflow/execution/ClientContinuationFlowExecutionStorage.html">ClientContinuationFlowExecutionStorage</a>
+            can be used too.
+          </p>
+        </div>
+
+        <div>
+          <a name="integration.tapestry"></a>
+          <h3>Tapestry</h3>
+          <p>
+            Integration with the <a href="#Tapestry">Tapestry</a> framework is done through
+            <a href="api/org/abstracthorizon/danube/tapestry/TapestryConnectionHandler.html">TapestryConnectionHandler</a>.
+            This class has several important parameters:
+            <ul>
+            <li><code>applicationSpecificationResourceName</code> - name of main .application file. It defaults to &quot;tapestry.application&quot;</li>
+            <li><code>initialParameters</code> - map of initial parameters.</li>
+            <li>
+                <code>sessionManager</code> - session manager to be used. It must implement <a href="api/org/abstracthorizon/danube/http/session/HttpSessionManager.html">HttpSessionManager</a>.
+                If not set then defaulted to <a href="api/org/abstracthorizon/danube/http/session/SimpleSessionManager.html">SimpleSessionManager</a>.
+            </li>
+            </ul>
+          </p>
+          <p>
+            Also there are a few parameters that are exposed as a expansion points but there is no reason for them to be set unless some
+            internal behaviour is to be changed. Here there are:
+            <ul>
+            <li><code>classResolver</code> - Class resolver implementation of <a href="http://jakarta.apache.org/hivemind/hivemind/apidocs/org/apache/hivemind/ClassResolver.html"></a> type.</li>
+            <li><code>webActivator</code> - web activator implementation of <a href="http://jakarta.apache.org/tapestry/tapestry/apidocs/org/apache/tapestry/web/WebActivator.html"></a> type.</li>
+            <li><code>webContext</code> - web context implementation of <a href="http://jakarta.apache.org/tapestry/tapestry/apidocs/org/apache/tapestry/web/WebContext.html"></a> type.</li>
+            </ul>
+          </p>
+          <p>
+            Pages and all other resources are accesses through class loader - so make sure that they are in the classpath.
+          </p>
+        </div>
+
+        <div>
+          <a name="integration.velocity"></a>
+          <h3>Velocity</h3>
+          <p>
+            Integration with the <a href="#Velocity">Velocity</a> template engine is done through
+            <a href="api/org/abstracthorizon/danube/velocity/VelocityViewAdapter.html">VelocityViewAdapter</a>.
+            This class has two important parameters: <code>templatesLocation</code> and <code>suffix</code>.
+            The first is self-explanatory, while the second represents a string that is suffixed to the template name
+            supplied by
+            <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a>.
+          </p>
+        </div>
+
+        <div>
+          <a name="integration.freemarker"></a>
+          <h3>Freemarker</h3>
+          <p>
+            Integration with <a href="#FreeMarker">FreeMarker</a> is done through
+            <a href="api/org/abstracthorizon/danube/freemarker/FreeMarkerViewAdapter.html">FreeMarkerViewAdapter</a>.
+            This class has two important parameters: <code>templatesLocation</code> and <code>suffix</code>.
+            The first is self-explanatory, while the second represents a string that is suffixed to the template name
+            supplied by
+            <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a>.
+          </p>
+        </div>
+
+        <div>
+          <a name="integration.jsf"></a>
+          <h3>JSF</h3>
+          <p>
+            Integration with <a href="#JSF">JSF</a> tied to <a href="#Facelets>Facelets</a>.
+            It is done through
+            <a href="api/org/abstracthorizon/danube/jsf/JSFConnectionHandler.html">JSFConnectionHandler</a>.
+            Parameters that can be set to it are:
+          </p>
+          <ul>
+          <li>
+              <code>sessionManager</code> - session manager to be used. It must implement <a href="api/org/abstracthorizon/danube/http/session/HttpSessionManager.html">HttpSessionManager</a>.
+              If not set then defaulted to <a href="api/org/abstracthorizon/danube/http/session/SimpleSessionManager.html">SimpleSessionManager</a>.
+          </li>
+          <li><code>attribuets</code> - attributes</li>
+          <li><code>initParameters</code> - initial parameters</li>
+          </ul>
+          <p>
+            Danube implementation is based on <a href="#MyFaces">MyFaces</a> implementation.
+          </p>
+        </div>
+-->
+    </section>
+  </body>
+</document>

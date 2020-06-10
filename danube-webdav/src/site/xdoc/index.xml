@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+  <properties>
+    <author email="daniel.sendula@abstracthorizon.org">Daniel Sendula</author>
+    <title>Danube (core)</title>
+  </properties>
+
+  <meta name="keyword" content="danube java"/>
+
+  <body>
+    <section name="Danube (WebDAV)">
+      <p>
+        This project is enabling WebDAV in Danube HTTP container. It provides simplified API for DAV 2 compliance and
+        file system implementation of it.
+      </p>
+    </section>
+  </body>
+
+</document>

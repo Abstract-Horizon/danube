@@ -1,0 +1,524 @@
+PROPFIND /danube/ HTTP/1.1
+Host: svn.abstracthorizon.org
+Depth: 1
+
+HTTP/1.1 207 Unknown
+Date: Thu, 04 Jan 2007 08:11:04 GMT
+Server: Apache/2.0.54 (Fedora)
+Content-Length: 4662
+Content-Type: text/xml; charset="utf-8"
+Connection: keep-alive
+
+<?xml version="1.0" encoding="utf-8"?>
+<D:multistatus xmlns:D="DAV:">
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+  <D:href>/danube/</D:href>
+  <D:propstat>
+    <D:prop>
+      <lp1:resourcetype><D:collection/></lp1:resourcetype>
+      <lp1:getcontenttype>text/html; charset=UTF-8</lp1:getcontenttype>
+      <lp1:getetag>W/"3//"</lp1:getetag>
+      <lp1:creationdate>2007-01-01T16:07:38.614145Z</lp1:creationdate>
+      <lp1:getlastmodified>Mon, 01 Jan 2007 16:07:38 GMT</lp1:getlastmodified>
+      <lp1:checked-in><D:href>/danube/!svn/ver/3/</D:href></lp1:checked-in>
+      <lp1:version-controlled-configuration><D:href>/danube/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+      <lp1:version-name>3</lp1:version-name>
+      <lp1:creator-displayname>click</lp1:creator-displayname>
+      <lp3:baseline-relative-path/>
+      <lp3:repository-uuid>fe2a38f7-9c1a-0410-b0f8-b2966d26827e</lp3:repository-uuid>
+      <D:lockdiscovery/>
+    </D:prop>
+  <D:status>HTTP/1.1 200 OK</D:status>
+  </D:propstat>
+</D:response>
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+  <D:href>/danube/trunk/</D:href>
+  <D:propstat>
+    <D:prop>
+      <lp1:resourcetype><D:collection/></lp1:resourcetype>
+      <lp1:getcontenttype>text/html; charset=UTF-8</lp1:getcontenttype>
+      <lp1:getetag>W/"3//trunk"</lp1:getetag>
+      <lp1:creationdate>2007-01-01T16:07:38.614145Z</lp1:creationdate>
+      <lp1:getlastmodified>Mon, 01 Jan 2007 16:07:38 GMT</lp1:getlastmodified>
+      <lp1:checked-in><D:href>/danube/!svn/ver/3/trunk</D:href></lp1:checked-in>
+      <lp1:version-controlled-configuration><D:href>/danube/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+      <lp1:version-name>3</lp1:version-name>
+      <lp1:creator-displayname>click</lp1:creator-displayname>
+      <lp3:baseline-relative-path>trunk</lp3:baseline-relative-path>
+      <lp3:repository-uuid>fe2a38f7-9c1a-0410-b0f8-b2966d26827e</lp3:repository-uuid>
+      <D:lockdiscovery/>
+    </D:prop>
+    <D:status>HTTP/1.1 200 OK</D:status>
+  </D:propstat>
+</D:response>
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+  <D:href>/danube/branches/</D:href>
+  <D:propstat>
+    <D:prop>
+      <lp1:resourcetype><D:collection/></lp1:resourcetype>
+      <lp1:getcontenttype>text/html; charset=UTF-8</lp1:getcontenttype>
+      <lp1:getetag>W/"1//branches"</lp1:getetag>
+      <lp1:creationdate>2006-12-30T14:18:39.881444Z</lp1:creationdate>
+      <lp1:getlastmodified>Sat, 30 Dec 2006 14:18:39 GMT</lp1:getlastmodified>
+      <lp1:checked-in><D:href>/danube/!svn/ver/1/branches</D:href></lp1:checked-in>
+      <lp1:version-controlled-configuration><D:href>/danube/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+      <lp1:version-name>1</lp1:version-name>
+      <lp1:creator-displayname>click</lp1:creator-displayname>
+      <lp3:baseline-relative-path>branches</lp3:baseline-relative-path>
+      <lp3:repository-uuid>fe2a38f7-9c1a-0410-b0f8-b2966d26827e</lp3:repository-uuid>
+      <D:lockdiscovery/>
+    </D:prop>
+    <D:status>HTTP/1.1 200 OK</D:status>
+  </D:propstat>
+</D:response>
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+  <D:href>/danube/tags/</D:href>
+  <D:propstat>
+    <D:prop>
+      <lp1:resourcetype><D:collection/></lp1:resourcetype>
+      <lp1:getcontenttype>text/html; charset=UTF-8</lp1:getcontenttype>
+      <lp1:getetag>W/"1//tags"</lp1:getetag>
+      <lp1:creationdate>2006-12-30T14:18:39.881444Z</lp1:creationdate>
+      <lp1:getlastmodified>Sat, 30 Dec 2006 14:18:39 GMT</lp1:getlastmodified>
+      <lp1:checked-in><D:href>/danube/!svn/ver/1/tags</D:href></lp1:checked-in>
+      <lp1:version-controlled-configuration><D:href>/danube/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+      <lp1:version-name>1</lp1:version-name>
+      <lp1:creator-displayname>click</lp1:creator-displayname>
+      <lp3:baseline-relative-path>tags</lp3:baseline-relative-path>
+      <lp3:repository-uuid>fe2a38f7-9c1a-0410-b0f8-b2966d26827e</lp3:repository-uuid>
+      <D:lockdiscovery/>
+    </D:prop>
+    <D:status>HTTP/1.1 200 OK</D:status>
+  </D:propstat>
+</D:response>
+</D:multistatus>
+=====================================================================================================================
+<?xml version="1.0" encoding="utf-8" ?>
+<D:multistatus xmlns:D="DAV:">
+<D:response>
+<D:href>/directory/</D:href>
+<D:propstat>
+<D:prop>
+<D:getlastmodified>Tue, 09 Jan 2007 18:49:15 +0000</D:getlastmodified>
+<D:getcontentlength>48</D:getcontentlength>
+<D:displayname>directory</D:displayname>
+<D:getcontenttype>text/html</D:getcontenttype>
+<D:getlastmodified>Tue, 09 Jan 2007 18:49:15 +0000</D:getlastmodified>
+<D:resourcetype><D:collection/></D:resourcetype>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<D:source/>
+<D:getcontentlanguage/>
+<D:getetag/>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 413 Forbidden</D:status>
+</D:propstat>
+</D:response>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<D:propfind xmlns:D="DAV:">
+<D:prop xmlns:A="http://www.apple.com/webdav_fs/props/">
+<D:getlastmodified/>
+<D:getcontentlength/>
+<D:resourcetype/>
+<A:appledoubleheader/>
+</D:prop>
+</D:propfind>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<D:multistatus xmlns:D="DAV:">
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/abstracthorizon/danube/trunk/webdav/</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype><D:collection/></lp1:resourcetype>
+<lp1:getcontenttype>text/html; charset=UTF-8</lp1:getcontenttype>
+<lp1:getetag>W/"72//danube/trunk/webdav"</lp1:getetag>
+<lp1:creationdate>2007-01-15T20:03:14.802406Z</lp1:creationdate>
+<lp1:getlastmodified>Mon, 15 Jan 2007 20:03:14 GMT</lp1:getlastmodified>
+<lp1:checked-in><D:href>/abstracthorizon/!svn/ver/72/danube/trunk/webdav</D:href></lp1:checked-in>
+<lp1:version-controlled-configuration><D:href>/abstracthorizon/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+<lp1:version-name>72</lp1:version-name>
+<lp3:baseline-relative-path>danube/trunk/webdav</lp3:baseline-relative-path>
+<lp3:repository-uuid>9cd2fd9b-1323-0410-b388-33f6328b31b7</lp3:repository-uuid>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/abstracthorizon/danube/trunk/webdav/.classpath</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getcontentlength>1227</lp1:getcontentlength>
+<lp1:getcontenttype>text/xml; charset="utf-8"</lp1:getcontenttype>
+<lp1:getetag>"58//danube/trunk/webdav/.classpath"</lp1:getetag>
+<lp1:creationdate>2007-01-05T17:50:53.330171Z</lp1:creationdate>
+<lp1:getlastmodified>Fri, 05 Jan 2007 17:50:53 GMT</lp1:getlastmodified>
+<lp1:checked-in><D:href>/abstracthorizon/!svn/ver/58/danube/trunk/webdav/.classpath</D:href></lp1:checked-in>
+<lp1:version-controlled-configuration><D:href>/abstracthorizon/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+<lp1:version-name>58</lp1:version-name>
+<lp3:baseline-relative-path>danube/trunk/webdav/.classpath</lp3:baseline-relative-path>
+<lp3:md5-checksum>6a2bdc67126b4ea4738a763476c11cf5</lp3:md5-checksum>
+<lp3:repository-uuid>9cd2fd9b-1323-0410-b388-33f6328b31b7</lp3:repository-uuid>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/abstracthorizon/danube/trunk/webdav/.project</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getcontentlength>339</lp1:getcontentlength>
+<lp1:getcontenttype>text/xml; charset="utf-8"</lp1:getcontenttype>
+<lp1:getetag>"45//danube/trunk/webdav/.project"</lp1:getetag>
+<lp1:creationdate>2006-12-25T15:36:58.334915Z</lp1:creationdate>
+<lp1:getlastmodified>Mon, 25 Dec 2006 15:36:58 GMT</lp1:getlastmodified>
+<lp1:checked-in><D:href>/abstracthorizon/!svn/ver/45/danube/trunk/webdav/.project</D:href></lp1:checked-in>
+<lp1:version-controlled-configuration><D:href>/abstracthorizon/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+<lp1:version-name>45</lp1:version-name>
+<lp3:baseline-relative-path>danube/trunk/webdav/.project</lp3:baseline-relative-path>
+<lp3:md5-checksum>8a81dece7d1680f1e2060f21d69e44f3</lp3:md5-checksum>
+<lp3:repository-uuid>9cd2fd9b-1323-0410-b388-33f6328b31b7</lp3:repository-uuid>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/abstracthorizon/danube/trunk/webdav/Start%20Test%20WebDAV%20Server.launch</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getcontentlength>532</lp1:getcontentlength>
+<lp1:getcontenttype>text/xml; charset="utf-8"</lp1:getcontenttype>
+<lp1:getetag>"70//danube/trunk/webdav/Start Test WebDAV Server.launch"</lp1:getetag>
+<lp1:creationdate>2007-01-13T10:03:59.262608Z</lp1:creationdate>
+<lp1:getlastmodified>Sat, 13 Jan 2007 10:03:59 GMT</lp1:getlastmodified>
+<lp1:checked-in><D:href>/abstracthorizon/!svn/ver/70/danube/trunk/webdav/Start%20Test%20WebDAV%20Server.launch</D:href></lp1:checked-in>
+<lp1:version-controlled-configuration><D:href>/abstracthorizon/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+<lp1:version-name>70</lp1:version-name>
+<lp3:baseline-relative-path>danube/trunk/webdav/Start Test WebDAV Server.launch</lp3:baseline-relative-path>
+<lp3:md5-checksum>d60a340c2e7591a1807391ae1ca6d636</lp3:md5-checksum>
+<lp3:repository-uuid>9cd2fd9b-1323-0410-b388-33f6328b31b7</lp3:repository-uuid>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/abstracthorizon/danube/trunk/webdav/target/</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype><D:collection/></lp1:resourcetype>
+<lp1:getcontenttype>text/html; charset=UTF-8</lp1:getcontenttype>
+<lp1:getetag>W/"68//danube/trunk/webdav/target"</lp1:getetag>
+<lp1:creationdate>2007-01-13T09:46:48.655848Z</lp1:creationdate>
+<lp1:getlastmodified>Sat, 13 Jan 2007 09:46:48 GMT</lp1:getlastmodified>
+<lp1:checked-in><D:href>/abstracthorizon/!svn/ver/68/danube/trunk/webdav/target</D:href></lp1:checked-in>
+<lp1:version-controlled-configuration><D:href>/abstracthorizon/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+<lp1:version-name>68</lp1:version-name>
+<lp3:baseline-relative-path>danube/trunk/webdav/target</lp3:baseline-relative-path>
+<lp3:repository-uuid>9cd2fd9b-1323-0410-b388-33f6328b31b7</lp3:repository-uuid>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/abstracthorizon/danube/trunk/webdav/src/</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype><D:collection/></lp1:resourcetype>
+<lp1:getcontenttype>text/html; charset=UTF-8</lp1:getcontenttype>
+<lp1:getetag>W/"72//danube/trunk/webdav/src"</lp1:getetag>
+<lp1:creationdate>2007-01-15T20:03:14.802406Z</lp1:creationdate>
+<lp1:getlastmodified>Mon, 15 Jan 2007 20:03:14 GMT</lp1:getlastmodified>
+<lp1:checked-in><D:href>/abstracthorizon/!svn/ver/72/danube/trunk/webdav/src</D:href></lp1:checked-in>
+<lp1:version-controlled-configuration><D:href>/abstracthorizon/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+<lp1:version-name>72</lp1:version-name>
+<lp3:baseline-relative-path>danube/trunk/webdav/src</lp3:baseline-relative-path>
+<lp3:repository-uuid>9cd2fd9b-1323-0410-b388-33f6328b31b7</lp3:repository-uuid>
+
+ac6
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/abstracthorizon/danube/trunk/webdav/pom.xml</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getcontentlength>2464</lp1:getcontentlength>
+<lp1:getcontenttype>text/xml; charset="utf-8"</lp1:getcontenttype>
+<lp1:getetag>"45//danube/trunk/webdav/pom.xml"</lp1:getetag>
+<lp1:creationdate>2006-12-25T15:36:58.334915Z</lp1:creationdate>
+<lp1:getlastmodified>Mon, 25 Dec 2006 15:36:58 GMT</lp1:getlastmodified>
+<lp1:checked-in><D:href>/abstracthorizon/!svn/ver/45/danube/trunk/webdav/pom.xml</D:href></lp1:checked-in>
+<lp1:version-controlled-configuration><D:href>/abstracthorizon/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+<lp1:version-name>45</lp1:version-name>
+<lp3:baseline-relative-path>danube/trunk/webdav/pom.xml</lp3:baseline-relative-path>
+<lp3:md5-checksum>5fc94697ea5a7d64ac8807e8f92866b5</lp3:md5-checksum>
+<lp3:repository-uuid>9cd2fd9b-1323-0410-b388-33f6328b31b7</lp3:repository-uuid>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/abstracthorizon/danube/trunk/webdav/rfcs/</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype><D:collection/></lp1:resourcetype>
+<lp1:getcontenttype>text/html; charset=UTF-8</lp1:getcontenttype>
+<lp1:getetag>W/"60//danube/trunk/webdav/rfcs"</lp1:getetag>
+<lp1:creationdate>2007-01-10T20:57:44.789684Z</lp1:creationdate>
+<lp1:getlastmodified>Wed, 10 Jan 2007 20:57:44 GMT</lp1:getlastmodified>
+<lp1:checked-in><D:href>/abstracthorizon/!svn/ver/60/danube/trunk/webdav/rfcs</D:href></lp1:checked-in>
+<lp1:version-controlled-configuration><D:href>/abstracthorizon/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
+<lp1:version-name>60</lp1:version-name>
+<lp3:baseline-relative-path>danube/trunk/webdav/rfcs</lp3:baseline-relative-path>
+<lp3:repository-uuid>9cd2fd9b-1323-0410-b388-33f6328b31b7</lp3:repository-uuid>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+</D:multistatus>
+
+
+=============================================================================================================================================================
+< HTTP/1.1 200 OK
+< Content-Length: 207
+< Date: Mon, 29 Jan 2007 22:50:43 +0000
+< Content-Type: text/html
+< Server: Danube/1.0
+<
+< My second file!
+< I am editing second file...
+<
+<
+< <?xml version="1.0" encoding="utf-8"?>
+< <D:propfind xmlns:D="DAV:">
+< <D:prop>
+< <D:getlastmodified/>
+< <D:getcontentlength/>
+< <D:resourcetype/>
+< </D:prop>
+< </D:propfind>> PROPFIND /test/.dat010f.002 HTTP/1.1
+> User-Agent: WebDAVFS/1.4.1 (01418000) Darwin/8.8.1 (i386)
+> Accept: */*
+> Content-Type: text/xml
+> Depth: 0
+> Content-Length: 161
+> Connection: keep-alive
+> Host: localhost:8080
+>
+HTTP/1.1 404 Not Found
+< Content-Length: 0
+< Date: Mon, 29 Jan 2007 22:50:54 +0000
+< Content-Type: text/html
+< Server: Danube/1.0
+<
+> <?xml version="1.0" encoding="utf-8"?>
+> <D:propfind xmlns:D="DAV:">
+> <D:prop>
+> <D:getlastmodified/>
+> <D:getcontentlength/>
+> <D:resourcetype/>
+> </D:prop>
+> </D:propfind>
+> PUT /test/.dat010f.002 HTTP/1.1
+> User-Agent: WebDAVFS/1.4.1 (01418000) Darwin/8.8.1 (i386)
+> Accept: */*
+> Content-Length: 0
+> Connection: keep-alive
+> Host: localhost:8080
+>
+< HTTP/1.1 201 Created
+< Content-Length: 0
+< Date: Mon, 29 Jan 2007 22:50:54 +0000
+< Content-Type: text/html
+< Server: Danube/1.0
+<
+> LOCK /test/.dat010f.002 HTTP/1.1
+> User-Agent: WebDAVFS/1.4.1 (01418000) Darwin/8.8.1 (i386)
+> Accept: */*
+> Depth: 0
+> Timeout: Second-600
+> Content-Type: text/xml; charset="utf-8"
+> Content-Length: 229
+> Connection: keep-alive
+> Host: localhost:8080
+>
+> <?xml version="1.0" encoding="utf-8"?>
+> <D:lockinfo xmlns:D="DAV:">
+> <D:lockscope><D:exclusive/></D:lockscope>
+> <D:locktype><D:write/></D:locktype>
+> <D:owner>
+> <D:href>http://www.apple.com/webdav_fs/</D:href>
+> </D:owner>
+> </D:lockinfo>
+< HTTP/1.1 207 Multistatus response
+< Content-Length: 188
+< Date: Mon, 29 Jan 2007 22:50:54 +0000
+< Content-Type: text/html
+< Server: Danube/1.0
+< Lock-Token: opaquelocktoken:110700dc26e-1
+<
+< <?xml version="1.0" encoding="utf-8" ?>
+< <D:multistatus xmlns:D="DAV:">
+< <D:response>
+< <D:href>/test/.dat010f.002</D:href>
+< <D:status>HTTP/1.1 200 OK</D:status>
+< </D:response>
+< </D:multistatus>
+> PUT /test/.dat010f.002 HTTP/1.1
+> User-Agent: WebDAVFS/1.4.1 (01418000) Darwin/8.8.1 (i386)
+> Accept: */*
+> Content-Length: 333
+> Connection: keep-alive
+> Host: localhost:8080
+>
+< HTTP/1.1 423 Locked
+< Content-Length: 0
+< Date: Mon, 29 Jan 2007 22:50:54 +0000
+< Content-Type: text/html
+< Server: Danube/1.0
+<
+> My second file!
+> I am editing second file...
+>
+> ==============================================================
+> <?xml version="1.0" encoding="utf-8"?>
+> <D:propfind xmlns:D="DAV:">
+> <D:prop>
+> <D:getlastmodified/>
+> <D:getcontentlength/>
+> <D:resourcetype/>
+> </D:prop>
+> </D:propfind>
+> ==============================================================
+> PROPFIND /test/.dat010f.002 HTTP/1.1
+> User-Agent: WebDAVFS/1.4.1 (01418000) Darwin/8.8.1 (i386)
+> Accept: */*
+> Content-Type: text/xml
+> Depth: 0
+> Content-Length: 161
+> Connection: keep-alive
+> Host: localhost:8080
+>
+> <?xml version="1.0" encoding="utf-8"?>
+> <D:propfind xmlns:D="DAV:">
+> <D:prop>
+> <D:getlastmodified/>
+> <D:getcontentlength/>
+> <D:resourcetype/>
+> </D:prop>
+> </D:propfind>
+< HTTP/1.1 207 Multistatus response
+< Content-Length: 366
+< Date: Mon, 29 Jan 2007 22:50:54 +0000
+< Content-Type: text/html
+< Server: Danube/1.0
+<
+< <?xml version="1.0" encoding="utf-8" ?>
+< <D:multistatus xmlns:D="DAV:">
+< <D:response>
+< <D:href>/test/.dat010f.002</D:href>
+< <D:propstat>
+< <D:prop>
+< <D:getlastmodified>Mon, 29 Jan 2007 22:50:54 +0000</D:getlastmodified>
+< <D:getcontentlength>0</D:getcontentlength>
+< <D:resourcetype/>
+< </D:prop>
+< <D:status>HTTP/1.1 200 OK</D:status>
+< </D:propstat>
+< </D:response>
+< </D:multistatus>
+> DELETE /test/.dat010f.002 HTTP/1.1
+> User-Agent: WebDAVFS/1.4.1 (01418000) Darwin/8.8.1 (i386)
+> Accept: */*
+> Content-Length: 0
+> Connection: keep-alive
+> Host: localhost:8080
+>
+< HTTP/1.1 423 Locked
+< Content-Length: 0
+< Date: Mon, 29 Jan 2007 22:50:54 +0000
+< Content-Type: text/html
+< Server: Danube/1.0
+<

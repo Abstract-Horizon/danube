@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - HTTP Server</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+
+      <section name="HTTP Server">
+        <p>
+          <!--
+            TODO
+          <a href="images/http1.all.png"><img src="images/http1.png" align="right" border="0"/></a>
+          -->
+          Danube's HTTP server is actually a combination of implementations of
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a> and
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>.
+          Interface <a href="api/org/abstracthorizon/danube/http/HTTPConnection.html">HTTPConnection</a> (extension of
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a>) and its
+          implementation <a href="api/org/abstracthorizon/danube/http/HTTPConnectionImpl.html">HTTPConnectionImpl</a>
+          represent both HTTP request and response (similarily to java.net.HttpURLConnection).
+        </p>
+      <subsection name="Internals">
+        <p>
+          <!--
+          <a href="images/http2.all.png"><img src="images/http2.png" align="right" border="0" /></a>
+          -->
+          An object of class <a href="api/org/abstracthorizon/danube/http/HTTPServerConnectionHandler.html">HTTPServerConnectionHandler</a>
+          creates <a href="api/org/abstracthorizon/danube/http/HTTPConnection.html">HTTPConnections</a> and invokes
+          the processing of headers and parameters. This class handles <a href="links.html#HTTP1.1">HTTP/1.1</a> and
+          <a href="links.html#HTTP1.0">HTTP/1.0</a>
+          requests. It sets a minimal set of required headers.
+        </p>
+      </subsection>
+      <subsection name="Matching resources">
+        <p>
+          <a href="images/http3.all.png"><img src="images/http3.png" align="right" border="0" /></a>
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          goes through a supplied list of
+          <a href="api/org/abstracthorizon/danube/http/matcher/Matcher.html">Matcher</a>s that in turn inspect
+          <a href="api/org/abstracthorizon/danube/http/HTTPConnection.html">HTTPConnection</a> (mostly for
+          request URI) and decide whether or not to pass control to the
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          they are pointing to.
+        </p>
+        <p>
+          There are two supplied important implementations of the
+          <a href="api/org/abstracthorizon/danube/http/matcher/Matcher.html">Matcher</a> interface:
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> and
+          <a href="api/org/abstracthorizon/danube/http/matcher/Pattern.html">Pattern</a>.
+        </p>
+        <p>
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> checks if the
+          supplied string is a prefix of the current request URI and, if it is, the case then
+          removes it from current request URI in
+          <a href="api/org/abstracthorizon/danube/http/HTTPConnection.html">HTTPConnection</a>
+          and passes control to the
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          it points to.
+        </p>
+        <p>
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Pattern</a> uses
+          regular expressions to match against the current request URI. If it matches it passes control to the
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          it points to.
+        </p>
+        <p>
+          The <a href="api/org/abstracthorizon/danube/http/matcher/Matcher.html">Matcher</a> interface
+          supplies one more pieces of information to the
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a> class to enable it to
+          determine whether it should stop on the first match or alternatively continue with the list even if a match is
+          found. The default value is <code>true</code>, which prevents the
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          going further down the list. Setting that value to <code>false</code> would
+          provide filter-like functionality, where
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          can act as a filter and enable the
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          to continue with other matches.
+        </p>
+        <p>
+          When using
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          with
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> matchers
+          it is possible for standard J2EE application behaviour to be simulated: Firstly, a
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          (<a href="api/org/abstracthorizon/danube/http/HTTPServerConnectionHandler.html">HTTPServerConnectionHandler</a>)
+          and its
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> matchers
+          are like applications.
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> matchers
+          should in this case point to their instances of
+          <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a>
+          with
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a> matchers
+          that serve as servlet paths.
+        </p>
+        <p>
+          For more complex matching,
+          <a href="api/org/abstracthorizon/danube/http/matcher/Pattern.html">Pattern</a> matchers
+          should be used. However, care must be taken to ensure that changes are not made to the
+          current request URI (which is what a
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a>
+          matcher would do). Also, it is posible for custom (dynamically assigned)
+          <a href="api/org/abstracthorizon/danube/http/matcher/Prefix.html">Prefix</a>
+          implementations to be introduced for more complex logic involving the matching of incoming URIs.
+        </p>
+        <p>
+          There is one more, special, case of the <a href="api/org/abstracthorizon/danube/http/matcher/Matcher.html">Matcher</a>
+          interface implementation:
+          <a href="api/org/abstracthorizon/danube/http/matcher/WelcomeFile.html">WelcomeFile</a>. This matcher
+          matches only &quot;/&quot; paths. Also, when matched it adds value of <code>welcomeFile</code> property
+          as <code>componentResourcePath</code> of current connection. If, for instance, linked with
+          <a href="api/org/abstracthorizon/danube/http/util/ReadOnlyFileConnectionHandler.html">ReadOnlyFileConnectionHandler</a>
+          it acts as would welcome files in some web servers.
+        </p>
+      </subsection>
+      <subsection name="Handling requests">
+        <p>
+          <!-- TODO remake this image - as it is not correct anymore -->
+          <a href="images/http4.all.png"><img src="images/http4.png" align="center" border="0" /></a>
+
+          As already mentioned,
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>
+          implementations are actually handling the requests. There are only handful of such implementations
+          supplied with this distribution:
+        </p>
+        <ul>
+          <li>the previously mentioned <a href="api/org/abstracthorizon/danube/http/Selector.html">Selector</a></li>
+          <li>and its extension <a href="api/org/abstracthorizon/danube/http/HTTPServerConnectionHandler.html">HTTPServerConnectionHandler</a></li>
+          <li>additionally, the <a href="api/org/abstracthorizon/danube/http/util/ErrorConnectionHandler.html">ErrorConnectionHandler</a> class handles
+              exceptions which are not handled anywhere else. It displays a HTTP error code with an explanatory message. If
+              request parameters have an entry with the name &quot;_exception&quot; of type
+              <a href="http://java.sun.com/j2se/1.5/docs/api/java/lang/Throwable.html">Throwable</a>,
+              then it will be displayed as well.
+          </li>
+          <li>and <a href="api/org/abstracthorizon/danube/http/util/ReadOnlyFileConnectionHandler.html">ReadOnlyFileConnectionHandler</a>, which processes simple files (and directories).
+              This handles and knows how to render directories in a HTML page and can return the contents of selected files. Files'
+              mime types are read from <a href="http://java.sun.com/j2ee/1.4/docs/api/javax/activation/FileTypeMap.html">FileTypeMap</a>.
+          </li>
+        </ul>
+        <p>
+          Implementing own
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>.
+          is simple as there is only one method to be implemented:
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html#handleConnection(org.abstracthorizon.danube.connection.Connection)">handleConnection</a>.
+          To obtain
+          <a href="api/org/abstracthorizon/danube/http/HTTPConnection.html">HTTPConnection</a> use:
+          <source>
+<![CDATA[
+HTTPConnection httpConnection = (HTTPConnection)connection.adapt(HTTPConnection.class);
+]]>
+</source>
+        </p>
+      </subsection>
+      <subsection name="Integrations and MVC">
+      <!-- br clear="all" / -->
+        <p>
+          <a href="images/mvc1.all.png"><img src="images/mvc1.png" align="right" border="0" /></a>
+          Apart from these basic implementations there is one important, &quot;integration&quot; implementation of
+          <a href="api/org/abstracthorizon/danube/connection/ConnectionHandler.html">ConnectionHandler</a>:
+          <a href="api/org/abstracthorizon/danube/mvc/MVCConnectionHandler.html">MVCConnectionHandler</a>. It is
+          a very simple implementation. It passes requests
+          (<a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a>)
+          to an implementation of the
+          <a href="api/org/abstracthorizon/danube/mvc/Controller.html">Controller</a> interface that is
+          intended to return a
+          <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a> object. Following this
+          an implementation of a
+          <a href="api/org/abstracthorizon/danube/mvc/View.html">View</a> interface is invoked with a
+          <a href="api/org/abstracthorizon/danube/connection/Connection.html">Connection</a> and
+          <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a> object.
+        </p>
+        <p>
+         <i>Note: This way of modelling the MVC is inspired by the <a href="links.html#Spring">Spring</a> framework.</i>
+        </p>
+        <p>
+          The <a href="api/org/abstracthorizon/danube/mvc/ModelAndView.html">ModelAndView</a> object contains
+          two fields only: the name of the view to be selected by the
+          <a href="api/org/abstracthorizon/danube/mvc/View.html">View</a> implementation
+          and the <a href="http://java.sun.com/j2se/1.5/docs/api/java/lang/Map.html">Map</a> that
+          represents the model. Various view layer technologies (<a href="links.html#Velocity">Velocity</a>,
+          <a href="links.html#Freemarker">Freemarker</a>, etc) have adopted such an approach.
+          Even the <a href="links.html#JSTL">JSTL</a>
+          tag library for <a href="links.html#JSP">JSP</a>s can use this as the subset of scopes it caters for.
+        </p>
+      </subsection>
+      </section>
+
+  </body>
+</document>

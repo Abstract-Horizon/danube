@@ -1,0 +1,65 @@
+<!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+ *
+-->
+<html>
+<head>
+  <title>Bean Console - Result of executing ${name}.${methodName}()</title>
+  <link rel="stylesheet" href="${connection.contextPath}/style.css" />
+</head>
+
+<body>
+
+  <h2>Result of executing ${name}.${methodName}()</h2>
+
+  <table class="quiet">
+  <tr>
+    <th>Bean name</th><td>${name}</td>
+  </tr>
+  <tr>
+    <th>Full path</th><td>${path}</td>
+  </tr>
+  </table>
+
+  <table class="quiet">
+  <tr>
+    <td>
+      <form action="${returnUri}" method="post">
+        <input type="submit" value="Return">
+      </form>
+    </td>
+  </tr>
+  </table>
+  <br />
+  <table>
+  <#if result?exists>
+  <tr>
+    <td>
+      <pre>${result}</pre>
+    </td>
+  </tr>
+  </#if>
+  <#if error?exists>
+  <tr>
+    <td>
+      There was an error executing the method:
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <pre>${error}</pre>
+    </td>
+  </tr>
+  </#if>
+  </table>
+
+</body>
+</html>

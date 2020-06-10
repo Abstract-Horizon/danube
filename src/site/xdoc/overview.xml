@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Danube Documentation - Overview</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <!--  macro name="toc" section="1" fromDepth="1" toDepth="3"/ -->
+
+    <section name="Overview">
+      <p>
+        The Danube project consists of several core parts: <a href="core.html">Danube core</a>,
+        <a href="services.html">services</a>,
+        <a href="http-server.html">http server</a>.
+        These components support the running of the server
+        and (optionally) any <a href="http-integrations.html">integration</a> with other technologies.
+        Aside of these there are a few of satelite sub-projects as <a href="bean-console">Bean Console</a> and
+        <a href="danube-webdav">WebDAV</a>.
+      </p>
+      <p>
+        All these elements can configured as POJOs - programmatically or by using
+        any of the dependency injection containers such
+        as <a href="links.html#Spring">Spring</a>,
+        <a href="links.html#Pico">Pico Container</a>,
+        <a href="links.html#JBossMicrocontainer">JBoss Microcontainer</a>
+        or similar. Danube is written so as not to depend on any configuration utilities, although the main
+        development was done using the <a href="links.html#Spring">Spring</a> container.
+      </p>
+      </section>
+  </body>
+</document>

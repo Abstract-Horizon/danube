@@ -1,0 +1,256 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.abstracthorizon.danube</groupId>
+    <artifactId>danube</artifactId>
+    <version>1.1-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>danube-bean-console</artifactId>
+
+  <groupId>org.abstracthorizon.danube.extra</groupId>
+
+  <packaging>jar</packaging>
+
+  <name>Bean Explorer</name>
+
+  <description>
+    Bean Exploer - Danube example project. Use the Bean Explorer
+    to see how Danube works, to see its internals.
+  </description>
+
+	<!--  include pluginRepository and repository for GWT-Maven -->
+  <pluginRepositories>
+    <pluginRepository>
+      <id>gwt-maven-plugins</id>
+      <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>codehaus-maven-repository.snapshot</id>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <url>http://snapshots.repository.codehaus.org/</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <repositories>
+    <repository>
+      <id>gwt-maven</id>
+      <url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo</url>
+    </repository>
+    <repository>
+      <id>smartclient</id>
+      <name>smartclient.com</name>
+      <url>http://www.smartclient.com/maven2</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <!--  convenience to define GWT version in one place -->
+  <properties>
+    <gwtVersion>2.7.0</gwtVersion>
+    <smartClientGWTVersion>4.0</smartClientGWTVersion>
+  </properties>
+
+  <dependencies>
+    <!--  GWT deps (from central repo) -->
+    <!-- 
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-servlet</artifactId>
+      <version>${gwtVersion}</version>
+      <scope>runtime</scope>
+    </dependency>
+    -->
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwtVersion}</version>
+      <!--  scope>provided</scope -->
+    </dependency>
+    <!-- 
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <version>${gwtVersion}</version>
+      <classifier>${platform}-libs</classifier>
+      <type>zip</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <version>${gwtVersion}</version>
+      <classifier>${platform}</classifier>
+      <scope>provided</scope>
+    </dependency>
+     -->
+
+    <dependency>
+      <groupId>com.smartgwt</groupId>
+      <artifactId>smartgwt</artifactId>
+      <version>${smartClientGWTVersion}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.smartgwt</groupId>
+      <artifactId>smartgwt-skins</artifactId>
+      <version>${smartClientGWTVersion}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube</groupId>
+      <artifactId>danube-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube.http</groupId>
+      <artifactId>danube-http</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube.http</groupId>
+      <artifactId>danube-json</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube.webdav</groupId>
+      <artifactId>danube-webdav</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube.http</groupId>
+      <artifactId>danube-freemarker</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>activation</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+
+    <!-- Test deps -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube</groupId>
+      <artifactId>danube-service</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube.spring</groupId>
+      <artifactId>danube-http-spring</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+<!-- 
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>2.7.0</version>
+        <executions>
+          <execution>
+            <configuration>
+              <module>org.abstracthorizon.danube.beanconsole.gwt.Application</module>
+              <style>DETAILED</style>
+              <webappDirectory>${project.build.directory}/classes/pages</webappDirectory>
+            </configuration>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+-->
+      <!--  tell the compiler we can use 1.5 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!--  profiles (with activation per platform) -->
+  <profiles>
+    <profile>
+      <id>gwt-dev-windows</id>
+      <properties>
+        <platform>windows</platform>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+    </profile>
+    <profile>
+      <id>gwt-dev-mac</id>
+      <properties>
+        <platform>mac</platform>
+      </properties>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+    </profile>
+    <profile>
+      <id>gwt-dev-linux</id>
+      <properties>
+        <platform>linux</platform>
+      </properties>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <os>
+          <name>linux</name>
+        </os>
+      </activation>
+    </profile>
+  </profiles>
+</project>

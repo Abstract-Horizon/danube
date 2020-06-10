@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+  <properties>
+    <author email="daniel.sendula@abstracthorizon.org">Daniel Sendula</author>
+    <title>Danube (core)</title>
+  </properties>
+
+  <meta name="keyword" content="danube java"/>
+
+  <body>
+    <section name="Danube (WebDAV - Spring)">
+      <p>
+        This project povides implementation of Danube WebDAV interface for Spring framework's Resource object.
+        Resource object is used as WebDAV resource.
+      </p>
+    </section>
+  </body>
+
+</document>
