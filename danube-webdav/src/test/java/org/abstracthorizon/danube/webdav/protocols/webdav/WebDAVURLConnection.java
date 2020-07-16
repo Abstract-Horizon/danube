@@ -12,6 +12,7 @@
  */
 package org.abstracthorizon.danube.webdav.protocols.webdav;
 
+import java.io.IOException;
 import java.net.ProtocolException;
 import java.net.Proxy;
 import java.net.URL;
@@ -25,10 +26,11 @@ import sun.net.www.protocol.http.HttpURLConnection;
  */
 public class WebDAVURLConnection extends HttpURLConnection {
 
-    protected WebDAVURLConnection(URL u, Proxy p, Handler handler) {
+    protected WebDAVURLConnection(URL u, Proxy p, Handler handler) throws IOException {
         super(u, p, handler);
     }
 
+    @Override
     public void setRequestMethod(String method) throws ProtocolException {
         if (connected) {
             throw new ProtocolException("Can't reset method: already connected");
