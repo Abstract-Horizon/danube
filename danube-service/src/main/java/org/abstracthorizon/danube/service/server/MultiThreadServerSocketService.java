@@ -198,7 +198,7 @@ public class MultiThreadServerSocketService extends MultiThreadServerService {
      * @throws Exception
      */
     protected Connection createSocketConnection(Socket socket) throws IOException {
-        Connection serverConnection = new SSLSocketConnection(socket);
+        Connection serverConnection = new SocketConnection(socket);
         return serverConnection;
     }
 }
