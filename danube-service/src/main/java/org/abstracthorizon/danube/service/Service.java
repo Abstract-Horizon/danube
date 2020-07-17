@@ -106,7 +106,7 @@ public abstract class Service implements Runnable {
             if (listeners != null) {
                 Iterator<ServiceNotificationListener> it = listeners.iterator();
                 while (it.hasNext()) {
-                    ServiceNotificationListener listener = (ServiceNotificationListener)it.next();
+                    ServiceNotificationListener listener = it.next();
                     listener.serviceChangedState(this, oldState);
                 }
             }
@@ -168,6 +168,13 @@ public abstract class Service implements Runnable {
      * @throws Exception
      */
     public void destroy() throws ServiceException {
+        if (state == STOPPING) {
+            if (!waitForState(STOPPED, 100)) {
+                throw new ServiceException("Couldn't reach stopped state within 100ms");
+            }
+        } else if (state != STOPPED || state == NOT_INITIALIZED || state == INITIALIZED) {
+            throw new ServiceException("Cannot call destry while in " + SERVICE_STATE_NAMES[state] + " state.");
+        }
         changeState(DESTROYED);
     }
 
@@ -194,4 +201,28 @@ public abstract class Service implements Runnable {
         }
     }
 
+    /**
+     * Wait for service to reach asked state.
+     * @param state new state expected to be reached
+     * @param millis number of milliseconds to wait or 0 forever
+     * @return if state has been reached within timeout
+     */
+    public boolean waitForState(int state, int millis) {
+        if (state == this.state) {
+            return true;
+        }
+        long waitUtil = System.currentTimeMillis() + millis;
+        synchronized (this) {
+            while (state != this.state) {
+                if (millis != 0 && System.currentTimeMillis() >= waitUtil) {
+                    return false;
+                }
+                try {
+                    this.wait(1);
+                } catch (InterruptedException ignore) {
+                }
+            }
+        }
+        return true;
+    }
 }
