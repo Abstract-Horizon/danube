@@ -12,14 +12,14 @@
  */
 package org.abstracthorizon.danube.auth.jaas.keystore;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLConnection;
 import java.security.Key;
 import java.security.KeyPair;
@@ -58,7 +58,7 @@ public class KeyStoreModuleService {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     /** Keystore URL */
-    private String keystore;
+    private URL keystoreURL;
 
     /** Keystore password */
     private String keystorePassword;
@@ -81,9 +81,6 @@ public class KeyStoreModuleService {
     /** Options */
     private Map<String, Object> options = new HashMap<String, Object>();
 
-    /** Keystore resource URI */
-    private URI keystoreResourceURI;
-    
     static {
         Security.addProvider(new BouncyCastleProvider());
     }
@@ -138,7 +135,7 @@ public class KeyStoreModuleService {
     public String listUsersString() throws Exception {
         List<String> u = listUsers();
         String[] users = new String[u.size()];
-        users = (String[])u.toArray(users);
+        users = u.toArray(users);
 
         StringBuffer res = new StringBuffer();
         res.append("[");
@@ -231,8 +228,8 @@ public class KeyStoreModuleService {
     protected KeyStore loadKeyStore() throws KeyStoreException, NoSuchProviderException, MalformedURLException,
         IOException, NoSuchAlgorithmException, CertificateException {
 
-        logger.info("Loading keystore from " + keystoreResourceURI.toString() + " for login context '" + loginContext + "'");
-        InputStream keystoreInputStream = keystoreResourceURI.toURL().openStream();
+        logger.info("Loading keystore from " + keystoreURL.toString() + " for login context '" + loginContext + "'");
+        InputStream keystoreInputStream = keystoreURL.openStream();
         try {
             KeyStore keyStore;
             if ((keystoreProvider == null) || (keystoreProvider.length() == 0)) {
@@ -263,9 +260,9 @@ public class KeyStoreModuleService {
     protected void storeKeyStore(KeyStore keystore) throws KeyStoreException, NoSuchProviderException, MalformedURLException,
         IOException, NoSuchAlgorithmException, CertificateException {
 
-        logger.info("Storing keystore to " + keystoreResourceURI.toString() + " for login context '" + loginContext + "'");
+        logger.info("Storing keystore to " + keystoreURL.toString() + " for login context '" + loginContext + "'");
         OutputStream keystoreOutputStream = null;
-        URLConnection connection = keystoreResourceURI.toURL().openConnection();
+        URLConnection connection = keystoreURL.openConnection();
         connection.setDoOutput(true);
         keystoreOutputStream = connection.getOutputStream();
 
@@ -289,30 +286,52 @@ public class KeyStoreModuleService {
         }
     }
 
-    /**
-     * Keystore location
-     * @param keystore keystore location
-     * @throws IOException
-     * @throws URISyntaxException 
-     */
-    public void setKeyStore(String keystore) throws IOException, URISyntaxException {
-        this.keystore = keystore;
 
-        if (keystore != null) {
-            keystoreResourceURI = new URI(keystore);
-            options.put("keyStoreURL", keystoreResourceURI);
+    /**
+     * Sets keystore URL
+     * @param filename keystore URL
+     */
+    public void setKeyStoreURL(URL url) {
+        if (url != null) {
+            this.keystoreURL = url;
+            options.put("keyStoreURL", keystoreURL.toString());
         } else {
-            keystoreResourceURI = null;
+            keystoreURL = null;
             options.remove("keyStoreURL");
         }
     }
 
     /**
-     * Returns keystore url
-     * @return keystore url
+     * Returns keystore filename
+     * @return keystore filename
      */
-    public String getKeyStoreURL() {
-        return keystore;
+    public URL getKeyStoreURL() {
+        return keystoreURL;
+    }
+
+    /**
+     * Sets keystore file
+     * @param filename keystore file
+     */
+    public void setKeyStoreFile(File file) throws IOException {
+        if (file != null) {
+            this.keystoreURL = file.toURI().toURL();
+            options.put("keyStoreURL", keystoreURL.toString());
+        } else {
+            keystoreURL = null;
+            options.remove("keyStoreURL");
+        }
+    }
+
+    /**
+     * Returns keystore file
+     * @return keystore file
+     */
+    public File getKeyStoreFile() {
+        if (keystoreURL.getProtocol().equals("file")) {
+            return new File(keystoreURL.getFile());
+        }
+        return null;
     }
 
     /**

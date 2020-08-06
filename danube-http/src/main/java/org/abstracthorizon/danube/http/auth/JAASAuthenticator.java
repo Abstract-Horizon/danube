@@ -126,6 +126,7 @@ public class JAASAuthenticator implements ConnectionHandler {
      * @param connection socket connection
      * @throws ConnectionException
      */
+    @Override
     public void handleConnection(final Connection connection) throws ConnectionException {
         Subject subject = null;
         Session session = null;
@@ -141,7 +142,7 @@ public class JAASAuthenticator implements ConnectionHandler {
             }
         }
 
-        HTTPConnection httpConnection = (HTTPConnection)connection.adapt(HTTPConnection.class);
+        HTTPConnection httpConnection = connection.adapt(HTTPConnection.class);
         if (subject == null) {
 
             String authHeader = httpConnection.getRequestHeaders().getOnly(AUTHORIZATION_REQUEST_HEADER);
@@ -159,6 +160,7 @@ public class JAASAuthenticator implements ConnectionHandler {
             }
             try {
                 Subject.doAs(subject, new PrivilegedExceptionAction<Object>() {
+                    @Override
                     public Object run() throws Exception {
                         getHandler().handleConnection(connection);
                         return null;
@@ -227,6 +229,7 @@ public class JAASAuthenticator implements ConnectionHandler {
             // if (loginContext == null) {
                 loginContext = new LoginContext(getLoginContextName(), new CallbackHandler() {
 
+                    @Override
                     public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
                         for (int i = 0; i < callbacks.length; i++) {
                             if (callbacks[i] instanceof TextOutputCallback) {

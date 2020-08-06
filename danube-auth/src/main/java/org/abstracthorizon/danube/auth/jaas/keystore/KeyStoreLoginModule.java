@@ -152,6 +152,7 @@ public class KeyStoreLoginModule implements LoginModule {
      * @param sharedState shared state
      * @param options options
      */
+    @Override
     public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
         this.subject = subject;
         this.callbackHandler = callbackHandler;
@@ -181,6 +182,7 @@ public class KeyStoreLoginModule implements LoginModule {
      * @return <code>true</code> if successful
      * @throws LoginException
      */
+    @Override
     public boolean login() throws LoginException {
         if (status == LOGGED_IN) {
             return true;
@@ -296,6 +298,7 @@ public class KeyStoreLoginModule implements LoginModule {
                 throw new FailedLoginException("Unable to recover key from keystore");
             }
             privateCredential = new X500PrivateCredential(certificate, (PrivateKey)privateKey, username);
+            logger.debug("Retrieved principal from the store for " + privateCredential.getAlias());
         } catch (KeyStoreException e) {
             throw new LoginException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
@@ -310,6 +313,7 @@ public class KeyStoreLoginModule implements LoginModule {
      * @return <code>true</code> if successful
      * @throws LoginException
      */
+    @Override
     public boolean commit() throws LoginException {
         if (status == LOGGED_IN) {
             return true;
@@ -338,6 +342,7 @@ public class KeyStoreLoginModule implements LoginModule {
      * Aborts login
      * @return <code>true</code> if successful
      */
+    @Override
     public boolean abort() throws LoginException {
         if ((status == AUTHENTICATED) || (status == LOGGED_IN)) {
             logoutImpl();
@@ -351,6 +356,7 @@ public class KeyStoreLoginModule implements LoginModule {
      * Logs out
      * @return <code>true</code> if successful
      */
+    @Override
     public boolean logout() throws LoginException {
         if (status == LOGGED_IN) {
             logoutImpl();
