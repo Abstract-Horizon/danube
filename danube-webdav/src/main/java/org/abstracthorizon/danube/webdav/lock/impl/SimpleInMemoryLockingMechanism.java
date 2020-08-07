@@ -132,7 +132,7 @@ public class SimpleInMemoryLockingMechanism implements LockingMechanism {
                 Collection<Object> resources = lockResources.get(lock);
                 resources.remove(resource);
                 if (resources.size() == 0) {
-                    tokenLocks.remove(lock);
+                    tokenLocks.remove(lock.getToken());
                     lockResources.remove(lock);
                 }
             }

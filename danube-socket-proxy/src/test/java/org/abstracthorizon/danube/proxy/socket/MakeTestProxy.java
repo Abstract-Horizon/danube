@@ -21,13 +21,13 @@ import java.util.Set;
 public class MakeTestProxy {
 
     public static int SERVER_PORT = 8123;
-    
+
     public static int PROXY_PORT = 8124;
-    
+
     public static int CLIENT_PORT = 8124;
-    
+
     public static void main(String[] args) throws Exception {
-        
+
         Thread proxy = new Thread(new Runnable() {
             public void run() {
                 try {
@@ -51,7 +51,7 @@ public class MakeTestProxy {
                             SelectionKey key = iterator.next();
                             iterator.remove();
                             Connection c = (Connection)key.attachment();
-                            
+
                             if (!key.isValid()) {
                                 System.out.println("PROXY : Key is not valid " + c + " closing channel");
                                 c.in.close();
@@ -66,10 +66,10 @@ public class MakeTestProxy {
                                 Socket inbound = channel.accept().socket();
                                 SocketChannel inboundChannel = inbound.getChannel();
                                 inboundChannel.configureBlocking(false);
-                                
+
                                 Connection outConnection = new Connection(outboundChannel, inboundChannel, false);
                                 Connection inConnection = new Connection(inboundChannel, outboundChannel, true);
-                                
+
                                 outboundChannel.register(selector, SelectionKey.OP_CONNECT, outConnection);
                                 outboundChannel.connect(serverSocketAddress);
 
@@ -103,64 +103,65 @@ public class MakeTestProxy {
                                 System.out.println("PROXY : No idea what! " + c);
                             }
                         }
-                        
+
                         keysAdded = selector.select();
                     }
 //                    System.out.println("KeysAdded = " + keysAdded);
-                    
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
         proxy.start();
-        
-        
+
+
         Thread server = new Thread(new Runnable() {
             public void run() {
                 try {
-                    ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
-                    
-                    while (true) {
-                        final Socket socket = serverSocket.accept();
-                        final Random r = new Random();
-                        
-                        Thread worker = new Thread(new Runnable() {
-                            public void run() {
-                                try {
-                                    PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-                                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                                    
-                                    out.println("SERVER HELLO");
-                                    out.flush();
-                                    System.out.println("SERVER: >SERVER HELLO");
-                                    String line = in.readLine();
-                                    while (line != null) {
-                                        System.out.println("SERVER: <" + line);
-                                        if (r.nextInt(10) > 7) {
-                                            System.out.println("SERVER: Shutting this side!");
-                                            line = null;
-                                        } else {
-                                            out.println("RESPONSE TO \"" + line + "\"");
-                                            out.flush();
-                                            System.out.println("SERVER: >RESPONSE TO \"" + line + "\"");
-                                            line = in.readLine();
-                                        }
-                                        System.out.println("SERVER: <" + line);
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                } finally {
+                    try (ServerSocket serverSocket = new ServerSocket(SERVER_PORT)) {
+
+                        while (true) {
+                            final Socket socket = serverSocket.accept();
+                            final Random r = new Random();
+
+                            Thread worker = new Thread(new Runnable() {
+                                public void run() {
                                     try {
-                                        socket.close();
-                                        System.out.println("SERVER: Closed server socket.");
-                                    } catch (IOException ex) {
-                                        ex.printStackTrace();
+                                        PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+                                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                                        out.println("SERVER HELLO");
+                                        out.flush();
+                                        System.out.println("SERVER: >SERVER HELLO");
+                                        String line = in.readLine();
+                                        while (line != null) {
+                                            System.out.println("SERVER: <" + line);
+                                            if (r.nextInt(10) > 7) {
+                                                System.out.println("SERVER: Shutting this side!");
+                                                line = null;
+                                            } else {
+                                                out.println("RESPONSE TO \"" + line + "\"");
+                                                out.flush();
+                                                System.out.println("SERVER: >RESPONSE TO \"" + line + "\"");
+                                                line = in.readLine();
+                                            }
+                                            System.out.println("SERVER: <" + line);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        try {
+                                            socket.close();
+                                            System.out.println("SERVER: Closed server socket.");
+                                        } catch (IOException ex) {
+                                            ex.printStackTrace();
+                                        }
                                     }
                                 }
-                            }
-                        });
-                        worker.start();
+                            });
+                            worker.start();
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -168,8 +169,8 @@ public class MakeTestProxy {
             }
         });
         server.start();
-        
-        
+
+
         Thread client = new Thread(new Runnable() {
             public void run() {
                 try {
@@ -178,7 +179,7 @@ public class MakeTestProxy {
                         System.out.println("Client run count " + count);
                         System.out.println();
                         Thread.sleep(2000);
-                        
+
                         Socket socket = new Socket("localhost", CLIENT_PORT);
                         PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
                         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -202,9 +203,9 @@ public class MakeTestProxy {
             }
         });
         client.start();
-        
+
     }
-    
+
     public static class Connection {
         private static int counter = 1;
         public ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
@@ -221,7 +222,7 @@ public class MakeTestProxy {
                 counter++;
             }
         }
-        
+
         public String toString() {
             if (inbound) {
                 return "Inbound(" + count + ")";
@@ -230,5 +231,5 @@ public class MakeTestProxy {
             }
         }
     }
-    
+
 }

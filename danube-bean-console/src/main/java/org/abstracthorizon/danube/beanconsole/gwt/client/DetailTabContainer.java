@@ -8,7 +8,7 @@
  * Contributors:
  *
  *   Criterion Design Concepts  - initial API and implementation
- *   
+ *
  */
 package org.abstracthorizon.danube.beanconsole.gwt.client;
 
@@ -62,12 +62,12 @@ import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.tree.TreeGridField;
 
 /**
- * 
+ *
  *
  * @author Mile Lukic
- * 
+ *
  * The component displayed in the Danube Bean Console which shows details of one particular bean.
- * This component contains a summary section describing the bean, and a more details section 
+ * This component contains a summary section describing the bean, and a more details section
  * comprising of a number of tabs. The tabs list the components making up the bean.
  */
 public class DetailTabContainer {
@@ -88,7 +88,7 @@ public class DetailTabContainer {
     private static final int MAP = 2;
     private static final int VALUE = 3;
     private static final int METHODS = 4;
-    
+
     /**
      * Constructor.
      * Defines and sizes the main layout for the component and the TabSet component.
@@ -102,7 +102,7 @@ public class DetailTabContainer {
         tabSet = new TabSet();
         detailLayout.addMember(tabSet);
         tabSet.setSize("100%", "100%");
-        
+
         createTab(BEANS_PROPERTIES, "beans & properties");
         createTab(COLLECTION, "collection");
         createTab(MAP, "map");
@@ -110,35 +110,35 @@ public class DetailTabContainer {
         createTab(METHODS, "methods");
     }
 
-    
-    
+
+
     /**
-     * 
+     *
      */
     protected void createTab(int index, String tabTitle) {
-        
+
         tabTitles[index] = tabTitle;
         if (index == METHODS) {
 
             VLayout methodsLayout = new VLayout();
             methodsLayout.setSize("100%", "100%");
-            
+
             ListGrid methodListGrid = new ListGrid();
             listGrids[index] = methodListGrid;
-            
+
             ListGridField nameField = new ListGridField("name");
             nameField.setTitle("Method Name & Signature");
             ListGridField paramField = new ListGridField("parameterTypes");
             methodListGrid.setTitle("Methods");
             methodListGrid.setFields(nameField, paramField);
             methodListGrid.hideField("parameterTypes");
-            
+
             methodListGrid.addCellClickHandler(new CellClickHandler() {
                 public void onCellClick(CellClickEvent event) {
                     new MethodWindow(event.getRecord().getAttribute("link"), event.getRecord().getAttribute("name"), event.getRecord().getAttribute("parameterTypes"));
                 }
             });
-            
+
             methodsLayout.addMember(methodListGrid);
 
             Canvas sectionCanvas = new Canvas();
@@ -146,12 +146,12 @@ public class DetailTabContainer {
             methodsLayout.setSize("100%", "100%");
             tabs[index] = sectionCanvas;
         } else if (index == VALUE) {
-            
+
             text = new HTMLPane();
             text.setSize("100%", "100%");
             text.setContents("&nbsp;");
             Canvas valueCanvas = new Canvas();
-            
+
             valueCanvas.addChild(text);
             tabs[index] = valueCanvas;
 
@@ -173,19 +173,19 @@ public class DetailTabContainer {
                     }
                 }
             });
-            
+
             listGrids[index] = listGrid;
             Canvas gridCanvas = new Canvas();
             gridCanvas.addChild(listGrid);
             tabs[index] = gridCanvas;
         }
     }
-    
+
     /**
      * Creates a grid to display bean details. The grid created is customised depending upon the
      * type provided in the parameter provided. The grid returned will be displayed on the tab
      * in the TabSet corresponding to the type.
-     * 
+     *
      * @param type - specified the type for which this grid will be constructed
      * @return grid - the customised grid created for the type specified.
      */
@@ -195,22 +195,22 @@ public class DetailTabContainer {
             * in blue for "followable" types*/
            protected String getCellCSSText(ListGridRecord record, int rowNum, int colNum) {
                String followable = record.getAttribute("followable");
-               if (record.getAttribute("group").equals("methods") || followable.equals(null) 
+               if (record.getAttribute("group").equals("methods") || followable.equals(null)
                        || followable.equals("false") || !(getFieldName(colNum).equals("name"))) {
-                   return super.getCellCSSText(record, rowNum, colNum); 
-               } else {  
+                   return super.getCellCSSText(record, rowNum, colNum);
+               } else {
                    return "color:blue;";
-               }  
-           }  
-       }; 
+               }
+           }
+       };
        //Define the ListGridField's
        grid.setWidth100();
-       
+
        ListGridField beansField = new TreeGridField("group", "Group");
-       
+
        ListGridField followableField = new TreeGridField("followable", "Followable");
        followableField.setCanEdit(false);
-       
+
        ListGridField iconField = new TreeGridField("icon", " ");
        iconField.setWidth(20);
        iconField.setType(ListGridFieldType.IMAGE);
@@ -234,17 +234,17 @@ public class DetailTabContainer {
 
        ListGridField typeField = new TreeGridField("type", "Type");
        typeField.setCanEdit(false);
-       
+
        ListGridField accessField = new TreeGridField("access", "Access");
        accessField.setCanEdit(false);
        accessField.setWidth("7%");
 
        final SelectItem boolItem = new SelectItem();
-       LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();  
-       valueMap.put("true", "true");  
+       LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
+       valueMap.put("true", "true");
        valueMap.put("false", "false");
-       boolItem.setValueMap(valueMap);       
-       
+       boolItem.setValueMap(valueMap);
+
        final ListGridField valueField = new TreeGridField("value", "Value");
        valueField.setWidth("68%");
        valueField.setType(ListGridFieldType.TEXT);
@@ -252,7 +252,7 @@ public class DetailTabContainer {
 //
 //           public void onRecordClick(RecordClickEvent event) {
 //               Record record = event.getRecord();
-//               
+//
 //               String access = record.getAttribute("access").toUpperCase();
 //               String type = record.getAttribute("type");
 //               if (access.indexOf('W') >= 0) {
@@ -268,7 +268,7 @@ public class DetailTabContainer {
 //                   valueField.setEditorType(new StaticTextItem());
 //               }
 //           }
-//           
+//
 //       });
        valueField.addCellSavedHandler(new CellSavedHandler() {
            public void onCellSaved(CellSavedEvent event) {
@@ -278,12 +278,12 @@ public class DetailTabContainer {
                transaction.sendSimplePostRequest((String)event.getNewValue());
            }
        });
-       
+
        ListGridField parametersField = new TreeGridField("parameterTypes", "Parameter Types");
        parametersField.setWidth("68%");
        parametersField.setCanEdit(false);
        parametersField.setType(ListGridFieldType.TEXT);
-       /* Customise the grid by only adding the ListGridFields to the grid that are pertinent 
+       /* Customise the grid by only adding the ListGridFields to the grid that are pertinent
         * to the type. Hide any columns not to be displayed.*/
        if (type.equals("beans & properties")) {
            grid.setFields(beansField, followableField, iconField, nameField, typeField, accessField, valueField);
@@ -305,29 +305,29 @@ public class DetailTabContainer {
        grid.hideField("group");
        grid.hideField("followable");
        grid.setAlternateRecordStyles(true);
-       
+
        grid.addSelectionChangedHandler(new SelectionChangedHandler() {
            public void onSelectionChanged(SelectionEvent event) {
                Record record = event.getRecord();
-               
+
                String access = record.getAttribute("access").toUpperCase();
                String type = record.getAttribute("type");
                if (access.indexOf('W') >= 0) {
                    SC.logWarn("Select Need to allow editing for: " + event.getRecord().getAttribute("value"));
                    if ("boolean".equals(type) || "java.lang.Boolean".equals(type)) {
-                       valueField.setEditorType(boolItem);
+                       valueField.setEditorProperties(boolItem);
                    } else {
-                       valueField.setEditorType(new TextItem());
+                       valueField.setEditorProperties(new TextItem());
                    }
                    // Allow editing
                } else {
                    SC.logWarn("Select Need to prevent editing for: " + event.getRecord().getAttribute("value"));
-                   valueField.setEditorType(new StaticTextItem());
+                   valueField.setEditorProperties(new StaticTextItem());
                }
-                
-           } 
+
+           }
        });
-       
+
        return grid;
     }
 
@@ -351,7 +351,7 @@ public class DetailTabContainer {
                         }
                         i++;
                     }
-    
+
                     if (record != null) {
                         updated = true;
                         record.setAttribute("value", resource.getValue());
@@ -370,10 +370,10 @@ public class DetailTabContainer {
             this.resource = resource;
             this.records = records;
             clearTabs();
-            
+
             populateTabs(records);
-            
-            String value = resource.getValue(); 
+
+            String value = resource.getValue();
             if ((value != null) && (value.length() >= 40)) {
                 SC.logWarn("Setting value ...");
                 String contents = value.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -387,16 +387,16 @@ public class DetailTabContainer {
             }
         }
     }
-    
+
     /**
      * Get the entire TabSet.
-     * 
+     *
      * @return tabset - The TabSet component used to hold details for the bean being displayed.
      */
     public TabSet getDetails() {
         return tabSet;
     }
-    
+
     /**
      * Removes each tab from the TabSet.
      */
@@ -408,14 +408,14 @@ public class DetailTabContainer {
             listGrids[i].setData(new ListGridRecord[0]);
         }
     }
-    
+
     protected void populateTabs(ListGridRecord [] detailRecs) {
         for (int i = 0; i < displayedTabs.length; i++) { // This is not needed, but just in case...
             displayedTabs[i] = false;
         }
-        
+
         Map<String, List<ListGridRecord>> map = new HashMap<String, List<ListGridRecord>>();
-        
+
         for (int i = 0; i < detailRecs.length; i++) {
             String group = detailRecs[i].getAttribute("group");
             List<ListGridRecord> records = map.get(group);
@@ -423,19 +423,19 @@ public class DetailTabContainer {
                 records = new ArrayList<ListGridRecord>();
                 map.put(group, records);
             }
-            
+
             if (group.equals("methods")) {
                 String name = detailRecs[i].getAttribute("name");
                 String params = detailRecs[i].getAttribute("parameterTypes");
                 name = name + "(" + params + ")";
                 detailRecs[i].setAttribute("name", name);
-                
+
 //                String url = detailRecs[i].getAttribute("link");
 //                detailRecs[i].setAttribute("link", url);
-            }            
+            }
             records.add(detailRecs[i]);
         }
-        
+
         List<ListGridRecord> beansAndPropsRecords = map.get("beans");
         if (beansAndPropsRecords != null) {
             List<ListGridRecord> propsRecords = map.get("properties");
@@ -453,19 +453,19 @@ public class DetailTabContainer {
         if (collectionRecords != null) {
             addTab(collectionRecords, COLLECTION);
         }
-        
+
         List<ListGridRecord> mapsRecords = map.get("map");
         if (mapsRecords != null) {
             addTab(mapsRecords, MAP);
         }
-        
+
         List<ListGridRecord> methodsRecords = map.get("methods");
         if (methodsRecords != null) {
             addTab(methodsRecords, METHODS);
         }
-        
+
     }
-    
+
     protected void addTab(List<ListGridRecord> recs, int index) {
         ListGridRecord[] records = new ListGridRecord[recs.size()];
         records = recs.toArray(records);
@@ -479,7 +479,7 @@ public class DetailTabContainer {
 
     private class MethodWindow {
         private Window methodWindow;
-        
+
         public MethodWindow(final String url, String name, String params) {
             methodWindow = new Window();
             methodWindow.animateShow(AnimationEffect.FLY);
@@ -491,9 +491,9 @@ public class DetailTabContainer {
             methodWindow.setAutoCenter(true);
             methodWindow.setTitle(name + " url: " + url);
             methodWindow.setIsModal(true);
-            methodWindow.setShowModalMask(true);            
+            methodWindow.setShowModalMask(true);
             String[] paramTypes = params.split(",");
-            
+
             VLayout methodsLayout = new VLayout();
             methodsLayout.setMargin(2);
             methodsLayout.setWidth100();
@@ -517,7 +517,7 @@ public class DetailTabContainer {
                         if(event.getKeyName().equals("Enter")) {
                             ClientServerTransaction transaction = new ClientServerTransaction(url, dataModel);
                             transaction.sendPostRequest(methodParams);
-                            methodWindow.destroy(); 
+                            methodWindow.destroy();
                         }
                     }
                 });
@@ -527,23 +527,23 @@ public class DetailTabContainer {
             Label noParams = new Label("No parameters required for this method.");
             noParams.setWidth("100%");
             noParams.setHeight(20);
-            
-            //Add the parameter input fields (if any) and buttons to the window. 
+
+            //Add the parameter input fields (if any) and buttons to the window.
             Button execButton = new Button();
             execButton.setTitle("Execute");
             execButton.setAlign(Alignment.CENTER);
             execButton.setLayoutAlign(Alignment.CENTER);
             execButton.setMargin(1);
-            
+
             execButton.addClickHandler(new ClickHandler() {
                 public void onClick(ClickEvent event) {
                     ClientServerTransaction transaction = new ClientServerTransaction(url, dataModel);
                     transaction.sendPostRequest(methodParams);
-                    methodWindow.destroy(); 
+                    methodWindow.destroy();
                 }
             });
-            
-            
+
+
             Button cancelButton = new Button();
             cancelButton.setTitle("Cancel");
             cancelButton.setAlign(Alignment.CENTER);
@@ -551,10 +551,10 @@ public class DetailTabContainer {
             cancelButton.setMargin(1);
             cancelButton.addClickHandler(new ClickHandler() {
                 public void onClick(ClickEvent event) {
-                    methodWindow.destroy(); 
+                    methodWindow.destroy();
                 }
             });
-            
+
             HLayout btnLayout = new HLayout();
             btnLayout.setWidth100();
             btnLayout.setHeight(30);
@@ -579,7 +579,7 @@ public class DetailTabContainer {
             } else {
                 methodsLayout.addMember(method);
             }
-                
+
             methodWindow.setWidth("60%");
             methodWindow.setHeight(windowHeight);
             methodWindow.addMember(methodsLayout);
@@ -590,11 +590,11 @@ public class DetailTabContainer {
                     if(event.getKeyName().equals("Escape")) {
                         methodWindow.destroy();
                     }
-                } 
+                }
             });
             methodWindow.show();
         }
-        
+
     }
 
 }

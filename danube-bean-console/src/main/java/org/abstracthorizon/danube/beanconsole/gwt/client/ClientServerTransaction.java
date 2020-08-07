@@ -9,7 +9,7 @@
  *
  *   Criterion Design Concepts  - initial API and implementation
  *   Creative Sphere            - initial API and implementation
- *   
+ *
  */
 package org.abstracthorizon.danube.beanconsole.gwt.client;
 
@@ -28,27 +28,27 @@ import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 
 /**
- * 
+ *
  * @author Mile Lukic
  * @author Daniel Sendula
- * 
+ *
  * This class handles the asynchronous remote procedure call to the Danube REST interface.
- * A JSON object is returned in response to the URL provided to the request. This class also 
- * updates the status bar in the Danube Bean Console and adds the JSON resource to the 
- * domain model. 
+ * A JSON object is returned in response to the URL provided to the request. This class also
+ * updates the status bar in the Danube Bean Console and adds the JSON resource to the
+ * domain model.
  */
 public class ClientServerTransaction implements RequestCallback {
 
     // This is local debug switch
     private static final boolean DEBUG = false;
-    
+
     private String url;
     private DataModel model;
     private String finalUrl;
 
     /**
      * Constructor.
-     *  
+     *
      * @param url
      * @param model
      */
@@ -80,7 +80,7 @@ public class ClientServerTransaction implements RequestCallback {
             StatusBar.setStatus("Status: Got request exception " + e.getMessage());
         }
     }
-    
+
     public void sendPostRequest(FormItem [] methodParams) {
         StringBuffer postData = new StringBuffer();
         if (methodParams.length > 0) {
@@ -110,7 +110,7 @@ public class ClientServerTransaction implements RequestCallback {
             StatusBar.setStatus("Status: Got request exception " + e.getMessage());
         }
     }
-    
+
     public void sendSimplePostRequest(String value) {
 
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, finalUrl);
@@ -130,9 +130,9 @@ public class ClientServerTransaction implements RequestCallback {
             StatusBar.setStatus("Status: Got request exception " + e.getMessage());
         }
     }
-    
+
     /**
-     * Updates the status bar with any error messages resulting from a request. 
+     * Updates the status bar with any error messages resulting from a request.
      */
     public void onError(Request request, Throwable exception) {
         StatusBar.setStatus("Status: Received error");
@@ -141,7 +141,7 @@ public class ClientServerTransaction implements RequestCallback {
     /**
      * Handles the response received for a request. The response contains a JSON encoded
      * string which is parsed in order to extract a JSON object. The status bar is updated
-     * and the object extracted from the response is added to the data model. 
+     * and the object extracted from the response is added to the data model.
      */
     public void onResponseReceived(Request request, Response response) {
 
@@ -149,7 +149,7 @@ public class ClientServerTransaction implements RequestCallback {
         StatusBar.setStatus("Received response");
         String t = response.getText();
         try {
-            JSONValue beanValue = JSONParser.parse(t);
+            JSONValue beanValue = JSONParser.parseLenient(t);
             StatusBar.setStatus("Received response - parsed");
             JSONObject bean = beanValue.isObject();
             StatusBar.setStatus("Status: Received response - got bean object");

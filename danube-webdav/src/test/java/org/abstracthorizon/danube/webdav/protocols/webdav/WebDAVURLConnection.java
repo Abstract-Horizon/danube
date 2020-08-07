@@ -24,6 +24,7 @@ import sun.net.www.protocol.http.HttpURLConnection;
  *
  * @author Daniel Sendula
  */
+@SuppressWarnings("restriction")
 public class WebDAVURLConnection extends HttpURLConnection {
 
     protected WebDAVURLConnection(URL u, Proxy p, Handler handler) throws IOException {

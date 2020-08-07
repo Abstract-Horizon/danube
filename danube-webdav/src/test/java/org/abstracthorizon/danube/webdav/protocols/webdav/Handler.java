@@ -21,6 +21,7 @@ import java.net.URL;
  *
  * @author Daniel Sendula
  */
+@SuppressWarnings("restriction")
 public class Handler extends sun.net.www.protocol.http.Handler {
 
 

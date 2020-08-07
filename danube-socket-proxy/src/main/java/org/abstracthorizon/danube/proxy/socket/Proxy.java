@@ -18,8 +18,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * 
- * 
+ *
+ *
  * @author Daniel Sendula
  */
 public class Proxy {
@@ -32,29 +32,28 @@ public class Proxy {
         String remotehost = "127.0.0.1";
 
         Socket incoming, outgoing = null;
-        ServerSocket server = null;
+        try (ServerSocket server = new ServerSocket(localport)) {
 
-        server = new ServerSocket(localport);
+            // Loop to listen for incoming connection, and accept if there is one
 
-        // Loop to listen for incoming connection, and accept if there is one
+            while (true) {
+                try {
+                    incoming = server.accept();
+                    // Create the 2 threads for the incoming and outgoing traffic of proxy server
+                    outgoing = new Socket(remotehost, remoteport);
 
-        while (true) {
-            try {
-                incoming = server.accept();
-                // Create the 2 threads for the incoming and outgoing traffic of proxy server
-                outgoing = new Socket(remotehost, remoteport);
+                    ProxyThread thread1 = new ProxyThread(incoming, outgoing);
+                    thread1.start();
 
-                ProxyThread thread1 = new ProxyThread(incoming, outgoing);
-                thread1.start();
-
-                ProxyThread thread2 = new ProxyThread(outgoing, incoming);
-                thread2.start();
-            } catch (UnknownHostException e) {
-                // Test and make connection to remote host
-                System.err.println("Error: Unknown Host " + remotehost);
-                System.exit(-1);
-            } catch (IOException e) {
-                System.exit(-2);// continue;
+                    ProxyThread thread2 = new ProxyThread(outgoing, incoming);
+                    thread2.start();
+                } catch (UnknownHostException e) {
+                    // Test and make connection to remote host
+                    System.err.println("Error: Unknown Host " + remotehost);
+                    System.exit(-1);
+                } catch (IOException e) {
+                    System.exit(-2);// continue;
+                }
             }
         }
     }
