@@ -21,7 +21,7 @@
     to see how Danube works, to see its internals.
   </description>
 
-	<!--  include pluginRepository and repository for GWT-Maven -->
+  <!--  include pluginRepository and repository for GWT-Maven -->
   <pluginRepositories>
     <pluginRepository>
       <id>gwt-maven-plugins</id>

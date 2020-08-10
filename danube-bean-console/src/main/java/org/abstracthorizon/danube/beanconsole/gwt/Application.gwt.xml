@@ -12,10 +12,9 @@
     <!-- inherits name='com.smartclient.theme.blackops.BlackOps'/ -->
     <!--  inherits name='com.smartclient.theme.treefrog.TreeFrog'/  -->
     <!--  inherits name='com.smartclient.theme.fleet.Fleet'/  -->
-	<!-- inherits name='com.smartclient.SmartClientDefault' / -->
+    <!-- inherits name='com.smartclient.SmartClientDefault' / -->
     
     <entry-point class='org.abstracthorizon.danube.beanconsole.gwt.client.Application'/>
     
     <stylesheet src='Application.css' />
-	
 </module>

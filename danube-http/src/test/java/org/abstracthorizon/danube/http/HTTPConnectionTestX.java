@@ -104,8 +104,8 @@ public class HTTPConnectionTestX {
 
     @Test public void testGetParametersRequest() throws Exception {
 
-    	serverSelector.getComponents().clear();
-    	serverSelector.getComponents().add(
+        serverSelector.getComponents().clear();
+        serverSelector.getComponents().add(
             new Prefix(new ParamTestConnectionHandler(), "/" + PATH)
         );
 
@@ -115,8 +115,8 @@ public class HTTPConnectionTestX {
     }
 
     @Test public void testPostParametersRequest() throws Exception {
-    	serverSelector.getComponents().clear();
-    	serverSelector.getComponents().add(
+        serverSelector.getComponents().clear();
+        serverSelector.getComponents().add(
             new Prefix(new ParamTestConnectionHandler(), "/" + PATH)
         );
 
