@@ -403,7 +403,9 @@ public class Proxy implements Runnable {
     protected static class ControlConnection implements Connection {
 
         private ByteBuffer buffer = ByteBuffer.allocate(1024);
+        @SuppressWarnings("unused")
         private BufferedReader in;
+        @SuppressWarnings("unused")
         private PrintWriter out;
         private SocketChannel channel;
         private InetSocketAddress sourceSocketAddress;
@@ -463,38 +465,41 @@ public class Proxy implements Runnable {
         Thread.sleep(1000);
 
         System.out.println("Creating server socket...");
-        ServerSocket serverSocket = new ServerSocket(9999);
-        System.out.println("Server socket created,");
+        try (ServerSocket serverSocket = new ServerSocket(9999)) {
+            System.out.println("Server socket created,");
 
-        System.out.println("Creating control socket...");
-        Socket socket = new Socket("localhost", 8044);
-        System.out.println("Control socket created.");
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-        System.out.println("Sending control data...");
-        out.println("localhost:8888");
-        out.println("localhost:9999");
-        out.flush();
-        System.out.println("Control data sent.");
-        Thread.sleep(1000);
+            System.out.println("Creating control socket...");
+            try (Socket socket = new Socket("localhost", 8044)) {
+                System.out.println("Control socket created.");
+                PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+                System.out.println("Sending control data...");
+                out.println("localhost:8888");
+                out.println("localhost:9999");
+                out.flush();
+                System.out.println("Control data sent.");
+                Thread.sleep(1000);
 
-        System.out.println("Creating client socket...");
-        Socket testClientSocket = new Socket("localhost", 8888);
-        System.out.println("Client socket created.");
-        PrintWriter testClientOut = new PrintWriter(new OutputStreamWriter(testClientSocket.getOutputStream()));
-        System.out.println("Sending some data...");
-        testClientOut.println("Something!");
-        testClientOut.flush();
-        System.out.println("Data sent.");
+                System.out.println("Creating client socket...");
+                try (Socket testClientSocket = new Socket("localhost", 8888)) {
+                    System.out.println("Client socket created.");
+                    PrintWriter testClientOut = new PrintWriter(new OutputStreamWriter(testClientSocket.getOutputStream()));
+                    System.out.println("Sending some data...");
+                    testClientOut.println("Something!");
+                    testClientOut.flush();
+                    System.out.println("Data sent.");
 
-        System.out.println("Accepting connection...");
-        Socket testServerSocket = serverSocket.accept();
-        System.out.println("Connection accepted.");
-        BufferedReader testServerIn = new BufferedReader(new InputStreamReader(testServerSocket.getInputStream()));
-        System.out.println("Receiving line...");
-        String line = testServerIn.readLine();
-        System.out.println("Got line: " + line);
-        System.out.println("Line received.");
+                    System.out.println("Accepting connection...");
+                    Socket testServerSocket = serverSocket.accept();
+                    System.out.println("Connection accepted.");
+                    BufferedReader testServerIn = new BufferedReader(new InputStreamReader(testServerSocket.getInputStream()));
+                    System.out.println("Receiving line...");
+                    String line = testServerIn.readLine();
+                    System.out.println("Got line: " + line);
+                    System.out.println("Line received.");
 
-        System.exit(0);
+                    System.exit(0);
+                }
+            }
+        }
     }
 }
