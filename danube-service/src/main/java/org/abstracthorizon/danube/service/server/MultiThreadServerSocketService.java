@@ -43,7 +43,7 @@ public class MultiThreadServerSocketService extends MultiThreadServerService {
      * Default constructor
      */
     public MultiThreadServerSocketService() {
-        waitForStateTimeout = (int)(serverSocketTimeout * 1.2);
+        waitForStateTimeout = serverSocketTimeout * 2;
     }
 
     /**
@@ -60,7 +60,7 @@ public class MultiThreadServerSocketService extends MultiThreadServerService {
      */
     public void setServerSocketTimeout(int socketTimeout) {
         this.serverSocketTimeout = socketTimeout;
-        waitForStateTimeout = (int)(serverSocketTimeout * 1.2);
+        waitForStateTimeout = serverSocketTimeout * 2;
     }
 
     /**
@@ -93,6 +93,9 @@ public class MultiThreadServerSocketService extends MultiThreadServerService {
      * @throws ServiceException
      */
     public void destroy() throws ServiceException {
+        try {
+            serverSocket.close();
+        } catch (IOException ignore) { }
         super.destroy();
         destroyServerSocket();
     }
