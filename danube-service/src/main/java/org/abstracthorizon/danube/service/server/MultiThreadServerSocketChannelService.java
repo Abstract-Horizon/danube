@@ -45,6 +45,7 @@ public class MultiThreadServerSocketChannelService extends MultiThreadServerServ
      * Default constructor
      */
     public MultiThreadServerSocketChannelService() {
+        waitForStateTimeout = (int)(serverSocketTimeout * 1.2);
     }
 
     /**
@@ -61,6 +62,7 @@ public class MultiThreadServerSocketChannelService extends MultiThreadServerServ
      */
     public void setServerSocketTimeout(int socketTimeout) {
         this.serverSocketTimeout = socketTimeout;
+        waitForStateTimeout = (int)(serverSocketTimeout * 1.2);
     }
 
     /**

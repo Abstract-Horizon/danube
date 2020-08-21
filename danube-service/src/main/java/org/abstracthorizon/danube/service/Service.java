@@ -54,6 +54,8 @@ public abstract class Service implements Runnable {
     /** Flag to signal to service that it needs to stop */
     protected boolean stopService = false;
 
+    protected int waitForStateTimeout = 100;
+
     /** Listeners */
     protected Set<ServiceNotificationListener> listeners;
 
@@ -169,8 +171,8 @@ public abstract class Service implements Runnable {
      */
     public void destroy() throws ServiceException {
         if (state == STOPPING) {
-            if (!waitForState(STOPPED, 100)) {
-                throw new ServiceException("Couldn't reach stopped state within 100ms");
+            if (!waitForState(STOPPED, waitForStateTimeout)) {
+                throw new ServiceException("Couldn't reach stopped state within " + waitForStateTimeout + "ms");
             }
         } else if (state != STOPPED || state == NOT_INITIALIZED || state == INITIALIZED) {
             throw new ServiceException("Cannot call destry while in " + SERVICE_STATE_NAMES[state] + " state.");

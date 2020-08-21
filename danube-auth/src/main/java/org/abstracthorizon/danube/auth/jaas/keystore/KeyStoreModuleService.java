@@ -120,11 +120,18 @@ public class KeyStoreModuleService {
     }
 
 
-    public void stop() throws Exception {
-        Method method = configuration.getClass().getMethod("removeAppConfigurationEntry", new Class[]{String.class});
-        Object[] args = {loginContext};
-        method.invoke(configuration, args);
-        logger.info("Removed login context '" + loginContext + "'");
+    public void stop() throws IOException {
+        try {
+            Method method = configuration.getClass().getMethod("removeAppConfigurationEntry", new Class[]{String.class});
+            Object[] args = {loginContext};
+            method.invoke(configuration, args);
+            logger.info("Removed login context '" + loginContext + "'");
+        } catch (Exception e) {
+            if (e instanceof IOException) {
+                throw (IOException)e;
+            }
+            throw new IOException(e);
+        }
     }
 
     /**
