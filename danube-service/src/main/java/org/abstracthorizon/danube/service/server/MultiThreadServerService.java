@@ -12,17 +12,17 @@
  */
 package org.abstracthorizon.danube.service.server;
 
-import org.abstracthorizon.danube.connection.Connection;
-import org.abstracthorizon.danube.connection.ConnectionHandler;
-import org.abstracthorizon.danube.service.Service;
-import org.abstracthorizon.danube.service.ServiceException;
-import org.abstracthorizon.danube.service.ServiceNotificationListener;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import org.abstracthorizon.danube.connection.Connection;
+import org.abstracthorizon.danube.connection.ConnectionHandler;
+import org.abstracthorizon.danube.service.Service;
+import org.abstracthorizon.danube.service.ServiceException;
+import org.abstracthorizon.danube.service.ServiceNotificationListener;
 
 /**
  * This class models multi-threaded model of connection service. Each new connection is
@@ -41,7 +41,7 @@ public abstract class MultiThreadServerService extends ServerService {
     protected Executor executor;
 
     /** Set of active connections */
-    protected Set<ConnectionHandlerThread> activeConnections = new HashSet<ConnectionHandlerThread>();
+    private Set<ConnectionHandlerThread> activeConnections = new HashSet<ConnectionHandlerThread>();
 
     /**
      * Default constructor
@@ -89,6 +89,11 @@ public abstract class MultiThreadServerService extends ServerService {
      * @return connections
      */
     public Set<ConnectionHandlerThread> getActiveConnections() {
+        Set<ConnectionHandlerThread> activeConnections;
+        synchronized (this) {
+            activeConnections = new HashSet<>(this.activeConnections);
+        }
+
         return activeConnections;
     }
 
@@ -97,10 +102,12 @@ public abstract class MultiThreadServerService extends ServerService {
      * @return number of active connections
      */
     public int getNumberOfActiveConnections() {
-        if (activeConnections != null) {
-            return activeConnections.size();
-        } else {
-            return 0;
+        synchronized (this) {
+            if (activeConnections != null) {
+                return activeConnections.size();
+            } else {
+                return 0;
+            }
         }
     }
 
@@ -140,7 +147,7 @@ public abstract class MultiThreadServerService extends ServerService {
         }
         removeListener(listener);
         // TODO We have java.util.ConcurrentModificationException on following iteration
-        for (ConnectionHandlerThread thread : activeConnections) {
+        for (ConnectionHandlerThread thread : getActiveConnections()) {
             Connection serverConnection = thread.getConnection();
             if (!serverConnection.isClosed()) {
                 serverConnection.close();
@@ -228,12 +235,16 @@ public abstract class MultiThreadServerService extends ServerService {
         public void run() {
             try {
                 thread = Thread.currentThread();
-                activeConnections.add(this);
+                synchronized (this) {
+                    activeConnections.add(this);
+                }
                 connectionHandler.handleConnection(serverConnection);
             } catch (Exception e) {
                 logger.error("Connection finished with error; " + serverConnection, e);
             } finally {
-                activeConnections.remove(this);
+                synchronized (this) {
+                    activeConnections.remove(this);
+                }
                 serverConnection.close();
             }
         }

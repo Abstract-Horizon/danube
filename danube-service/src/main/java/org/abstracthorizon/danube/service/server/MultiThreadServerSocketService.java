@@ -93,9 +93,11 @@ public class MultiThreadServerSocketService extends MultiThreadServerService {
      * @throws ServiceException
      */
     public void destroy() throws ServiceException {
-        try {
-            serverSocket.close();
-        } catch (IOException ignore) { }
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+            } catch (IOException ignore) { }
+        }
         super.destroy();
         destroyServerSocket();
     }
